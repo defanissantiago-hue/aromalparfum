@@ -56,7 +56,13 @@ const products=[
 ["La Vie Est Belle",15000,75,"Diseñador","Mujer"],
 ["Zatys Exodus",15000,100,"Argentina","Unisex"],["Zatys Magnetic",15000,100,"Argentina","Unisex"],["9 PM Night Out",43200,100,"Árabe","Hombre"],["Asad Elixir",30000,100,"Árabe","Hombre"],["Hayaati",28800,100,"Árabe","Hombre"],["Musk Mood",22400,100,"Árabe","Unisex"],["Khamrah Qahwa",37600,100,"Árabe","Unisex"],["Valentino",35700,100,"Diseñador","Hombre"],["JPG Intense",47600,100,"Diseñador","Hombre"],["Azzaro The Most Wanted",34000,100,"Diseñador","Hombre"],["Pride Lattafa",37400,100,"Árabe","Unisex"],["Fakhar Lattafa",37400,100,"Árabe","Hombre"],["Yum Yum",42500,100,"Árabe","Mujer"],["VCL",25000,100,"Argentina","Unisex"],["Victoria",39950,100,"Diseñador","Mujer"],["Mandarín Sky Elixir",37500,100,"Diseñador","Unisex"],["Club de Nuit Icon",34000,100,"Árabe","Hombre"],["Olumpea",17000,100,"Diseñador","Mujer"],["Libre Vainilla",25000,100,"Diseñador","Mujer"],["Erba Pura",45900,100,"Nicho","Unisex"],
 ["Le male elixir absolu",35000,125,"Diseñador","Hombre"],["Club de Nuit Sillage",32000,105,"Árabe","Unisex"]
-].map((p,i)=>({id:i+1,nombre:p[0],precio:p[1],ml:p[2],categoria:p[3],genero:p[4],stock:10,img:"",descripcion:"Fragancia seleccionada de AromaLParfum. Consultá disponibilidad y detalles por WhatsApp.",salida:"Consultar",corazon:"Consultar",fondo:"Consultar",familia:"Fragancia",destacado:i<8,nuevo:i<5,vendido:i%4===0}));
+].map((p,i)=>({id:i+1,nombre:p[0],precio:p[1],ml:p[2],categoria:p[3],genero:p[4],stock:10,img:img:({
+"9 PM Rebel":"imagenes/9pm-rebel.jpeg",
+"Asad Elixir":"imagenes/asad-elixir.jpeg",
+"Ecos del Silencio":"imagenes/ecos-silencio.jpeg",
+"JPG Intense":"imagenes/jpg-intense.jpeg",
+"Le Male Elixir":"imagenes/jpg-dorado.jpeg"
+}[p[0]]||""),descripcion:"Fragancia seleccionada de AromaLParfum. Consultá disponibilidad y detalles por WhatsApp.",salida:"Consultar",corazon:"Consultar",fondo:"Consultar",familia:"Fragancia",destacado:i<8,nuevo:i<5,vendido:i%4===0}));
 
 let cart=JSON.parse(localStorage.getItem("alp_cart")||"[]"), fav=JSON.parse(localStorage.getItem("alp_fav")||"[]"), filter="Todos", sort="default", search="";
 
