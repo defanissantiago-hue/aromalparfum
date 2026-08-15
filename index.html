@@ -51,18 +51,166 @@ footer{background:#111;color:#fff;padding:50px 18px}.footer-inner{max-width:1200
 
 <script>
 const products=[
-["JPG Le Beau",7000,30,"Diseñador","Hombre"],["JPG Le Male",7000,30,"Diseñador","Hombre"],["9 PM Rebel",6000,30,"Árabe","Hombre"],["9 PM Elixir",6000,30,"Árabe","Hombre"],["Mandarine Sky",6000,30,"Diseñador","Unisex"],["Moto Vintage",5000,30,"Árabe","Unisex"],["Ecos del Silencio",14080,30,"Argentina","Unisex"],["Ébano Exótico",14080,30,"Argentina","Unisex"],["Sexy Secreto Enganche",6460,30,"Argentina","Mujer"],["Champia",5610,30,"Argentina","Mujer"],["Yara",6120,30,"Árabe","Mujer"],["Marshmallow",6120,30,"Nicho","Mujer"],["Vulcan",6120,30,"Nicho","Unisex"],["Erba Pura",6120,30,"Nicho","Unisex"],["Cool Girl Rojo",8330,30,"Argentina","Mujer"],["Mádame",5610,30,"Argentina","Mujer"],["Flores Eternas",14960,30,"Argentina","Mujer"],["Fantasía de Mujer",14960,30,"Argentina","Mujer"],["Conquistador",14960,30,"Argentina","Hombre"],["Ébano Exótico 30 ml",14960,30,"Argentina","Unisex"],["Santa 33",6460,30,"Argentina","Unisex"],
-["Zatys Golden Heat",12000,50,"Argentina","Unisex"],["Yara Blanco",19200,50,"Árabe","Mujer"],["Asad Black",16000,50,"Árabe","Hombre"],
+
+["JPG Le Beau",7000,30,"Diseñador","Hombre"],
+["JPG Le Male",7000,30,"Diseñador","Hombre"],
+["9 PM Rebel",6000,30,"Árabe","Hombre"],
+["9 PM Elixir",6000,30,"Árabe","Hombre"],
+["Mandarine Sky",6000,30,"Diseñador","Unisex"],
+["Moto Vintage",5000,30,"Árabe","Unisex"],
+["Ecos del Silencio",14080,30,"Argentina","Unisex"],
+["Ébano Exótico",14080,30,"Argentina","Unisex"],
+["Sexy Secreto Enganche",6460,30,"Argentina","Mujer"],
+["Champia",5610,30,"Argentina","Mujer"],
+["Yara",6120,30,"Árabe","Mujer"],
+["Marshmallow",6120,30,"Nicho","Mujer"],
+["Vulcan",6120,30,"Nicho","Unisex"],
+["Erba Pura",6120,30,"Nicho","Unisex"],
+["Cool Girl Rojo",8330,30,"Argentina","Mujer"],
+["Mádame",5610,30,"Argentina","Mujer"],
+["Flores Eternas",14960,30,"Argentina","Mujer"],
+["Fantasía de Mujer",14960,30,"Argentina","Mujer"],
+["Conquistador",14960,30,"Argentina","Hombre"],
+["Ébano Exótico 30 ml",14960,30,"Argentina","Unisex"],
+["Santa 33",6460,30,"Argentina","Unisex"],
+
+["Zatys Golden Heat",12000,50,"Argentina","Unisex"],
+["Yara Blanco",19200,50,"Árabe","Mujer"],
+["Asad Black",16000,50,"Árabe","Hombre"],
+
 ["La Vie Est Belle",15000,75,"Diseñador","Mujer"],
-["Zatys Exodus",15000,100,"Argentina","Unisex"],["Zatys Magnetic",15000,100,"Argentina","Unisex"],["9 PM Night Out",43200,100,"Árabe","Hombre"],["Asad Elixir",30000,100,"Árabe","Hombre"],["Hayaati",28800,100,"Árabe","Hombre"],["Musk Mood",22400,100,"Árabe","Unisex"],["Khamrah Qahwa",37600,100,"Árabe","Unisex"],["Valentino",35700,100,"Diseñador","Hombre"],["JPG Intense",47600,100,"Diseñador","Hombre"],["Azzaro The Most Wanted",34000,100,"Diseñador","Hombre"],["Pride Lattafa",37400,100,"Árabe","Unisex"],["Fakhar Lattafa",37400,100,"Árabe","Hombre"],["Yum Yum",42500,100,"Árabe","Mujer"],["VCL",25000,100,"Argentina","Unisex"],["Victoria",39950,100,"Diseñador","Mujer"],["Mandarín Sky Elixir",37500,100,"Diseñador","Unisex"],["Club de Nuit Icon",34000,100,"Árabe","Hombre"],["Olumpea",17000,100,"Diseñador","Mujer"],["Libre Vainilla",25000,100,"Diseñador","Mujer"],["Erba Pura",45900,100,"Nicho","Unisex"],
-["Le male elixir absolu",35000,125,"Diseñador","Hombre"],["Club de Nuit Sillage",32000,105,"Árabe","Unisex"]
-].map((p,i)=>({id:i+1,nombre:p[0],precio:p[1],ml:p[2],categoria:p[3],genero:p[4],stock:10,img:({
+
+["Zatys Exodus",15000,100,"Argentina","Unisex"],
+["Zatys Magnetic",15000,100,"Argentina","Unisex"],
+["9 PM Night Out",43200,100,"Árabe","Hombre"],
+["Asad Elixir",30000,100,"Árabe","Hombre"],
+["Hayaati",28800,100,"Árabe","Hombre"],
+["Musk Mood",22400,100,"Árabe","Unisex"],
+["Khamrah Qahwa",37600,100,"Árabe","Unisex"],
+["Valentino",35700,100,"Diseñador","Hombre"],
+["JPG Intense",47600,100,"Diseñador","Hombre"],
+["Azzaro The Most Wanted",34000,100,"Diseñador","Hombre"],
+["Pride Lattafa",37400,100,"Árabe","Unisex"],
+["Fakhar Lattafa",37400,100,"Árabe","Hombre"],
+["Yum Yum",42500,100,"Árabe","Mujer"],
+["VCL",25000,100,"Argentina","Unisex"],
+["Victoria",39950,100,"Diseñador","Mujer"],
+["Mandarín Sky Elixir",37500,100,"Diseñador","Unisex"],
+["Club de Nuit Icon",34000,100,"Árabe","Hombre"],
+["Olumpea",17000,100,"Diseñador","Mujer"],
+["Libre Vainilla",25000,100,"Diseñador","Mujer"],
+["Erba Pura",45900,100,"Nicho","Unisex"],
+
+["Le male elixir absolu",35000,125,"Diseñador","Hombre"],
+["Club de Nuit Sillage",32000,105,"Árabe","Unisex"],
+
+
+/* =========================
+   NUEVOS PERFUMES
+   PRECIOS PROVISIONALES
+   ========================= */
+
+["9 AM",25000,100,"Árabe","Hombre"],
+["9 AM Dive",28000,100,"Árabe","Hombre"],
+["Amber Oud Gold",32000,100,"Árabe","Unisex"],
+["Ametysta",25000,100,"Árabe","Mujer"],
+["Aqua",20000,100,"Diseñador","Unisex"],
+["Choco Dubai",30000,100,"Árabe","Unisex"],
+["Erba Gold",40000,100,"Nicho","Unisex"],
+["Golden Head",25000,100,"Árabe","Unisex"],
+["HAG",25000,100,"Árabe","Unisex"],
+["Hawas Chrome",30000,100,"Árabe","Hombre"],
+["Hawas For Him",30000,100,"Árabe","Hombre"],
+["Hayaati Black",25000,100,"Árabe","Hombre"],
+["Homme A",25000,100,"Diseñador","Hombre"],
+["JPG Celeste",30000,100,"Diseñador","Hombre"],
+["JPG Negro",30000,100,"Diseñador","Hombre"],
+["JPS Verde",25000,100,"Diseñador","Unisex"],
+["Mousuf",25000,100,"Árabe","Unisex"],
+["Noble Blush",25000,100,"Árabe","Mujer"],
+["Oug",25000,100,"Árabe","Unisex"],
+["Sublime",25000,100,"Árabe","Mujer"],
+["The Kingdom",30000,100,"Árabe","Hombre"],
+["Vulcan Feu",25000,100,"Nicho","Unisex"],
+["X Accento",35000,100,"Nicho","Unisex"],
+["X Coro",35000,100,"Nicho","Unisex"],
+["X Opera",35000,100,"Nicho","Unisex"],
+["Yara Elixir",25000,100,"Árabe","Mujer"],
+["Yara Moi",25000,100,"Árabe","Mujer"]
+
+].map((p,i)=>({
+
+id:i+1,
+nombre:p[0],
+precio:p[1],
+ml:p[2],
+categoria:p[3],
+genero:p[4],
+stock:10,
+
+img:({
+
+/* FOTOS QUE YA TENÍAMOS */
 "9 PM Rebel":"imagenes/9pm-rebel.jpeg",
 "Asad Elixir":"imagenes/asad-elixir.jpeg",
 "Ecos del Silencio":"imagenes/ecos-silencio.jpeg",
 "JPG Intense":"imagenes/jpg-intense.jpeg",
-"Le male elixir absolu":"imagenes/jpg-dorado.jpeg"
-}[p[0]]||""),descripcion:"Fragancia seleccionada de AromaLParfum. Consultá disponibilidad y detalles por WhatsApp.",salida:"Consultar",corazon:"Consultar",fondo:"Consultar",familia:"Fragancia",destacado:i<8,nuevo:i<5,vendido:i%4===0}));
+"Le male elixir absolu":"imagenes/jpg-dorado.jpeg",
+
+/* NUEVAS FOTOS */
+"9 AM":"imagenes/9am.jpeg",
+"9 AM Dive":"imagenes/9am-dive.jpeg",
+"Amber Oud Gold":"imagenes/amber-oud-gold.jpeg",
+"Ametysta":"imagenes/ametysta.jpeg",
+"Aqua":"imagenes/aqua.jpeg",
+"Choco Dubai":"imagenes/chocolatdubai.jpeg",
+"Erba Gold":"imagenes/erba-gold.jpeg",
+"Erba Pura":"imagenes/erba-pura.jpeg",
+"Zatys Exodus":"imagenes/exodus.jpeg",
+"Fakhar Lattafa":"imagenes/fakhar-gold.jpeg",
+"Golden Head":"imagenes/golden-head.jpeg",
+"HAG":"imagenes/hag.jpeg",
+"Hawas Chrome":"imagenes/hawas-chrome.jpeg",
+"Hawas For Him":"imagenes/hawas-for-him.jpeg",
+"Hayaati":"imagenes/hayaati.jpeg",
+"Hayaati Black":"imagenes/hayaati-black.jpeg",
+"Homme A":"imagenes/homme-a.jpeg",
+"JPG Celeste":"imagenes/jpg-celeste.jpeg",
+"JPG Negro":"imagenes/jpg-negro.jpeg",
+"JPS Verde":"imagenes/jps-verde.jpeg",
+"Khamrah Qahwa":"imagenes/khamrah-qawa.jpeg",
+"Mandarine Sky":"imagenes/mandarinsky.jpeg",
+"Marshmallow":"imagenes/marsmallow.jpeg",
+"Mousuf":"imagenes/mousuf.jpeg",
+"Musk Mood":"imagenes/musk-mood.jpeg",
+"Noble Blush":"imagenes/noble-blush.jpeg",
+"Oug":"imagenes/oug.jpeg",
+"Sublime":"imagenes/sublime.jpeg",
+"The Kingdom":"imagenes/the-kingdom.jpeg",
+"Valentino":"imagenes/valentino-extra-dose.jpeg",
+"Vulcan Feu":"imagenes/vulcan-feu.jpeg",
+"X Accento":"imagenes/x-accento.jpeg",
+"X Coro":"imagenes/x-coro.jpeg",
+"X Opera":"imagenes/x-opera.jpeg",
+"Yara":"imagenes/yara.jpeg",
+"Yara Elixir":"imagenes/yara-elixir.jpeg",
+"Yara Moi":"imagenes/yara-moi.jpeg",
+"Zatys Magnetic":"imagenes/zatys-magnetic.jpeg"
+
+}[p[0]]||""),
+
+descripcion:"Fragancia seleccionada de AromaLParfum. Consultá disponibilidad y detalles por WhatsApp.",
+
+salida:"Consultar",
+corazon:"Consultar",
+fondo:"Consultar",
+familia:"Fragancia",
+
+destacado:i<8,
+nuevo:i<5,
+vendido:i%4===0
+
+}));
 
 let cart=JSON.parse(localStorage.getItem("alp_cart")||"[]"), fav=JSON.parse(localStorage.getItem("alp_fav")||"[]"), filter="Todos", sort="default", search="";
 
