@@ -275,42 +275,37 @@ async function adminSave(id){
     const fondo = document.getElementById("fon" + id).value;
     const familia = document.getElementById("fam" + id).value;
 
-    const { data, error } = await supabaseClient
+    const { error } = await supabaseClient
         .from("products")
         .update({
-            precio,
-            ml,
-            stock,
-            descripcion,
-            salida,
-            corazon,
-            fondo,
-            familia
+            precio: precio,
+            ml: ml,
+            stock: stock,
+            descripcion: descripcion,
+            salida: salida,
+            corazon: corazon,
+            fondo: fondo,
+            familia: familia
         })
-        .eq("id", id)
-        .select()
-        .single();
+        .eq("id", id);
 
     if(error){
         console.error("Error actualizando producto:", error);
-        alert("❌ No se pudo guardar el producto.");
+        alert("❌ No se pudo guardar: " + error.message);
         return;
     }
 
-    const index = products.findIndex(p => p.id === id);
+    const p = products.find(x => x.id === id);
 
-    if(index !== -1){
-        products[index] = {
-            ...products[index],
-            precio: Number(data.precio),
-            ml: Number(data.ml),
-            stock: Number(data.stock),
-            descripcion: data.descripcion,
-            salida: data.salida,
-            corazon: data.corazon,
-            fondo: data.fondo,
-            familia: data.familia
-        };
+    if(p){
+        p.precio = precio;
+        p.ml = ml;
+        p.stock = stock;
+        p.descripcion = descripcion;
+        p.salida = salida;
+        p.corazon = corazon;
+        p.fondo = fondo;
+        p.familia = familia;
     }
 
     alert("✅ Producto guardado correctamente.");
