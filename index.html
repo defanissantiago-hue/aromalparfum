@@ -88,24 +88,24 @@ async function cargarProductos() {
         return;
     }
 
-    products = data.map(p => ({
-        id: p.id,
-        nombre: p.nombre,
-        precio: Number(p.precio),
-        ml: Number(p.ml),
-        categoria: p.categoria || "Otros",
-        genero: p.genero || "Unisex",
-        stock: Number(p.stock || 0),
-        img: p.imagen_url || "",
-        descripcion: "Fragancia seleccionada de AromaLParfum. Consultá disponibilidad y detalles por WhatsApp.",
-        salida: "Consultar",
-        corazon: "Consultar",
-        fondo: "Consultar",
-        familia: "Fragancia",
-        destacado: false,
-        nuevo: false,
-        vendido: false
-    }));
+   products = data.map(p => ({
+    id: p.id,
+    nombre: p.nombre,
+    precio: Number(p.precio || 0),
+    ml: Number(p.ml || 0),
+    categoria: p.categoria || "Otros",
+    genero: p.genero || "Unisex",
+    stock: Number(p.stock || 0),
+    img: p.imagen_url || "",
+    descripcion: p.descripcion || "Fragancia seleccionada de AromaLParfum.",
+    salida: p.salida || "Consultar",
+    corazon: p.corazon || "Consultar",
+    fondo: p.fondo || "Consultar",
+    familia: p.familia || "Fragancia",
+    destacado: p.destacado || false,
+    nuevo: p.nuevo || false,
+    vendido: p.vendido || false
+}));
 
     console.log("Productos cargados:", products);
 
