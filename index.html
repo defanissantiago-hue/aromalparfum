@@ -152,116 +152,77 @@ function checkout(){if(!cart.length)return;let total=cart.reduce((s,x)=>s+produc
 function sendOrder(){let name=document.getElementById("cname").value||"Cliente";let lines=cart.map(x=>{let p=products.find(p=>p.id===x.id);return `• ${p.nombre} (${p.ml} ml) x${x.qty} — ${money(p.precio*x.qty)}`}).join("%0A");let total=cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).precio*x.qty,0);let msg=`Hola, soy ${name}. Quiero hacer este pedido:%0A${lines}%0A%0ATotal: ${money(total)}`;window.open("https://wa.me/5491144293913?text="+msg,"_blank")}
 function showContact(){closeMenu();document.getElementById("app").innerHTML=`<section><div class="eyebrow">Estamos para ayudarte</div><h2>Contacto</h2><div class="detail-grid"><div><h3>WhatsApp</h3><p class="muted">Reemplazá el número en el código por el WhatsApp de AromaLParfum.</p><h3>Instagram</h3><p class="muted">@AromaLParfum</p><h3>Horarios</h3><p class="muted">Configurá tus horarios de atención.</p></div><form class="form" onsubmit="event.preventDefault();alert('Mensaje preparado. Conectá este formulario a tu correo o backend para recibirlo.')"><input placeholder="Nombre"><input type="email" placeholder="Email"><textarea placeholder="Mensaje"></textarea><button class="btn gold">ENVIAR MENSAJE</button></form></div></section>`}
 function showAbout(){closeMenu();document.getElementById("app").innerHTML=`<section><div class="eyebrow">Nuestra historia</div><h2>Acerca de AromaLParfum</h2><p style="max-width:800px;line-height:2">AromaLParfum nace de nuestra pasión por el mundo de las fragancias y de la idea de acercar perfumes únicos a cada persona.</p><p style="max-width:800px;line-height:2">Creamos este espacio para que puedas descubrir fragancias árabes, argentinas, de diseñador y de nicho, seleccionadas para diferentes estilos, momentos y personalidades.</p><p style="max-width:800px;line-height:2">Para nosotros, un perfume no es simplemente una fragancia: es una forma de expresión, un recuerdo y una parte de nuestra identidad.</p><p style="max-width:800px;line-height:2">En AromaLParfum queremos ayudarte a encontrar esa fragancia que se sienta realmente tuya.</p></section>`}
-function showAdmin(){
+async function showAdmin(){
     closeMenu();
 
-    document.getElementById("app").innerHTML = `
-    <section class="admin">
-        <div class="eyebrow">Gestión de productos</div>
-        <h2>Administración</h2>
+    const { data: { session } } = await supabaseClient.auth.getSession();
 
-        <p class="muted">
-            Los cambios se guardarán directamente en Supabase.
-        </p>
+    if(!session){
+        document.getElementById("app").innerHTML = `
+            <section style="max-width:500px">
+                <div class="eyebrow">Área privada</div>
+                <h2>Administración</h2>
 
-        <div style="overflow-x:auto">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Precio</th>
-                        <th>ML</th>
-                        <th>Stock</th>
-                        <th>Descripción</th>
-                        <th>Salida</th>
-                        <th>Corazón</th>
-                        <th>Fondo</th>
-                        <th>Familia</th>
-                        <th>Guardar</th>
-                    </tr>
-                </thead>
+                <p class="muted">
+                    Ingresá con tu cuenta de administrador.
+                </p>
 
-                <tbody>
-                    ${products.map(p => `
-                        <tr>
-                            <td>
-                                <strong>${p.nombre}</strong><br>
-                                <small>${p.categoria} · ${p.genero}</small>
-                            </td>
+                <div class="form">
+                    <input
+                        id="adminEmail"
+                        type="email"
+                        placeholder="Email"
+                    >
 
-                            <td>
-                                <input
-                                    id="pr${p.id}"
-                                    type="number"
-                                    value="${p.precio}"
-                                >
-                            </td>
+                    <input
+                        id="adminPassword"
+                        type="password"
+                        placeholder="Contraseña"
+                    >
 
-                            <td>
-                                <input
-                                    id="ml${p.id}"
-                                    type="number"
-                                    value="${p.ml}"
-                                >
-                            </td>
+                    <button class="btn gold" onclick="adminLogin()">
+                        INGRESAR
+                    </button>
+                </div>
 
-                            <td>
-                                <input
-                                    id="st${p.id}"
-                                    type="number"
-                                    value="${p.stock}"
-                                >
-                            </td>
+                <p id="adminMessage" class="muted" style="margin-top:15px"></p>
+            </section>
+        `;
 
-                            <td>
-                                <textarea
-                                    id="desc${p.id}"
-                                    style="min-width:220px"
-                                >${p.descripcion}</textarea>
-                            </td>
+        return;
+    }
 
-                            <td>
-                                <input
-                                    id="sal${p.id}"
-                                    value="${p.salida}"
-                                >
-                            </td>
+    renderAdmin();
+}
 
-                            <td>
-                                <input
-                                    id="cor${p.id}"
-                                    value="${p.corazon}"
-                                >
-                            </td>
+async function adminLogin(){
 
-                            <td>
-                                <input
-                                    id="fon${p.id}"
-                                    value="${p.fondo}"
-                                >
-                            </td>
+    const email = document.getElementById("adminEmail").value.trim();
+    const password = document.getElementById("adminPassword").value;
 
-                            <td>
-                                <input
-                                    id="fam${p.id}"
-                                    value="${p.familia}"
-                                >
-                            </td>
+    const message = document.getElementById("adminMessage");
 
-                            <td>
-                                <button
-                                    class="btn"
-                                    onclick="adminSave(${p.id})"
-                                >
-                                    GUARDAR
-                                </button>
-                            </td>
-                        </tr>
-                    `).join("")}
-                </tbody>
-            </table>
-        </div>
-    </section>`;
+    if(!email || !password){
+        message.textContent = "Completá email y contraseña.";
+        return;
+    }
+
+    message.textContent = "Ingresando...";
+
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: password
+    });
+
+    if(error){
+        console.error("Error de login:", error);
+        message.textContent = "❌ Email o contraseña incorrectos.";
+        return;
+    }
+
+    console.log("Administrador autenticado:", data.user);
+
+    renderAdmin();
 }
 async function adminSave(id){
 
