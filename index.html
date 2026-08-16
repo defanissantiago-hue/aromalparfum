@@ -57,7 +57,21 @@ const supabaseClient = supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
 );
+   
+async function probarSupabase() {
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select("*")
+    .limit(1);
 
+  if (error) {
+    console.error("Error de Supabase:", error);
+  } else {
+    console.log("Supabase conectado correctamente:", data);
+  }
+}
+
+probarSupabase();
 const products=[
 
 ["JPG Le Beau",7000,30,"Diseñador","Hombre"],
