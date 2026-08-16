@@ -48,8 +48,16 @@ footer{background:#111;color:#fff;padding:50px 18px}.footer-inner{max-width:1200
 <div class="drawer cart" id="cart"><div class="shade" onclick="closeCart()"></div><aside class="panel"><button class="close" onclick="closeCart()">×</button><h2>Tu carrito</h2><div id="cartItems"></div><div id="cartTotal"></div><button class="btn gold" style="width:100%;margin-top:20px" onclick="checkout()">FINALIZAR PEDIDO</button></aside></div>
 
 <div class="modal" id="modal"><div class="shade" onclick="closeModal()"></div><div class="panel" style="left:50%;top:50%;transform:translate(-50%,-50%);height:auto;max-height:90vh;width:min(700px,94vw);border-radius:4px"><button class="close" onclick="closeModal()">×</button><div id="modalBody"></div></div></div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
+   const SUPABASE_URL = "https://klppiznssciyveufmoff.supabase.co";
+const SUPABASE_KEY = "sb_publishable_lMSak0Ze-NYWwq3SCpqEaA_7UrVFU3T";
+
+const supabaseClient = supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
 const products=[
 
 ["JPG Le Beau",7000,30,"Diseñador","Hombre"],
