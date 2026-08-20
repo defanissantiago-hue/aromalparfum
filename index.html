@@ -6,1041 +6,1031 @@
 <meta name="description" content="AromaLParfum — perfumes, fragancias y decants.">
 <title>AromaLParfum | Perfumería</title>
 <style>
-:root{--bg:#f7f5f1;--card:#fff;--ink:#171717;--muted:#777;--line:#e8e3db;--accent:#b48a45;--dark:#111}
+:root{--bg:#f7f5f1;--card:#fff;--ink:#171717;--muted:#777;--line:#e8e3db;--accent:#b48a45;--dark:#111;--danger:#b21f32}
 *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
 button,input,select,textarea{font:inherit}button{cursor:pointer}.top{background:#111;color:#fff;text-align:center;padding:8px;font-size:12px;letter-spacing:1px}
-header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 .nav{max-width:1200px;margin:auto;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 18px}.brand{font-family:Georgia,serif;font-size:26px;letter-spacing:2px}.brand small{display:block;font:9px Arial;letter-spacing:4px;text-align:center;color:var(--accent)}
 .nav-actions{display:flex;gap:8px}.icon-btn{border:0;background:transparent;font-size:22px;padding:10px;position:relative}.count{position:absolute;right:2px;top:2px;background:var(--accent);color:#fff;border-radius:50%;font-size:10px;width:18px;height:18px;display:grid;place-items:center}
 .hero{min-height:520px;display:grid;place-items:center;text-align:center;padding:70px 20px;background:linear-gradient(110deg,#181818,#3a3329);color:#fff;position:relative;overflow:hidden}
-.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 35%,rgba(180,138,69,.35),transparent 35%)}.hero>*{position:relative}.eyebrow{text-transform:uppercase;letter-spacing:4px;color:#d9b878;font-size:12px}.hero h1{font:clamp(48px,9vw,92px) Georgia,serif;margin:14px 0}.hero p{max-width:600px;margin:0 auto 30px;color:#ddd;line-height:1.7}.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;padding:13px 20px;border-radius:2px;text-transform:uppercase;letter-spacing:1px;font-size:12px}.btn.gold{background:var(--accent);border-color:var(--accent)}.btn.light{background:#fff;color:#111;border-color:#fff}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 35%,rgba(180,138,69,.35),transparent 35%)}.hero>*{position:relative}.eyebrow{text-transform:uppercase;letter-spacing:4px;color:#b48a45;font-size:12px}.hero .eyebrow{color:#d9b878}.hero h1{font:clamp(48px,9vw,92px) Georgia,serif;margin:14px 0}.hero p{max-width:600px;margin:0 auto 30px;color:#ddd;line-height:1.7}.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;padding:13px 20px;border-radius:2px;text-transform:uppercase;letter-spacing:1px;font-size:12px}.btn.gold{background:var(--accent);border-color:var(--accent)}.btn.light{background:#fff;color:#111;border-color:#fff}.btn.danger{background:var(--danger);border-color:var(--danger)}
 section{max-width:1200px;margin:auto;padding:65px 18px}.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:25px}.section-head h2{font:36px Georgia,serif;margin:0}.muted{color:var(--muted);font-size:14px}.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.cat{padding:28px 20px;background:#181818;color:#fff;border:0;text-align:left;min-height:120px}.cat strong{display:block;font:23px Georgia,serif;margin-bottom:10px}.cat span{color:#bbb;font-size:12px}
 .toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0 25px}.search{flex:1;min-width:220px;padding:13px 15px;border:1px solid var(--line);background:#fff}.select{padding:13px;border:1px solid var(--line);background:#fff}.chips{display:flex;gap:8px;overflow:auto;padding-bottom:4px}.chip{white-space:nowrap;border:1px solid var(--line);background:#fff;padding:9px 14px;border-radius:99px}.chip.active{background:#111;color:#fff}
 .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.product{background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}.pic{aspect-ratio:1/1;background:linear-gradient(135deg,#eee,#ddd);display:grid;place-items:center;position:relative}.pic img{width:100%;height:100%;object-fit:contain}.placeholder{font:24px Georgia,serif;color:#aaa;text-align:center;padding:20px}.heart{position:absolute;right:10px;top:10px;border:0;background:#fff;width:36px;height:36px;border-radius:50%;font-size:19px;box-shadow:0 3px 15px #0001}.heart.active{color:#b21f32}.info{padding:15px}.brandline{font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px}.product h3{font:20px Georgia,serif;margin:7px 0}.meta{font-size:12px;color:#777}.price{font-weight:bold;font-size:18px;margin:12px 0}.stock{font-size:11px;color:#4c7a54}.product .btn{width:100%;margin-top:5px}
 .banner{background:#171717;color:#fff;max-width:none}.banner-inner{max-width:1200px;margin:auto;padding:60px 18px;text-align:center}.banner h2{font:40px Georgia,serif;margin:8px}.banner p{color:#bbb}
 footer{background:#111;color:#fff;padding:50px 18px}.footer-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:35px}.footer p,.footer a{color:#aaa;font-size:13px;line-height:1.8}.footer a{display:block;text-decoration:none}
-.drawer,.modal{position:fixed;inset:0;z-index:100;display:none}.drawer.open,.modal.open{display:block}.shade{position:absolute;inset:0;background:#0008}.panel{position:absolute;background:#fff;height:100%;width:min(380px,90vw);padding:25px;overflow:auto}.drawer .panel{left:0}.cart .panel{right:0;width:min(460px,94vw)}.close{border:0;background:transparent;font-size:26px;float:right}.menu-links{margin-top:50px}.menu-links button{display:block;width:100%;padding:15px 0;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;font-size:15px}.submenu{padding-left:15px;display:none}.submenu.open{display:block}.cart-item{display:grid;grid-template-columns:60px 1fr auto;gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}.cart-thumb{width:60px;height:60px;background:#eee;display:grid;place-items:center;font-size:9px;text-align:center}.qty{display:flex;align-items:center;gap:7px}.qty button{border:1px solid var(--line);background:#fff;width:28px;height:28px}.cart-total{border-top:1px solid var(--line);margin-top:20px;padding-top:20px;font-size:20px;font-weight:bold}
+.drawer,.modal{position:fixed;inset:0;z-index:100;display:none}.drawer.open,.modal.open{display:block}.shade{position:absolute;inset:0;background:#0008}.panel{position:absolute;background:#fff;height:100%;width:min(380px,90vw);padding:25px;overflow:auto}.drawer .panel{left:0}.cart .panel{right:0;width:min(460px,94vw)}.close{border:0;background:transparent;font-size:26px;float:right}.menu-links{margin-top:50px}.menu-links button{display:block;width:100%;padding:15px 0;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;font-size:15px}.submenu{padding-left:15px;display:none}.submenu.open{display:block}.cart-item{display:grid;grid-template-columns:60px 1fr auto;gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}.cart-thumb{width:60px;height:60px;background:#eee;display:grid;place-items:center;font-size:9px;text-align:center;overflow:hidden}.cart-thumb img{width:100%;height:100%;object-fit:contain}.qty{display:flex;align-items:center;gap:7px}.qty button{border:1px solid var(--line);background:#fff;width:28px;height:28px}.cart-total{border-top:1px solid var(--line);margin-top:20px;padding-top:20px;font-size:20px;font-weight:bold}
 .detail{max-width:1100px;margin:auto;padding:40px 18px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:45px}.gallery-main{aspect-ratio:1;background:#eee;display:grid;place-items:center}.gallery-main img{width:100%;height:100%;object-fit:contain}.thumbs{display:flex;gap:8px;margin-top:10px}.thumb{width:75px;height:75px;background:#eee;border:1px solid var(--line)}.detail h1{font:48px Georgia,serif;margin:8px 0 15px}.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:25px 0}.note{border:1px solid var(--line);padding:15px;background:#fff}.note b{display:block;font-size:11px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}.info-list{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}.info-list div{padding:12px 0;border-bottom:1px solid var(--line);font-size:13px}.info-list b{display:block;color:#777;font-size:10px;text-transform:uppercase;margin-bottom:4px}
 .form{display:grid;gap:12px}.form input,.form textarea,.form select{padding:13px;border:1px solid var(--line);background:#fff}.form textarea{min-height:110px}
-.admin{max-width:1200px;margin:auto;padding:35px 18px}.admin table{width:100%;border-collapse:collapse;background:#fff}.admin th,.admin td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:12px}.admin input,
-.admin textarea{
-    width:180px;
-    min-width:180px;
-    padding:8px;
-    border:1px solid var(--line);
-    background:#fff;
-    color:#171717;
-}
-
-.admin textarea{
-    min-height:80px;
-    resize:vertical;
-}
-
-.admin table{
-    min-width:1500px;
-}
-
-.admin th,
-.admin td{
-    vertical-align:top;
-}.hidden{display:none!important}.empty{text-align:center;padding:60px 20px;color:#777}
+.admin{max-width:1250px;margin:auto;padding:35px 18px}.admin-top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.admin-actions{display:flex;gap:8px;flex-wrap:wrap}.admin table{width:100%;border-collapse:collapse;background:#fff;min-width:1100px}.admin-wrap{overflow:auto;border:1px solid var(--line)}.admin th,.admin td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:12px;vertical-align:top}.admin input,.admin select,.admin textarea{width:100%;padding:8px;border:1px solid var(--line);background:#fff}.admin textarea{min-width:170px;min-height:60px}.admin-img{width:70px;height:70px;object-fit:contain;background:#eee;border:1px solid var(--line)}.admin-file{width:180px}.admin-message{padding:12px;margin:15px 0;border:1px solid var(--line);background:#fff}.admin-message.ok{border-color:#9ac7a1;background:#f1faf2}.admin-message.error{border-color:#d99;background:#fff3f3}.hidden{display:none!important}.empty{text-align:center;padding:60px 20px;color:#777}.login-box{max-width:450px;margin:60px auto;background:#fff;padding:30px;border:1px solid var(--line)}.login-box h2{font:34px Georgia,serif}.admin-badge{font-size:12px;color:#4c7a54}
 @media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.cats{grid-template-columns:repeat(2,1fr)}.detail-grid{grid-template-columns:1fr}.footer-inner{grid-template-columns:1fr}.detail h1{font-size:38px}}
 @media(max-width:480px){.nav{height:62px}.brand{font-size:21px}.grid{gap:9px}.product h3{font-size:16px}.info{padding:10px}.hero{min-height:450px}.cats{grid-template-columns:1fr 1fr}.notes{grid-template-columns:1fr}.section-head h2{font-size:29px}}
 </style>
 </head>
 <body>
 <div class="top">ENVÍOS Y PEDIDOS — CONSULTÁ POR WHATSAPP</div>
-<header><nav class="nav">
+
+<header>
+<nav class="nav">
 <button class="icon-btn" onclick="openMenu()" aria-label="Menú">☰</button>
 <div class="brand">AromaLParfum<small>PERFUMERÍA</small></div>
-<div class="nav-actions"><button class="icon-btn" onclick="showFavorites()">♡<span class="count" id="favCount">0</span></button><button class="icon-btn" onclick="openCart()">🛒<span class="count" id="cartCount">0</span></button></div>
-</nav></header>
+<div class="nav-actions">
+<button class="icon-btn" onclick="showFavorites()">♡<span class="count" id="favCount">0</span></button>
+<button class="icon-btn" onclick="openCart()">🛒<span class="count" id="cartCount">0</span></button>
+</div>
+</nav>
+</header>
 
 <main id="app"></main>
 
-<div class="drawer" id="menu"><div class="shade" onclick="closeMenu()"></div><aside class="panel"><button class="close" onclick="closeMenu()">×</button><div class="menu-links">
+<div class="drawer" id="menu">
+<div class="shade" onclick="closeMenu()"></div>
+<aside class="panel">
+<button class="close" onclick="closeMenu()">×</button>
+<div class="menu-links">
 <button onclick="goHome()">INICIO</button>
 <button onclick="toggleSub()">PERFUMES　⌄</button>
 <div class="submenu" id="submenu">
-<button onclick="catalog('Todos')">Todos los perfumes</button><button onclick="catalog('Hombre')">Perfumes de hombre</button><button onclick="catalog('Mujer')">Perfumes de mujer</button><button onclick="catalog('Árabe')">Perfumería árabe</button><button onclick="catalog('Argentina')">Perfumería argentina</button><button onclick="catalog('Nicho')">Perfumería de nicho</button><button onclick="catalog('Diseñador')">Perfumería de diseñador</button></div>
-<button onclick="showFavorites()">FAVORITOS</button><button onclick="showContact()">CONTACTO</button><button onclick="showAbout()">ACERCA DE</button><button onclick="showAdmin()">ADMINISTRACIÓN</button>
-</div></aside></div>
+<button onclick="catalog('Todos')">Todos los perfumes</button>
+<button onclick="catalog('Hombre')">Perfumes de hombre</button>
+<button onclick="catalog('Mujer')">Perfumes de mujer</button>
+<button onclick="catalog('Árabe')">Perfumería árabe</button>
+<button onclick="catalog('Argentina')">Perfumería argentina</button>
+<button onclick="catalog('Nicho')">Perfumería de nicho</button>
+<button onclick="catalog('Diseñador')">Perfumería de diseñador</button>
+</div>
+<button onclick="showFavorites()">FAVORITOS</button>
+<button onclick="showContact()">CONTACTO</button>
+<button onclick="showAbout()">ACERCA DE</button>
+<button onclick="showAdmin()">ADMINISTRACIÓN</button>
+</div>
+</aside>
+</div>
 
-<div class="drawer cart" id="cart"><div class="shade" onclick="closeCart()"></div><aside class="panel"><button class="close" onclick="closeCart()">×</button><h2>Tu carrito</h2><div id="cartItems"></div><div id="cartTotal"></div><button class="btn gold" style="width:100%;margin-top:20px" onclick="checkout()">FINALIZAR PEDIDO</button></aside></div>
+<div class="drawer cart" id="cart">
+<div class="shade" onclick="closeCart()"></div>
+<aside class="panel">
+<button class="close" onclick="closeCart()">×</button>
+<h2>Tu carrito</h2>
+<div id="cartItems"></div>
+<div id="cartTotal"></div>
+<button class="btn gold" style="width:100%;margin-top:20px" onclick="checkout()">FINALIZAR PEDIDO</button>
+</aside>
+</div>
 
-<div class="modal" id="modal"><div class="shade" onclick="closeModal()"></div><div class="panel" style="left:50%;top:50%;transform:translate(-50%,-50%);height:auto;max-height:90vh;width:min(700px,94vw);border-radius:4px"><button class="close" onclick="closeModal()">×</button><div id="modalBody"></div></div></div>
+<div class="modal" id="modal">
+<div class="shade" onclick="closeModal()"></div>
+<div class="panel" style="left:50%;top:50%;transform:translate(-50%,-50%);height:auto;max-height:90vh;width:min(700px,94vw);border-radius:4px">
+<button class="close" onclick="closeModal()">×</button>
+<div id="modalBody"></div>
+</div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-   const SUPABASE_URL = "https://klppiznssciyveufmoff.supabase.co";
-const SUPABASE_KEY = "sb_publishable_lMSak0Ze-NYWwq3SCpqEaA_7UrVFU3T";
+"use strict";
 
-const supabaseClient = supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-   
-async function probarSupabase() {
-  const { data, error } = await supabaseClient
+/* =========================
+   SUPABASE
+========================= */
+const SUPABASE_URL = "https://klppiznssciyveufmoff.supabase.co";
+const SUPABASE_KEY = "sb_publishable_lMSak0Ze-NYWwq3SCpqEaA_7UrVFU3T";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* El email que puede entrar al panel de administración */
+const ADMIN_EMAILS = ["defanissantiago@gmail.com"];
+
+/* Nombre del bucket de Storage que ya estás usando */
+const STORAGE_BUCKET = "perfumes";
+
+/* =========================
+   ESTADO
+========================= */
+let products = [];
+let cart = JSON.parse(localStorage.getItem("alp_cart") || "[]");
+let fav = JSON.parse(localStorage.getItem("alp_fav") || "[]");
+let filter = "Todos";
+let sort = "default";
+let search = "";
+
+/* =========================
+   UTILIDADES
+========================= */
+const money = n => new Intl.NumberFormat("es-AR", {
+  style:"currency",
+  currency:"ARS",
+  maximumFractionDigits:0
+}).format(Number(n) || 0);
+
+function esc(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function save(){
+  localStorage.setItem("alp_cart", JSON.stringify(cart));
+  localStorage.setItem("alp_fav", JSON.stringify(fav));
+  updateCounts();
+}
+
+function updateCounts(){
+  const cartCount = document.getElementById("cartCount");
+  const favCount = document.getElementById("favCount");
+  if(cartCount) cartCount.textContent = cart.reduce((a,x)=>a + x.qty,0);
+  if(favCount) favCount.textContent = fav.length;
+}
+
+function showMessage(text,type="ok"){
+  const el = document.getElementById("adminMessage");
+  if(!el) return;
+  el.className = "admin-message " + type;
+  el.textContent = text;
+}
+
+/* =========================
+   CARGAR PRODUCTOS
+========================= */
+async function cargarProductos(){
+  const {data,error} = await supabaseClient
     .from("products")
     .select("*")
-    .limit(1);
+    .order("id",{ascending:true});
 
-  if (error) {
-    console.error("Error de Supabase:", error);
-  } else {
-    console.log("Supabase conectado correctamente:", data);
+  if(error){
+    console.error("Error cargando productos:",error);
+    document.getElementById("app").innerHTML =
+      '<section><div class="empty"><h2>No se pudieron cargar los perfumes</h2><p>Revisá la conexión con Supabase y las políticas RLS.</p></div></section>';
+    return;
+  }
+
+  products = (data || []).map(p => ({
+    id:p.id,
+    nombre:p.nombre || "",
+    precio:Number(p.precio) || 0,
+    ml:Number(p.ml) || 0,
+    categoria:p.categoria || "Otros",
+    genero:p.genero || "Unisex",
+    stock:Number(p.stock) || 0,
+    img:p.imagen_url || "",
+    imagen_url:p.imagen_url || "",
+    descripcion:p.descripcion || "Fragancia seleccionada de AromaLParfum.",
+    salida:p.salida || "Consultar",
+    corazon:p.corazon || "Consultar",
+    fondo:p.fondo || "Consultar",
+    familia:p.familia || "Fragancia",
+    destacado:Boolean(p.destacado),
+    nuevo:Boolean(p.nuevo),
+    vendido:Boolean(p.vendido)
+  }));
+
+  console.log("Productos cargados:",products);
+  render();
+}
+
+/* =========================
+   NAVEGACIÓN
+========================= */
+function render(){
+  document.getElementById("app").innerHTML = home();
+  updateCounts();
+}
+
+function home(){
+  const featured = products.filter(p=>p.destacado).slice(0,8);
+  const featuredHtml = featured.length
+    ? featured.map(card).join("")
+    : products.slice(0,4).map(card).join("");
+
+  return `
+  <div class="hero">
+    <div>
+      <div class="eyebrow">AromaLParfum</div>
+      <h1>Encontrá tu<br>próxima fragancia.</h1>
+      <p>Descubrí perfumes árabes, argentinos, de diseñador y de nicho seleccionados para distintos estilos y momentos.</p>
+      <button class="btn light" onclick="catalog('Todos')">VER PERFUMES</button>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <div><div class="eyebrow">Explorá</div><h2>Categorías</h2></div>
+    </div>
+    <div class="cats">
+      <button class="cat" onclick="catalog('Hombre')"><strong>Hombre</strong><span>Fragancias masculinas</span></button>
+      <button class="cat" onclick="catalog('Mujer')"><strong>Mujer</strong><span>Fragancias femeninas</span></button>
+      <button class="cat" onclick="catalog('Árabe')"><strong>Árabes</strong><span>Intensas y envolventes</span></button>
+      <button class="cat" onclick="catalog('Nicho')"><strong>Nicho</strong><span>Composiciones especiales</span></button>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div><div class="eyebrow">Selección</div><h2>Destacados</h2></div>
+      <button class="btn" onclick="catalog('Todos')">VER TODO</button>
+    </div>
+    <div class="grid">${featuredHtml}</div>
+  </section>
+
+  <div class="banner">
+    <div class="banner-inner">
+      <div class="eyebrow">Tu identidad, tu aroma</div>
+      <h2>Un perfume es más que una fragancia.</h2>
+      <p>Es una forma de expresión, un recuerdo y una parte de tu identidad.</p>
+      <button class="btn gold" onclick="showAbout()">CONOCÉ AROMALPARFUM</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div><h3>AromaLParfum</h3><p>Perfumería y fragancias seleccionadas.</p></div>
+      <div><h3>Contacto</h3><p>WhatsApp e Instagram.</p></div>
+      <div><h3>Información</h3><p>Consultá disponibilidad y medios de entrega.</p></div>
+    </div>
+  </footer>`;
+}
+
+function catalog(x="Todos"){
+  filter = x;
+  search = "";
+  closeMenu();
+  document.getElementById("app").innerHTML = renderCatalog();
+  window.scrollTo(0,0);
+}
+
+function renderCatalog(){
+  let a = products.filter(p =>
+    (filter==="Todos" || p.categoria===filter || p.genero===filter) &&
+    (!search || p.nombre.toLowerCase().includes(search.toLowerCase()))
+  );
+
+  if(sort==="low") a.sort((x,y)=>x.precio-y.precio);
+  if(sort==="high") a.sort((x,y)=>y.precio-x.precio);
+  if(sort==="name") a.sort((x,y)=>x.nombre.localeCompare(y.nombre));
+
+  return `
+  <section>
+    <div class="section-head">
+      <div><div class="eyebrow">Colección</div><h2>Perfumes</h2></div>
+      <span class="muted">${a.length} productos</span>
+    </div>
+
+    <div class="chips">
+      ${["Todos","Hombre","Mujer","Árabe","Argentina","Nicho","Diseñador"].map(x =>
+        `<button class="chip ${filter===x?"active":""}" onclick="catalog('${x}')">${x}</button>`
+      ).join("")}
+    </div>
+
+    <div class="toolbar">
+      <input class="search" placeholder="Buscar por perfume o marca..." value="${esc(search)}"
+        oninput="search=this.value;document.getElementById('app').innerHTML=renderCatalog()">
+      <select class="select" onchange="sort=this.value;document.getElementById('app').innerHTML=renderCatalog()">
+        <option value="default">Ordenar</option>
+        <option value="low" ${sort==="low"?"selected":""}>Precio menor a mayor</option>
+        <option value="high" ${sort==="high"?"selected":""}>Precio mayor a menor</option>
+        <option value="name" ${sort==="name"?"selected":""}>Nombre A-Z</option>
+      </select>
+    </div>
+
+    <div class="grid">
+      ${a.length ? a.map(card).join("") : `<div class="empty" style="grid-column:1/-1">No encontramos perfumes con esa búsqueda.</div>`}
+    </div>
+  </section>`;
+}
+
+/* =========================
+   TARJETAS
+========================= */
+function card(p){
+  const favorite = fav.includes(p.id);
+  const image = p.img
+    ? `<img src="${esc(p.img)}" alt="${esc(p.nombre)}" loading="lazy">`
+    : `<div class="placeholder">${esc(p.nombre)}<br><small>${p.ml} ml</small></div>`;
+
+  return `
+  <article class="product">
+    <div class="pic">
+      ${image}
+      <button class="heart ${favorite?"active":""}" onclick="toggleFav(${p.id})">${favorite?"♥":"♡"}</button>
+    </div>
+    <div class="info">
+      <div class="brandline">${esc(p.categoria)} · ${esc(p.genero)}</div>
+      <h3>${esc(p.nombre)}</h3>
+      <div class="meta">${p.ml} ml</div>
+      <div class="price">${money(p.precio)}</div>
+      <div class="stock">${p.stock > 0 ? "● Disponible" : "● Sin stock"}</div>
+      <button class="btn" onclick="productDetail(${p.id})">VER PERFUME</button>
+    </div>
+  </article>`;
+}
+
+/* =========================
+   DETALLE / FAVORITOS
+========================= */
+function productDetail(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+
+  document.getElementById("app").innerHTML = `
+  <div class="detail">
+    <button class="btn" onclick="catalog(filter)">← VOLVER</button>
+    <div class="detail-grid" style="margin-top:25px">
+      <div>
+        <div class="gallery-main">
+          ${p.img ? `<img src="${esc(p.img)}" alt="${esc(p.nombre)}">`
+                  : `<div class="placeholder">${esc(p.nombre)}<br>${p.ml} ml</div>`}
+        </div>
+      </div>
+
+      <div>
+        <div class="eyebrow">${esc(p.categoria)} · ${esc(p.genero)}</div>
+        <h1>${esc(p.nombre)}</h1>
+        <div class="price" style="font-size:28px">${money(p.precio)}</div>
+        <p class="muted">${p.ml} ml · ${p.stock>0?"● Disponible":"● Sin stock"}</p>
+        <p style="line-height:1.7">${esc(p.descripcion)}</p>
+
+        <button class="btn gold" onclick="addCart(${p.id})" ${p.stock<=0?"disabled":""}>AGREGAR AL CARRITO</button>
+        <button class="btn" style="margin-left:8px" onclick="toggleFav(${p.id});productDetail(${p.id})">${fav.includes(p.id)?"♥ EN FAVORITOS":"♡ FAVORITOS"}</button>
+
+        <div class="notes">
+          <div class="note"><b>Salida</b>${esc(p.salida)}</div>
+          <div class="note"><b>Corazón</b>${esc(p.corazon)}</div>
+          <div class="note"><b>Fondo</b>${esc(p.fondo)}</div>
+        </div>
+
+        <div class="info-list">
+          <div><b>Familia olfativa</b>${esc(p.familia)}</div>
+          <div><b>Tamaño</b>${p.ml} ml</div>
+          <div><b>Stock</b>${p.stock}</div>
+          <div><b>Duración</b>Consultar</div>
+          <div><b>Proyección</b>Consultar</div>
+          <div><b>Uso</b>Diario / salidas / ocasiones especiales</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  window.scrollTo(0,0);
+}
+
+function toggleFav(id){
+  fav.includes(id) ? fav=fav.filter(x=>x!==id) : fav.push(id);
+  save();
+  if(document.getElementById("app").innerHTML.includes("Destacados")) render();
+  else if(document.getElementById("app").innerHTML.includes("Favoritos")) showFavorites();
+  else catalog(filter);
+}
+
+function showFavorites(){
+  closeMenu();
+  const a = products.filter(p=>fav.includes(p.id));
+  document.getElementById("app").innerHTML = `
+  <section>
+    <div class="eyebrow">Guardados</div>
+    <h2>Favoritos</h2>
+    ${a.length
+      ? `<div class="grid">${a.map(card).join("")}</div>`
+      : `<div class="empty"><h3>Todavía no tienes perfumes favoritos.</h3><button class="btn" onclick="catalog('Todos')">DESCUBRIR PERFUMES</button></div>`}
+  </section>`;
+}
+
+/* =========================
+   CARRITO
+========================= */
+function addCart(id){
+  const p=products.find(x=>x.id===id);
+  if(!p || p.stock<=0) return alert("Este perfume no tiene stock disponible.");
+  const x=cart.find(x=>x.id===id);
+  if(x){
+    if(x.qty >= p.stock) return alert("No hay más stock disponible.");
+    x.qty++;
+  }else{
+    cart.push({id,qty:1});
+  }
+  save();
+  openCart();
+}
+
+function openCart(){
+  document.getElementById("cart").classList.add("open");
+  renderCart();
+}
+
+function closeCart(){
+  document.getElementById("cart").classList.remove("open");
+}
+
+function renderCart(){
+  const box=document.getElementById("cartItems");
+  if(!box) return;
+
+  if(!cart.length){
+    box.innerHTML='<div class="empty">Tu carrito está vacío.</div>';
+    document.getElementById("cartTotal").innerHTML="";
+    return;
+  }
+
+  let total=0;
+
+  box.innerHTML=cart.map(x=>{
+    const p=products.find(p=>p.id===x.id);
+    if(!p) return "";
+    const sub=p.precio*x.qty;
+    total+=sub;
+
+    return `
+    <div class="cart-item">
+      <div class="cart-thumb">
+        ${p.img ? `<img src="${esc(p.img)}" alt="">` : esc(p.nombre)}
+      </div>
+      <div>
+        <b>${esc(p.nombre)}</b>
+        <div class="muted">${money(p.precio)}</div>
+        <div class="qty">
+          <button onclick="changeQty(${p.id},-1)">−</button>
+          ${x.qty}
+          <button onclick="changeQty(${p.id},1)">+</button>
+          <button onclick="removeCart(${p.id})" style="border:0;background:none">🗑</button>
+        </div>
+      </div>
+      <b>${money(sub)}</b>
+    </div>`;
+  }).join("");
+
+  document.getElementById("cartTotal").innerHTML=`<div class="cart-total">Total: ${money(total)}</div>`;
+}
+
+function changeQty(id,n){
+  const x=cart.find(x=>x.id===id);
+  const p=products.find(p=>p.id===id);
+  if(!x || !p) return;
+
+  if(n>0 && x.qty>=p.stock) return alert("No hay más stock disponible.");
+
+  x.qty+=n;
+  if(x.qty<=0) cart=cart.filter(y=>y.id!==id);
+  save();
+  renderCart();
+}
+
+function removeCart(id){
+  cart=cart.filter(x=>x.id!==id);
+  save();
+  renderCart();
+}
+
+function checkout(){
+  if(!cart.length) return alert("El carrito está vacío.");
+
+  const total=cart.reduce((s,x)=>{
+    const p=products.find(p=>p.id===x.id);
+    return s+(p?p.precio*x.qty:0);
+  },0);
+
+  document.getElementById("modalBody").innerHTML=`
+    <h2>Finalizar pedido</h2>
+    <p class="muted">Completá tus datos y te prepararemos el pedido.</p>
+    <div class="form">
+      <input id="cname" placeholder="Nombre y apellido">
+      <input id="ctel" placeholder="Teléfono">
+      <input id="cemail" placeholder="Email">
+      <input id="caddress" placeholder="Dirección">
+      <input id="ccity" placeholder="Ciudad">
+      <input id="cprov" placeholder="Provincia">
+      <input id="cp" placeholder="Código postal">
+      <button class="btn gold" onclick="sendOrder()">ENVIAR PEDIDO POR WHATSAPP · ${money(total)}</button>
+    </div>`;
+  document.getElementById("modal").classList.add("open");
+}
+
+function sendOrder(){
+  const name=document.getElementById("cname").value||"Cliente";
+  const lines=cart.map(x=>{
+    const p=products.find(p=>p.id===x.id);
+    return `• ${p.nombre} (${p.ml} ml) x${x.qty} — ${money(p.precio*x.qty)}`;
+  }).join("\n");
+
+  const total=cart.reduce((s,x)=>{
+    const p=products.find(p=>p.id===x.id);
+    return s+(p?p.precio*x.qty:0);
+  },0);
+
+  const msg=`Hola, soy ${name}. Quiero hacer este pedido:\n${lines}\n\nTotal: ${money(total)}`;
+  window.open("https://wa.me/5491144293913?text="+encodeURIComponent(msg),"_blank");
+}
+
+/* =========================
+   MENÚ / CONTACTO / ABOUT
+========================= */
+function openMenu(){document.getElementById("menu").classList.add("open")}
+function closeMenu(){document.getElementById("menu").classList.remove("open")}
+function toggleSub(){document.getElementById("submenu").classList.toggle("open")}
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+function goHome(){closeMenu();render();window.scrollTo(0,0)}
+
+function showContact(){
+  closeMenu();
+  document.getElementById("app").innerHTML=`
+  <section>
+    <div class="eyebrow">Estamos para ayudarte</div>
+    <h2>Contacto</h2>
+    <div class="detail-grid">
+      <div>
+        <h3>WhatsApp</h3><p class="muted">+54 9 11 4429-3913</p>
+        <h3>Instagram</h3><p class="muted">@AromaLParfum</p>
+        <h3>Horarios</h3><p class="muted">Consultá por WhatsApp.</p>
+      </div>
+      <form class="form" onsubmit="event.preventDefault();alert('Mensaje preparado.')">
+        <input placeholder="Nombre">
+        <input type="email" placeholder="Email">
+        <textarea placeholder="Mensaje"></textarea>
+        <button class="btn gold">ENVIAR MENSAJE</button>
+      </form>
+    </div>
+  </section>`;
+}
+
+function showAbout(){
+  closeMenu();
+  document.getElementById("app").innerHTML=`
+  <section>
+    <div class="eyebrow">Nuestra historia</div>
+    <h2>Acerca de AromaLParfum</h2>
+    <p style="max-width:800px;line-height:2">AromaLParfum nace de nuestra pasión por el mundo de las fragancias y de la idea de acercar perfumes únicos a cada persona.</p>
+    <p style="max-width:800px;line-height:2">Creamos este espacio para que puedas descubrir fragancias árabes, argentinas, de diseñador y de nicho, seleccionadas para diferentes estilos, momentos y personalidades.</p>
+    <p style="max-width:800px;line-height:2">Para nosotros, un perfume no es simplemente una fragancia: es una forma de expresión, un recuerdo y una parte de nuestra identidad.</p>
+  </section>`;
+}
+
+/* =========================
+   ADMIN AUTH
+========================= */
+async function getCurrentUser(){
+  const {data,error}=await supabaseClient.auth.getUser();
+  if(error) return null;
+  return data.user || null;
+}
+
+async function showAdmin(){
+  closeMenu();
+
+  const user=await getCurrentUser();
+
+  if(!user){
+    showAdminLogin();
+    return;
+  }
+
+  if(!ADMIN_EMAILS.includes((user.email||"").toLowerCase())){
+    document.getElementById("app").innerHTML=`
+      <section class="login-box">
+        <h2>Sin autorización</h2>
+        <p class="muted">Tu usuario inició sesión, pero no tiene permisos de administrador.</p>
+        <button class="btn" onclick="signOut()">CERRAR SESIÓN</button>
+      </section>`;
+    return;
+  }
+
+  renderAdmin();
+}
+
+function showAdminLogin(){
+  document.getElementById("app").innerHTML=`
+  <section>
+    <div class="login-box">
+      <div class="eyebrow">Área privada</div>
+      <h2>Administración</h2>
+      <p class="muted">Ingresá con el usuario administrador de Supabase.</p>
+      <div id="loginMessage" class="admin-message hidden"></div>
+      <form class="form" onsubmit="adminLogin(event)">
+        <input id="adminEmail" type="email" placeholder="Email" required>
+        <input id="adminPassword" type="password" placeholder="Contraseña" required>
+        <button class="btn gold" type="submit">INGRESAR</button>
+      </form>
+      <button class="btn" style="margin-top:10px;width:100%" onclick="recoverPassword()">RECUPERAR CONTRASEÑA</button>
+    </div>
+  </section>`;
+}
+
+async function adminLogin(event){
+  event.preventDefault();
+
+  const email=document.getElementById("adminEmail").value.trim();
+  const password=document.getElementById("adminPassword").value;
+
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+
+  if(error){
+    console.error("Error de login:",error);
+    const box=document.getElementById("loginMessage");
+    box.className="admin-message error";
+    box.textContent="❌ Email o contraseña incorrectos.";
+    return;
+  }
+
+  if(!ADMIN_EMAILS.includes((data.user.email||"").toLowerCase())){
+    await supabaseClient.auth.signOut();
+    const box=document.getElementById("loginMessage");
+    box.className="admin-message error";
+    box.textContent="❌ Este usuario no tiene permisos de administrador.";
+    return;
+  }
+
+  renderAdmin();
+}
+
+async function signOut(){
+  await supabaseClient.auth.signOut();
+  render();
+}
+
+async function recoverPassword(){
+  const email=document.getElementById("adminEmail")?.value.trim();
+  if(!email) return alert("Primero escribí tu email.");
+
+  const redirect=window.location.origin + window.location.pathname;
+
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:redirect});
+
+  if(error){
+    console.error("Error recuperación:",error);
+    alert("No se pudo enviar el correo. Si aparece 'rate limit exceeded', esperá un tiempo antes de volver a solicitarlo.");
+    return;
+  }
+
+  alert("Si el email existe, Supabase enviará el correo de recuperación.");
+}
+
+/* =========================
+   PANEL ADMIN
+   - CREAR
+   - EDITAR
+   - ELIMINAR
+   - SUBIR IMAGEN
+========================= */
+function renderAdmin(){
+  closeCart();
+
+  document.getElementById("app").innerHTML=`
+  <section class="admin">
+    <div class="admin-top">
+      <div>
+        <div class="eyebrow">Gestión de productos</div>
+        <h2>Administración</h2>
+        <div class="admin-badge">● Sesión de administrador activa</div>
+      </div>
+
+      <div class="admin-actions">
+        <button class="btn gold" onclick="openNewProduct()">+ AGREGAR PERFUME</button>
+        <button class="btn" onclick="cargarProductos().then(()=>renderAdmin())">ACTUALIZAR</button>
+        <button class="btn danger" onclick="signOut()">CERRAR SESIÓN</button>
+      </div>
+    </div>
+
+    <div id="adminMessage" class="admin-message hidden"></div>
+
+    <p class="muted">
+      Desde acá podés agregar perfumes, editar datos, subir fotos y eliminar productos.
+      Los cambios se guardan directamente en Supabase.
+    </p>
+
+    <div class="admin-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Foto</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>ML</th>
+            <th>Stock</th>
+            <th>Categoría</th>
+            <th>Género</th>
+            <th>Descripción</th>
+            <th>Salida</th>
+            <th>Corazón</th>
+            <th>Fondo</th>
+            <th>Familia</th>
+            <th>Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${products.map(adminRow).join("")}
+        </tbody>
+      </table>
+    </div>
+  </section>`;
+}
+
+function adminRow(p){
+  return `
+  <tr id="row-${p.id}">
+    <td>
+      ${p.img ? `<img id="preview-${p.id}" class="admin-img" src="${esc(p.img)}" alt="">`
+              : `<div id="preview-${p.id}" class="admin-img" style="display:grid;place-items:center;font-size:10px">Sin foto</div>`}
+      <input class="admin-file" id="file-${p.id}" type="file" accept="image/*"
+             onchange="uploadProductImage(${p.id},this.files[0])">
+    </td>
+
+    <td><input id="name-${p.id}" value="${esc(p.nombre)}"></td>
+    <td><input id="price-${p.id}" type="number" min="0" value="${p.precio}"></td>
+    <td><input id="ml-${p.id}" type="number" min="1" value="${p.ml}"></td>
+    <td><input id="stock-${p.id}" type="number" min="0" value="${p.stock}"></td>
+
+    <td>
+      <select id="cat-${p.id}">
+        ${["Árabe","Argentina","Nicho","Diseñador","Otros"].map(x=>`<option ${p.categoria===x?"selected":""}>${x}</option>`).join("")}
+      </select>
+    </td>
+
+    <td>
+      <select id="gender-${p.id}">
+        ${["Hombre","Mujer","Unisex"].map(x=>`<option ${p.genero===x?"selected":""}>${x}</option>`).join("")}
+      </select>
+    </td>
+
+    <td><textarea id="desc-${p.id}">${esc(p.descripcion)}</textarea></td>
+    <td><input id="out-${p.id}" value="${esc(p.salida)}"></td>
+    <td><input id="heart-${p.id}" value="${esc(p.corazon)}"></td>
+    <td><input id="base-${p.id}" value="${esc(p.fondo)}"></td>
+    <td><input id="family-${p.id}" value="${esc(p.familia)}"></td>
+
+    <td>
+      <button class="btn gold" onclick="adminSave(${p.id})">GUARDAR</button>
+      <button class="btn danger" style="margin-top:6px" onclick="deleteProduct(${p.id})">ELIMINAR</button>
+    </td>
+  </tr>`;
+}
+
+function openNewProduct(){
+  document.getElementById("modalBody").innerHTML=`
+  <h2>Agregar perfume</h2>
+  <p class="muted">Completá los datos. La foto se subirá a Supabase Storage.</p>
+
+  <div id="newProductMessage" class="admin-message hidden"></div>
+
+  <form class="form" onsubmit="createProduct(event)">
+    <input id="newName" placeholder="Nombre del perfume" required>
+    <input id="newPrice" type="number" min="0" placeholder="Precio" required>
+    <input id="newMl" type="number" min="1" placeholder="ML" required>
+    <input id="newStock" type="number" min="0" placeholder="Stock" value="0">
+
+    <select id="newCategory">
+      <option>Árabe</option>
+      <option>Argentina</option>
+      <option>Nicho</option>
+      <option>Diseñador</option>
+      <option>Otros</option>
+    </select>
+
+    <select id="newGender">
+      <option>Hombre</option>
+      <option>Mujer</option>
+      <option>Unisex</option>
+    </select>
+
+    <textarea id="newDescription" placeholder="Descripción"></textarea>
+    <input id="newSalida" placeholder="Notas de salida">
+    <input id="newCorazon" placeholder="Notas de corazón">
+    <input id="newFondo" placeholder="Notas de fondo">
+    <input id="newFamilia" placeholder="Familia olfativa">
+    <input id="newImage" type="file" accept="image/*">
+
+    <button class="btn gold" type="submit">CREAR PERFUME</button>
+  </form>`;
+
+  document.getElementById("modal").classList.add("open");
+}
+
+async function createProduct(event){
+  event.preventDefault();
+
+  const btn=event.submitter;
+  if(btn) btn.disabled=true;
+
+  try{
+    const name=document.getElementById("newName").value.trim();
+    const price=Number(document.getElementById("newPrice").value);
+    const ml=Number(document.getElementById("newMl").value);
+    const stock=Number(document.getElementById("newStock").value||0);
+    const category=document.getElementById("newCategory").value;
+    const gender=document.getElementById("newGender").value;
+    const description=document.getElementById("newDescription").value.trim();
+    const salida=document.getElementById("newSalida").value.trim() || "Consultar";
+    const corazon=document.getElementById("newCorazon").value.trim() || "Consultar";
+    const fondo=document.getElementById("newFondo").value.trim() || "Consultar";
+    const familia=document.getElementById("newFamilia").value.trim() || "Fragancia";
+    const file=document.getElementById("newImage").files[0];
+
+    let imageUrl="";
+
+    if(file){
+      imageUrl=await uploadImageFile(file);
+    }
+
+    const {data,error}=await supabaseClient
+      .from("products")
+      .insert({
+        nombre:name,
+        precio:price,
+        ml:ml,
+        categoria:category,
+        genero:gender,
+        stock:stock,
+        imagen_url:imageUrl || null,
+        descripcion:description || "Fragancia seleccionada de AromaLParfum.",
+        salida,
+        corazon,
+        fondo,
+        familia
+      })
+      .select()
+      .single();
+
+    if(error){
+      console.error("Error creando producto:",error);
+      throw error;
+    }
+
+    closeModal();
+    await cargarProductos();
+    renderAdmin();
+    showMessage("✅ Perfume agregado correctamente.","ok");
+
+  }catch(error){
+    console.error(error);
+    const box=document.getElementById("newProductMessage");
+    if(box){
+      box.className="admin-message error";
+      box.textContent="❌ No se pudo crear el perfume: " + (error.message || error);
+    }else{
+      alert("No se pudo crear el perfume.");
+    }
+  }finally{
+    if(btn) btn.disabled=false;
   }
 }
 
-probarSupabase();
-let products = [];
-
-let cart=JSON.parse(localStorage.getItem("alp_cart")||"[]"), fav=JSON.parse(localStorage.getItem("alp_fav")||"[]"), filter="Todos", sort="default", search="";
-
-async function cargarProductos() {
-    const { data, error } = await supabaseClient
-        .from("products")
-        .select("*")
-        .order("id", { ascending: true });
-
-    if (error) {
-        console.error("Error cargando productos:", error);
-        alert("No se pudieron cargar los perfumes.");
-        return;
-    }
-
-   products = data.map(p => ({
-    id: p.id,
-    nombre: p.nombre,
-    precio: Number(p.precio || 0),
-    ml: Number(p.ml || 0),
-    categoria: p.categoria || "Otros",
-    genero: p.genero || "Unisex",
-    stock: Number(p.stock || 0),
-    img: p.imagen_url || "",
-    descripcion: p.descripcion || "Fragancia seleccionada de AromaLParfum.",
-    salida: p.salida || "Consultar",
-    corazon: p.corazon || "Consultar",
-    fondo: p.fondo || "Consultar",
-    familia: p.familia || "Fragancia",
-    destacado: p.destacado || false,
-    nuevo: p.nuevo || false,
-    vendido: p.vendido || false
-}));
-
-    console.log("Productos cargados:", products);
-
-    render();
-}
-
-const money=n=>new Intl.NumberFormat("es-AR",{style:"currency",currency:"ARS",maximumFractionDigits:0}).format(n);
-function save(){localStorage.setItem("alp_cart",JSON.stringify(cart));localStorage.setItem("alp_fav",JSON.stringify(fav));updateCounts()}
-function updateCounts(){document.getElementById("cartCount").textContent=cart.reduce((a,x)=>a+x.qty,0);document.getElementById("favCount").textContent=fav.length}
-function card(p){return `<article class="product"><div class="pic">${p.img?`<img src="${p.img}" alt="${p.nombre}">`:`<div class="placeholder">${p.nombre}<br><small>${p.ml} ml</small></div>`}<button class="heart ${fav.includes(p.id)?"active":""}" onclick="toggleFav(${p.id})">${fav.includes(p.id)?"♥":"♡"}</button></div><div class="info"><div class="brandline">${p.categoria} · ${p.genero}</div><h3>${p.nombre}</h3><div class="meta">${p.ml} ml</div><div class="price">${money(p.precio)}</div><div class="stock">● Disponible</div><button class="btn" onclick="productDetail(${p.id})">VER PERFUME</button></div></article>`}
-function renderCatalog(){let a=products.filter(p=>(filter==="Todos"||p.categoria===filter||p.genero===filter)&&(!search||p.nombre.toLowerCase().includes(search.toLowerCase())));if(sort==="low")a.sort((x,y)=>x.precio-y.precio);if(sort==="high")a.sort((x,y)=>y.precio-x.precio);if(sort==="name")a.sort((x,y)=>x.nombre.localeCompare(y.nombre));return `<section><div class="section-head"><div><div class="eyebrow">Colección</div><h2>Perfumes</h2></div><span class="muted">${a.length} productos</span></div><div class="chips">${["Todos","Hombre","Mujer","Árabe","Argentina","Nicho","Diseñador"].map(x=>`<button class="chip ${filter===x?"active":""}" onclick="catalog('${x}')">${x}</button>`).join("")}</div><div class="toolbar"><input class="search" placeholder="Buscar por perfume o marca..." value="${search}" oninput="search=this.value;render()"><select class="select" onchange="sort=this.value;render()"><option value="default">Ordenar</option><option value="low">Precio menor a mayor</option><option value="high">Precio mayor a menor</option><option value="name">Nombre A-Z</option></select></div><div class="grid">${a.length?a.map(card).join(""):`<div class="empty" style="grid-column:1/-1">No encontramos perfumes con esa búsqueda.</div>`}</div></section>`}
-function home(){let featured=products.filter(p=>p.destacado).slice(0,8);return `<div class="hero"><div><div class="eyebrow">AromaLParfum</div><h1>Encontrá tu<br>próxima fragancia.</h1><p>Descubrí perfumes árabes, argentinos, de diseñador y de nicho seleccionados para distintos estilos y momentos.</p><button class="btn light" onclick="catalog('Todos')">VER PERFUMES</button></div></div><section><div class="section-head"><div><div class="eyebrow">Explorá</div><h2>Categorías</h2></div></div><div class="cats"><button class="cat" onclick="catalog('Hombre')"><strong>Hombre</strong><span>Fragancias masculinas</span></button><button class="cat" onclick="catalog('Mujer')"><strong>Mujer</strong><span>Fragancias femeninas</span></button><button class="cat" onclick="catalog('Árabe')"><strong>Árabes</strong><span>Intensas y envolventes</span></button><button class="cat" onclick="catalog('Nicho')"><strong>Nicho</strong><span>Composiciones especiales</span></button></div></section><section><div class="section-head"><div><div class="eyebrow">Selección</div><h2>Destacados</h2></div><button class="btn" onclick="catalog('Todos')">VER TODO</button></div><div class="grid">${featured.map(card).join("")}</div></section><div class="banner"><div class="banner-inner"><div class="eyebrow">Tu identidad, tu aroma</div><h2>Un perfume es más que una fragancia.</h2><p>Es una forma de expresión, un recuerdo y una parte de tu identidad.</p><button class="btn gold" onclick="showAbout()">CONOCÉ AROMALPARFUM</button></div></div>`}
-function render(){document.getElementById("app").innerHTML=home()}function catalog(x="Todos"){filter=x;search="";closeMenu();document.getElementById("app").innerHTML=renderCatalog();window.scrollTo(0,0)}
-function productDetail(id){let p=products.find(x=>x.id===id);document.getElementById("app").innerHTML=`<div class="detail"><button class="btn" onclick="catalog(filter)">← VOLVER</button><div class="detail-grid" style="margin-top:25px"><div><div class="gallery-main">${p.img?`<img src="${p.img}" alt="${p.nombre}">`:`<div class="placeholder">${p.nombre}<br>${p.ml} ml</div>`}</div><div class="thumbs"><div class="thumb"></div><div class="thumb"></div><div class="thumb"></div></div></div><div><div class="eyebrow">${p.categoria} · ${p.genero}</div><h1>${p.nombre}</h1><div class="price" style="font-size:28px">${money(p.precio)}</div><p class="muted">${p.ml} ml · ● Disponible</p><p style="line-height:1.7">${p.descripcion}</p><button class="btn gold" onclick="addCart(${p.id})">AGREGAR AL CARRITO</button><button class="btn" style="margin-left:8px" onclick="toggleFav(${p.id});productDetail(${p.id})">${fav.includes(p.id)?"♥ EN FAVORITOS":"♡ FAVORITOS"}</button><div class="notes"><div class="note"><b>Salida</b>${p.salida}</div><div class="note"><b>Corazón</b>${p.corazon}</div><div class="note"><b>Fondo</b>${p.fondo}</div></div><div class="info-list"><div><b>Familia olfativa</b>${p.familia}</div><div><b>Tamaño</b>${p.ml} ml</div><div><b>Duración</b>Consultar</div><div><b>Proyección</b>Consultar</div><div><b>Uso</b>Diario / salidas / ocasiones especiales</div><div><b>¿Dónde usarlo?</b>Espacios cerrados, salidas y eventos</div></div></div></div></div>`;window.scrollTo(0,0)}
-function toggleFav(id){fav.includes(id)?fav=fav.filter(x=>x!==id):fav.push(id);save();if(document.getElementById("app").innerHTML.includes("Destacados"))render();else catalog(filter)}
-function showFavorites(){closeMenu();let a=products.filter(p=>fav.includes(p.id));document.getElementById("app").innerHTML=`<section><div class="eyebrow">Guardados</div><h2>Favoritos</h2>${a.length?`<div class="grid">${a.map(card).join("")}</div>`:`<div class="empty"><h3>Todavía no tienes perfumes favoritos.</h3><button class="btn" onclick="catalog('Todos')">DESCUBRIR PERFUMES</button></div>`}</section>`}
-function addCart(id){let x=cart.find(x=>x.id===id);x?x.qty++:cart.push({id,qty:1});save();openCart()}
-function openCart(){document.getElementById("cart").classList.add("open");renderCart()}function closeCart(){document.getElementById("cart").classList.remove("open")}
-function renderCart(){let box=document.getElementById("cartItems");if(!cart.length){box.innerHTML='<div class="empty">Tu carrito está vacío.</div>';document.getElementById("cartTotal").innerHTML="";return}let total=0;box.innerHTML=cart.map(x=>{let p=products.find(p=>p.id===x.id),sub=p.precio*x.qty;total+=sub;return `<div class="cart-item"><div class="cart-thumb">${p.nombre}</div><div><b>${p.nombre}</b><div class="muted">${money(p.precio)}</div><div class="qty"><button onclick="changeQty(${p.id},-1)">−</button>${x.qty}<button onclick="changeQty(${p.id},1)">+</button><button onclick="removeCart(${p.id})" style="border:0;background:none">🗑</button></div></div><b>${money(sub)}</b></div>`}).join("");document.getElementById("cartTotal").innerHTML=`<div class="cart-total">Total: ${money(total)}</div>`}
-function changeQty(id,n){let x=cart.find(x=>x.id===id);x.qty+=n;if(x.qty<=0)cart=cart.filter(y=>y.id!==id);save();renderCart()}function removeCart(id){cart=cart.filter(x=>x.id!==id);save();renderCart()}
-function checkout(){if(!cart.length)return;let total=cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).precio*x.qty,0);document.getElementById("modalBody").innerHTML=`<h2>Finalizar pedido</h2><p class="muted">Completá tus datos y te prepararemos el pedido.</p><div class="form"><input id="cname" placeholder="Nombre y apellido"><input id="ctel" placeholder="Teléfono"><input id="cemail" placeholder="Email"><input id="caddress" placeholder="Dirección"><input id="ccity" placeholder="Ciudad"><input id="cprov" placeholder="Provincia"><input id="cp" placeholder="Código postal"><button class="btn gold" onclick="sendOrder()">ENVIAR PEDIDO POR WHATSAPP · ${money(total)}</button></div>`;document.getElementById("modal").classList.add("open")}
-function sendOrder(){let name=document.getElementById("cname").value||"Cliente";let lines=cart.map(x=>{let p=products.find(p=>p.id===x.id);return `• ${p.nombre} (${p.ml} ml) x${x.qty} — ${money(p.precio*x.qty)}`}).join("%0A");let total=cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).precio*x.qty,0);let msg=`Hola, soy ${name}. Quiero hacer este pedido:%0A${lines}%0A%0ATotal: ${money(total)}`;window.open("https://wa.me/5491144293913?text="+msg,"_blank")}
-function showContact(){closeMenu();document.getElementById("app").innerHTML=`<section><div class="eyebrow">Estamos para ayudarte</div><h2>Contacto</h2><div class="detail-grid"><div><h3>WhatsApp</h3><p class="muted">Reemplazá el número en el código por el WhatsApp de AromaLParfum.</p><h3>Instagram</h3><p class="muted">@AromaLParfum</p><h3>Horarios</h3><p class="muted">Configurá tus horarios de atención.</p></div><form class="form" onsubmit="event.preventDefault();alert('Mensaje preparado. Conectá este formulario a tu correo o backend para recibirlo.')"><input placeholder="Nombre"><input type="email" placeholder="Email"><textarea placeholder="Mensaje"></textarea><button class="btn gold">ENVIAR MENSAJE</button></form></div></section>`}
-function showAbout(){closeMenu();document.getElementById("app").innerHTML=`<section><div class="eyebrow">Nuestra historia</div><h2>Acerca de AromaLParfum</h2><p style="max-width:800px;line-height:2">AromaLParfum nace de nuestra pasión por el mundo de las fragancias y de la idea de acercar perfumes únicos a cada persona.</p><p style="max-width:800px;line-height:2">Creamos este espacio para que puedas descubrir fragancias árabes, argentinas, de diseñador y de nicho, seleccionadas para diferentes estilos, momentos y personalidades.</p><p style="max-width:800px;line-height:2">Para nosotros, un perfume no es simplemente una fragancia: es una forma de expresión, un recuerdo y una parte de nuestra identidad.</p><p style="max-width:800px;line-height:2">En AromaLParfum queremos ayudarte a encontrar esa fragancia que se sienta realmente tuya.</p></section>`}
-async function showAdmin(){
-
-    closeMenu();
-
-    const { data: { session } } = await supabaseClient.auth.getSession();
-
-    if(!session){
-        document.getElementById("app").innerHTML = `
-            <section style="max-width:500px;margin:auto">
-                <div class="eyebrow">Área privada</div>
-                <h2>Administración</h2>
-
-                <p class="muted">
-                    Ingresá con tu cuenta de administrador.
-                </p>
-
-                <div class="form">
-
-                    <input
-                        id="adminEmail"
-                        type="email"
-                        placeholder="Email"
-                    >
-
-                    <input
-                        id="adminPassword"
-                        type="password"
-                        placeholder="Contraseña"
-                    >
-
-                    <button class="btn gold" onclick="adminLogin()">
-                        INGRESAR
-                    </button>
-
-                </div>
-
-                <p id="adminMessage"
-                   class="muted"
-                   style="margin-top:15px">
-                </p>
-            </section>
-        `;
-
-        return;
-    }
-
-function renderAdmin(){
-
-    document.getElementById("app").innerHTML = `
-        <section class="admin">
-
-            <div style="
-                display:flex;
-                justify-content:space-between;
-                align-items:center;
-                gap:15px;
-                margin-bottom:25px;
-                flex-wrap:wrap;
-            ">
-
-                <div>
-                    <div class="eyebrow">Gestión de productos</div>
-                    <h2>Administración</h2>
-                    <p class="muted">
-                        Los cambios se guardarán directamente en Supabase.
-                    </p>
-                </div>
-
-                <div style="display:flex;gap:10px;flex-wrap:wrap">
-                    <button class="btn gold" onclick="mostrarAgregarProducto()">
-                        + AGREGAR PERFUME
-                    </button>
-
-                    <button class="btn" onclick="adminLogout()">
-                        CERRAR SESIÓN
-                    </button>
-                </div>
-
-            </div>
-
-            <div id="formNuevoProducto"></div>
-
-            <div style="overflow-x:auto">
-
-                <table>
-
-                    <thead>
-                        <tr>
-                            <th>Foto</th>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>ML</th>
-                            <th>Stock</th>
-                            <th>Descripción</th>
-                            <th>Salida</th>
-                            <th>Corazón</th>
-                            <th>Fondo</th>
-                            <th>Familia</th>
-                            <th>Guardar</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        ${products.map(p => `
-
-                            <tr>
-
-                                <td>
-                                    ${
-                                        p.img
-                                        ? `<img src="${p.img}"
-                                                style="width:70px;height:70px;object-fit:contain;background:#eee">`
-                                        : `<div style="
-                                                width:70px;
-                                                height:70px;
-                                                background:#eee;
-                                                display:grid;
-                                                place-items:center;
-                                                font-size:10px;
-                                                text-align:center">
-                                                Sin foto
-                                           </div>`
-                                    }
-
-                                    <br>
-
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        id="img${p.id}"
-                                        style="width:180px"
-                                    >
-
-                                    <button
-                                        class="btn"
-                                        style="margin-top:5px"
-                                        onclick="subirFoto(${p.id})">
-                                        SUBIR FOTO
-                                    </button>
-                                </td>
-
-                                <td>
-                                    <strong>${p.nombre}</strong><br>
-                                    <small>
-                                        ${p.categoria} · ${p.genero}
-                                    </small>
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="pr${p.id}"
-                                        type="number"
-                                        value="${p.precio}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="ml${p.id}"
-                                        type="number"
-                                        value="${p.ml}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="st${p.id}"
-                                        type="number"
-                                        value="${p.stock}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <textarea id="desc${p.id}">${p.descripcion}</textarea>
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="sal${p.id}"
-                                        value="${p.salida}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="cor${p.id}"
-                                        value="${p.corazon}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="fon${p.id}"
-                                        value="${p.fondo}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="fam${p.id}"
-                                        value="${p.familia}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <button
-                                        class="btn"
-                                        onclick="adminSave(${p.id})">
-                                        GUARDAR
-                                    </button>
-                                </td>
-
-                            </tr>
-
-                        `).join("")}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-    `;
-}
-async function adminLogin(){
-
-    const email = document.getElementById("adminEmail").value.trim();
-    const password = document.getElementById("adminPassword").value;
-    const message = document.getElementById("adminMessage");
-
-    if(!email || !password){
-        message.textContent = "Completá email y contraseña.";
-        return;
-    }
-
-    message.textContent = "Ingresando...";
-
-    const { data, error } =
-        await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-        });
-
-    if(error){
-        console.error("Error de login:", error);
-        message.textContent = "❌ Email o contraseña incorrectos.";
-        return;
-    }
-
-    console.log("Administrador autenticado:", data.user);
-
-    renderAdmin();
-}
-
-
-function renderAdmin(){
-
-    document.getElementById("app").innerHTML = `
-        <section class="admin">
-
-            <div style="
-                display:flex;
-                justify-content:space-between;
-                align-items:center;
-                gap:15px;
-                margin-bottom:25px;
-            ">
-
-                <div>
-                    <div class="eyebrow">
-                        Gestión de productos
-                    </div>
-
-                    <h2>Administración</h2>
-
-                    <p class="muted">
-                        Los cambios se guardarán directamente en Supabase.
-                    </p>
-                </div>
-
-                <button class="btn" onclick="adminLogout()">
-                    CERRAR SESIÓN
-                </button>
-
-            </div>
-
-            <div style="overflow-x:auto">
-
-                <table>
-
-                    <thead>
-                        <tr>
-                            <th>Producto</th>
-                            <th>Precio</th>
-                            <th>ML</th>
-                            <th>Stock</th>
-                            <th>Descripción</th>
-                            <th>Salida</th>
-                            <th>Corazón</th>
-                            <th>Fondo</th>
-                            <th>Familia</th>
-                            <th>Guardar</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        ${products.map(p => `
-
-                            <tr>
-
-                                <td>
-                                    <strong>${p.nombre}</strong><br>
-                                    <small>
-                                        ${p.categoria} · ${p.genero}
-                                    </small>
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="pr${p.id}"
-                                        type="number"
-                                        value="${p.precio}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="ml${p.id}"
-                                        type="number"
-                                        value="${p.ml}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="st${p.id}"
-                                        type="number"
-                                        value="${p.stock}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <textarea
-                                        id="desc${p.id}"
-                                    >${p.descripcion}</textarea>
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="sal${p.id}"
-                                        value="${p.salida}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="cor${p.id}"
-                                        value="${p.corazon}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="fon${p.id}"
-                                        value="${p.fondo}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <input
-                                        id="fam${p.id}"
-                                        value="${p.familia}"
-                                    >
-                                </td>
-
-                                <td>
-                                    <button
-                                        class="btn"
-                                        onclick="adminSave(${p.id})"
-                                    >
-                                        GUARDAR
-                                    </button>
-                                </td>
-
-                            </tr>
-
-                        `).join("")}
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-        </section>
-    `;
-}
-
-function mostrarAgregarProducto(){
-
-    const box = document.getElementById("formNuevoProducto");
-
-    box.innerHTML = `
-
-        <div style="
-            background:#fff;
-            border:1px solid var(--line);
-            padding:25px;
-            margin-bottom:30px;
-        ">
-
-            <div class="eyebrow">
-                Nuevo producto
-            </div>
-
-            <h3 style="font:28px Georgia,serif;margin-top:8px">
-                Agregar perfume
-            </h3>
-
-            <div class="form">
-
-                <input
-                    id="nuevoNombre"
-                    placeholder="Nombre del perfume"
-                >
-
-                <input
-                    id="nuevoPrecio"
-                    type="number"
-                    placeholder="Precio"
-                >
-
-                <input
-                    id="nuevoMl"
-                    type="number"
-                    placeholder="ML"
-                >
-
-                <input
-                    id="nuevoStock"
-                    type="number"
-                    placeholder="Stock"
-                >
-
-                <select id="nuevoCategoria">
-
-                    <option value="Diseñador">
-                        Diseñador
-                    </option>
-
-                    <option value="Árabe">
-                        Árabe
-                    </option>
-
-                    <option value="Argentina">
-                        Argentina
-                    </option>
-
-                    <option value="Nicho">
-                        Nicho
-                    </option>
-
-                </select>
-
-                <select id="nuevoGenero">
-
-                    <option value="Hombre">
-                        Hombre
-                    </option>
-
-                    <option value="Mujer">
-                        Mujer
-                    </option>
-
-                    <option value="Unisex">
-                        Unisex
-                    </option>
-
-                </select>
-
-                <input
-                    id="nuevoFamilia"
-                    placeholder="Familia olfativa"
-                >
-
-                <textarea
-                    id="nuevoDescripcion"
-                    placeholder="Descripción"
-                ></textarea>
-
-                <input
-                    id="nuevoSalida"
-                    placeholder="Notas de salida"
-                >
-
-                <input
-                    id="nuevoCorazon"
-                    placeholder="Notas de corazón"
-                >
-
-                <input
-                    id="nuevoFondo"
-                    placeholder="Notas de fondo"
-                >
-
-                <label>
-                    <b>Foto del perfume</b>
-                    <input
-                        id="nuevoImagen"
-                        type="file"
-                        accept="image/*"
-                        style="margin-top:8px"
-                    >
-                </label>
-
-                <div style="
-                    display:flex;
-                    gap:10px;
-                    flex-wrap:wrap;
-                ">
-
-                    <button
-                        class="btn gold"
-                        onclick="crearProducto()">
-                        GUARDAR PERFUME
-                    </button>
-
-                    <button
-                        class="btn"
-                        onclick="document.getElementById('formNuevoProducto').innerHTML=''">
-                        CANCELAR
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-    `;
-}
-async function crearProducto(){
-
-    const nombre =
-        document.getElementById("nuevoNombre").value.trim();
-
-    const precio =
-        Number(document.getElementById("nuevoPrecio").value);
-
-    const ml =
-        Number(document.getElementById("nuevoMl").value);
-
-    const stock =
-        Number(document.getElementById("nuevoStock").value);
-
-    const categoria =
-        document.getElementById("nuevoCategoria").value;
-
-    const genero =
-        document.getElementById("nuevoGenero").value;
-
-    const familia =
-        document.getElementById("nuevoFamilia").value.trim();
-
-    const descripcion =
-        document.getElementById("nuevoDescripcion").value.trim();
-
-    const salida =
-        document.getElementById("nuevoSalida").value.trim();
-
-    const corazon =
-        document.getElementById("nuevoCorazon").value.trim();
-
-    const fondo =
-        document.getElementById("nuevoFondo").value.trim();
-
-    const imagenInput =
-        document.getElementById("nuevoImagen");
-
-    if(!nombre){
-        alert("❌ Poné el nombre del perfume.");
-        return;
-    }
-
-    if(!precio){
-        alert("❌ Poné el precio.");
-        return;
-    }
-
-    if(!ml){
-        alert("❌ Poné los ML.");
-        return;
-    }
-
-    if(stock < 0){
-        alert("❌ El stock no puede ser negativo.");
-        return;
-    }
-
-    /*
-      Primero creamos el producto.
-    */
-
-    const { data: producto, error } =
-        await supabaseClient
-            .from("products")
-            .insert({
-                nombre: nombre,
-                precio: precio,
-                ml: ml,
-                categoria: categoria,
-                genero: genero,
-                stock: stock,
-                descripcion: descripcion || "Fragancia seleccionada de AromaLParfum.",
-                salida: salida || "Consultar",
-                corazon: corazon || "Consultar",
-                fondo: fondo || "Consultar",
-                familia: familia || "Fragancia",
-                destacado: false,
-                nuevo: true,
-                vendido: false,
-                imagen_url: null
-            })
-            .select()
-            .single();
-
-    if(error){
-        console.error(
-            "Error creando producto:",
-            error
-        );
-
-        alert(
-            "❌ No se pudo crear el perfume:\n" +
-            error.message
-        );
-
-        return;
-    }
-
-    /*
-      Si seleccionamos una foto,
-      la subimos después de crear el producto.
-    */
-
-    let imagenUrl = null;
-
-    if(imagenInput.files && imagenInput.files[0]){
-
-        const file = imagenInput.files[0];
-
-        const extension =
-            file.name.split(".").pop().toLowerCase();
-
-        const nombreSeguro =
-            nombre
-            .toLowerCase()
-            .replace(/[^a-z0-9]/g, "-");
-
-        const ruta =
-            `productos/${producto.id}-${Date.now()}-${nombreSeguro}.${extension}`;
-
-        const { error: uploadError } =
-            await supabaseClient.storage
-                .from("perfumes")
-                .upload(
-                    ruta,
-                    file,
-                    {
-                        upsert:true,
-                        contentType:file.type
-                    }
-                );
-
-        if(uploadError){
-
-            console.error(
-                "Error subiendo imagen:",
-                uploadError
-            );
-
-            alert(
-                "⚠️ El perfume se creó, pero la foto no pudo subirse:\n" +
-                uploadError.message
-            );
-
-        }else{
-
-            const {
-                data: signedData,
-                error: signedError
-            } =
-                await supabaseClient.storage
-                    .from("perfumes")
-                    .createSignedUrl(
-                        ruta,
-                        60 * 60 * 24 * 365
-                    );
-
-            if(!signedError){
-
-                imagenUrl =
-                    signedData.signedUrl;
-
-                await supabaseClient
-                    .from("products")
-                    .update({
-                        imagen_url: imagenUrl
-                    })
-                    .eq("id", producto.id);
-
-            }
-        }
-    }
-
-    alert("✅ Perfume agregado correctamente.");
-
-    await cargarProductos();
-
-    renderAdmin();
-}
-async function adminLogout(){
-
-    const { error } = await supabaseClient.auth.signOut();
-
-    if(error){
-        console.error("Error cerrando sesión:", error);
-        alert("No se pudo cerrar la sesión.");
-        return;
-    }
-
-    render();
-}
-async function subirFoto(id){
-
-    const input = document.getElementById("img" + id);
-
-    if(!input.files || !input.files[0]){
-        alert("❌ Primero seleccioná una imagen.");
-        return;
-    }
-
-    const file = input.files[0];
-
-    if(!file.type.startsWith("image/")){
-        alert("❌ El archivo debe ser una imagen.");
-        return;
-    }
-
-    const extension = file.name.split(".").pop().toLowerCase();
-
-    const nombreSeguro =
-        file.name
-        .replace(/\.[^/.]+$/, "")
-        .toLowerCase()
-        .replace(/[^a-z0-9]/g, "-");
-
-    const ruta =
-        `productos/${id}-${Date.now()}-${nombreSeguro}.${extension}`;
-
-    console.log("Subiendo imagen:", ruta);
-
-    const { error: uploadError } =
-        await supabaseClient.storage
-            .from("perfumes")
-            .upload(ruta, file, {
-                upsert: true,
-                contentType: file.type
-            });
-
-    if(uploadError){
-        console.error("Error subiendo imagen:", uploadError);
-
-        alert(
-            "❌ No se pudo subir la imagen:\n" +
-            uploadError.message
-        );
-
-        return;
-    }
-
-    /*
-      Generamos una URL firmada para que la imagen
-      pueda mostrarse aunque el bucket sea privado.
-    */
-
-    const { data: signedData, error: signedError } =
-        await supabaseClient.storage
-            .from("perfumes")
-            .createSignedUrl(ruta, 60 * 60 * 24 * 365);
-
-    if(signedError){
-        console.error(
-            "Error creando URL de imagen:",
-            signedError
-        );
-
-        alert(
-            "❌ La imagen se subió, pero no se pudo generar la URL."
-        );
-
-        return;
-    }
-
-    const imagenUrl = signedData.signedUrl;
-
-    const { error: updateError } =
-        await supabaseClient
-            .from("products")
-            .update({
-                imagen_url: imagenUrl
-            })
-            .eq("id", id);
-
-    if(updateError){
-        console.error(
-            "Error guardando imagen en producto:",
-            updateError
-        );
-
-        alert(
-            "❌ La imagen se subió, pero no se pudo guardar en el producto."
-        );
-
-        return;
-    }
-
-    const producto = products.find(p => p.id === id);
-
-    if(producto){
-        producto.img = imagenUrl;
-    }
-
-    alert("✅ Foto subida correctamente.");
-
-    renderAdmin();
-}
 async function adminSave(id){
+  const p=products.find(x=>x.id===id);
+  if(!p) return;
 
-    const precio = Number(document.getElementById("pr" + id).value);
-    const ml = Number(document.getElementById("ml" + id).value);
-    const stock = Number(document.getElementById("st" + id).value);
+  try{
+    const payload={
+      nombre:document.getElementById("name-"+id).value.trim(),
+      precio:Number(document.getElementById("price-"+id).value),
+      ml:Number(document.getElementById("ml-"+id).value),
+      stock:Number(document.getElementById("stock-"+id).value),
+      categoria:document.getElementById("cat-"+id).value,
+      genero:document.getElementById("gender-"+id).value,
+      descripcion:document.getElementById("desc-"+id).value.trim(),
+      salida:document.getElementById("out-"+id).value.trim(),
+      corazon:document.getElementById("heart-"+id).value.trim(),
+      fondo:document.getElementById("base-"+id).value.trim(),
+      familia:document.getElementById("family-"+id).value.trim()
+    };
 
-    const descripcion = document.getElementById("desc" + id).value;
-    const salida = document.getElementById("sal" + id).value;
-    const corazon = document.getElementById("cor" + id).value;
-    const fondo = document.getElementById("fon" + id).value;
-    const familia = document.getElementById("fam" + id).value;
-
-    const { error } = await supabaseClient
-        .from("products")
-        .update({
-            precio: precio,
-            ml: ml,
-            stock: stock,
-            descripcion: descripcion,
-            salida: salida,
-            corazon: corazon,
-            fondo: fondo,
-            familia: familia
-        })
-        .eq("id", id);
+    const {error}=await supabaseClient
+      .from("products")
+      .update(payload)
+      .eq("id",id);
 
     if(error){
-        console.error("Error actualizando producto:", error);
-        alert("❌ No se pudo guardar: " + error.message);
-        return;
+      console.error("Error actualizando producto:",error);
+      showMessage("❌ Error al guardar: " + error.message,"error");
+      return;
     }
 
-    const p = products.find(x => x.id === id);
+    Object.assign(p,payload);
+    showMessage("✅ "+p.nombre+" guardado correctamente.","ok");
 
-    if(p){
-        p.precio = precio;
-        p.ml = ml;
-        p.stock = stock;
-        p.descripcion = descripcion;
-        p.salida = salida;
-        p.corazon = corazon;
-        p.fondo = fondo;
-        p.familia = familia;
-    }
-
-    alert("✅ Producto guardado correctamente.");
+  }catch(error){
+    console.error("Error:",error);
+    showMessage("❌ Error inesperado al guardar.","error");
+  }
 }
-function openMenu(){document.getElementById("menu").classList.add("open")}function closeMenu(){document.getElementById("menu").classList.remove("open")}function toggleSub(){document.getElementById("submenu").classList.toggle("open")}function closeModal(){document.getElementById("modal").classList.remove("open")}function goHome(){closeMenu();render();window.scrollTo(0,0)}
+
+/* =========================
+   STORAGE / FOTOS
+========================= */
+async function uploadImageFile(file){
+  if(!file) return "";
+
+  if(!file.type.startsWith("image/")){
+    throw new Error("El archivo seleccionado no es una imagen.");
+  }
+
+  if(file.size > 8 * 1024 * 1024){
+    throw new Error("La imagen es demasiado grande. Máximo 8 MB.");
+  }
+
+  const extension=(file.name.split(".").pop() || "jpg").toLowerCase();
+  const safeName=file.name
+    .replace(/\.[^/.]+$/,"")
+    .toLowerCase()
+    .replace(/[^a-z0-9áéíóúñ_-]+/gi,"-")
+    .replace(/-+/g,"-")
+    .slice(0,50);
+
+  const path=`productos/${Date.now()}-${safeName}.${extension}`;
+
+  const {error}=await supabaseClient.storage
+    .from(STORAGE_BUCKET)
+    .upload(path,file,{
+      cacheControl:"3600",
+      upsert:false,
+      contentType:file.type
+    });
+
+  if(error){
+    console.error("Error subiendo imagen:",error);
+    throw new Error("No se pudo subir la imagen. Revisá las políticas del bucket 'perfumes'.");
+  }
+
+  const {data}=supabaseClient.storage
+    .from(STORAGE_BUCKET)
+    .getPublicUrl(path);
+
+  return data.publicUrl;
+}
+
+async function uploadProductImage(id,file){
+  if(!file) return;
+
+  try{
+    const url=await uploadImageFile(file);
+
+    const {error}=await supabaseClient
+      .from("products")
+      .update({imagen_url:url})
+      .eq("id",id);
+
+    if(error){
+      console.error("Error guardando URL:",error);
+      showMessage("❌ La foto se subió, pero no se pudo guardar su URL: "+error.message,"error");
+      return;
+    }
+
+    const p=products.find(x=>x.id===id);
+    if(p){
+      p.img=url;
+      p.imagen_url=url;
+    }
+
+    const preview=document.getElementById("preview-"+id);
+    if(preview){
+      preview.outerHTML=`<img id="preview-${id}" class="admin-img" src="${esc(url)}" alt="">`;
+    }
+
+    showMessage("✅ Foto subida y guardada correctamente.","ok");
+
+  }catch(error){
+    console.error(error);
+    showMessage("❌ "+(error.message || "No se pudo subir la foto."),"error");
+  }
+}
+
+/* =========================
+   ELIMINAR
+========================= */
+async function deleteProduct(id){
+  const p=products.find(x=>x.id===id);
+  if(!p) return;
+
+  if(!confirm(`¿Seguro que querés eliminar "${p.nombre}"?`)) return;
+
+  const {error}=await supabaseClient
+    .from("products")
+    .delete()
+    .eq("id",id);
+
+  if(error){
+    console.error("Error eliminando:",error);
+    showMessage("❌ No se pudo eliminar: "+error.message,"error");
+    return;
+  }
+
+  products=products.filter(x=>x.id!==id);
+  cart=cart.filter(x=>x.id!==id);
+  fav=fav.filter(x=>x!==id);
+  save();
+
+  const row=document.getElementById("row-"+id);
+  if(row) row.remove();
+
+  showMessage("✅ Producto eliminado correctamente.","ok");
+}
+
+/* =========================
+   ARRANQUE
+========================= */
 updateCounts();
 cargarProductos();
+
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+  console.log("Auth:",event,session?.user?.email || "sin sesión");
+});
 </script>
 </body>
 </html>
