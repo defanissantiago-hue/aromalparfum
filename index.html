@@ -198,10 +198,186 @@ async function showAdmin(){
         return;
     }
 
-    renderAdmin();
+function renderAdmin(){
+
+    document.getElementById("app").innerHTML = `
+        <section class="admin">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                gap:15px;
+                margin-bottom:25px;
+                flex-wrap:wrap;
+            ">
+
+                <div>
+                    <div class="eyebrow">Gestión de productos</div>
+                    <h2>Administración</h2>
+                    <p class="muted">
+                        Los cambios se guardarán directamente en Supabase.
+                    </p>
+                </div>
+
+                <div style="display:flex;gap:10px;flex-wrap:wrap">
+                    <button class="btn gold" onclick="mostrarAgregarProducto()">
+                        + AGREGAR PERFUME
+                    </button>
+
+                    <button class="btn" onclick="adminLogout()">
+                        CERRAR SESIÓN
+                    </button>
+                </div>
+
+            </div>
+
+            <div id="formNuevoProducto"></div>
+
+            <div style="overflow-x:auto">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Foto</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>ML</th>
+                            <th>Stock</th>
+                            <th>Descripción</th>
+                            <th>Salida</th>
+                            <th>Corazón</th>
+                            <th>Fondo</th>
+                            <th>Familia</th>
+                            <th>Guardar</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        ${products.map(p => `
+
+                            <tr>
+
+                                <td>
+                                    ${
+                                        p.img
+                                        ? `<img src="${p.img}"
+                                                style="width:70px;height:70px;object-fit:contain;background:#eee">`
+                                        : `<div style="
+                                                width:70px;
+                                                height:70px;
+                                                background:#eee;
+                                                display:grid;
+                                                place-items:center;
+                                                font-size:10px;
+                                                text-align:center">
+                                                Sin foto
+                                           </div>`
+                                    }
+
+                                    <br>
+
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        id="img${p.id}"
+                                        style="width:180px"
+                                    >
+
+                                    <button
+                                        class="btn"
+                                        style="margin-top:5px"
+                                        onclick="subirFoto(${p.id})">
+                                        SUBIR FOTO
+                                    </button>
+                                </td>
+
+                                <td>
+                                    <strong>${p.nombre}</strong><br>
+                                    <small>
+                                        ${p.categoria} · ${p.genero}
+                                    </small>
+                                </td>
+
+                                <td>
+                                    <input
+                                        id="pr${p.id}"
+                                        type="number"
+                                        value="${p.precio}"
+                                    >
+                                </td>
+
+                                <td>
+                                    <input
+                                        id="ml${p.id}"
+                                        type="number"
+                                        value="${p.ml}"
+                                    >
+                                </td>
+
+                                <td>
+                                    <input
+                                        id="st${p.id}"
+                                        type="number"
+                                        value="${p.stock}"
+                                    >
+                                </td>
+
+                                <td>
+                                    <textarea id="desc${p.id}">${p.descripcion}</textarea>
+                                </td>
+
+                                <td>
+                                    <input
+                                        id="sal${p.id}"
+                                        value="${p.salida}"
+                                    >
+                                </td>
+
+                                <td>
+                                    <input
+                                        id="cor${p.id}"
+                                        value="${p.corazon}"
+                                    >
+                                </td>
+
+                                <td>
+                                    <input
+                                        id="fon${p.id}"
+                                        value="${p.fondo}"
+                                    >
+                                </td>
+
+                                <td>
+                                    <input
+                                        id="fam${p.id}"
+                                        value="${p.familia}"
+                                    >
+                                </td>
+
+                                <td>
+                                    <button
+                                        class="btn"
+                                        onclick="adminSave(${p.id})">
+                                        GUARDAR
+                                    </button>
+                                </td>
+
+                            </tr>
+
+                        `).join("")}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+    `;
 }
-
-
 async function adminLogin(){
 
     const email = document.getElementById("adminEmail").value.trim();
@@ -377,7 +553,328 @@ function renderAdmin(){
     `;
 }
 
+function mostrarAgregarProducto(){
 
+    const box = document.getElementById("formNuevoProducto");
+
+    box.innerHTML = `
+
+        <div style="
+            background:#fff;
+            border:1px solid var(--line);
+            padding:25px;
+            margin-bottom:30px;
+        ">
+
+            <div class="eyebrow">
+                Nuevo producto
+            </div>
+
+            <h3 style="font:28px Georgia,serif;margin-top:8px">
+                Agregar perfume
+            </h3>
+
+            <div class="form">
+
+                <input
+                    id="nuevoNombre"
+                    placeholder="Nombre del perfume"
+                >
+
+                <input
+                    id="nuevoPrecio"
+                    type="number"
+                    placeholder="Precio"
+                >
+
+                <input
+                    id="nuevoMl"
+                    type="number"
+                    placeholder="ML"
+                >
+
+                <input
+                    id="nuevoStock"
+                    type="number"
+                    placeholder="Stock"
+                >
+
+                <select id="nuevoCategoria">
+
+                    <option value="Diseñador">
+                        Diseñador
+                    </option>
+
+                    <option value="Árabe">
+                        Árabe
+                    </option>
+
+                    <option value="Argentina">
+                        Argentina
+                    </option>
+
+                    <option value="Nicho">
+                        Nicho
+                    </option>
+
+                </select>
+
+                <select id="nuevoGenero">
+
+                    <option value="Hombre">
+                        Hombre
+                    </option>
+
+                    <option value="Mujer">
+                        Mujer
+                    </option>
+
+                    <option value="Unisex">
+                        Unisex
+                    </option>
+
+                </select>
+
+                <input
+                    id="nuevoFamilia"
+                    placeholder="Familia olfativa"
+                >
+
+                <textarea
+                    id="nuevoDescripcion"
+                    placeholder="Descripción"
+                ></textarea>
+
+                <input
+                    id="nuevoSalida"
+                    placeholder="Notas de salida"
+                >
+
+                <input
+                    id="nuevoCorazon"
+                    placeholder="Notas de corazón"
+                >
+
+                <input
+                    id="nuevoFondo"
+                    placeholder="Notas de fondo"
+                >
+
+                <label>
+                    <b>Foto del perfume</b>
+                    <input
+                        id="nuevoImagen"
+                        type="file"
+                        accept="image/*"
+                        style="margin-top:8px"
+                    >
+                </label>
+
+                <div style="
+                    display:flex;
+                    gap:10px;
+                    flex-wrap:wrap;
+                ">
+
+                    <button
+                        class="btn gold"
+                        onclick="crearProducto()">
+                        GUARDAR PERFUME
+                    </button>
+
+                    <button
+                        class="btn"
+                        onclick="document.getElementById('formNuevoProducto').innerHTML=''">
+                        CANCELAR
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+    `;
+}
+async function crearProducto(){
+
+    const nombre =
+        document.getElementById("nuevoNombre").value.trim();
+
+    const precio =
+        Number(document.getElementById("nuevoPrecio").value);
+
+    const ml =
+        Number(document.getElementById("nuevoMl").value);
+
+    const stock =
+        Number(document.getElementById("nuevoStock").value);
+
+    const categoria =
+        document.getElementById("nuevoCategoria").value;
+
+    const genero =
+        document.getElementById("nuevoGenero").value;
+
+    const familia =
+        document.getElementById("nuevoFamilia").value.trim();
+
+    const descripcion =
+        document.getElementById("nuevoDescripcion").value.trim();
+
+    const salida =
+        document.getElementById("nuevoSalida").value.trim();
+
+    const corazon =
+        document.getElementById("nuevoCorazon").value.trim();
+
+    const fondo =
+        document.getElementById("nuevoFondo").value.trim();
+
+    const imagenInput =
+        document.getElementById("nuevoImagen");
+
+    if(!nombre){
+        alert("❌ Poné el nombre del perfume.");
+        return;
+    }
+
+    if(!precio){
+        alert("❌ Poné el precio.");
+        return;
+    }
+
+    if(!ml){
+        alert("❌ Poné los ML.");
+        return;
+    }
+
+    if(stock < 0){
+        alert("❌ El stock no puede ser negativo.");
+        return;
+    }
+
+    /*
+      Primero creamos el producto.
+    */
+
+    const { data: producto, error } =
+        await supabaseClient
+            .from("products")
+            .insert({
+                nombre: nombre,
+                precio: precio,
+                ml: ml,
+                categoria: categoria,
+                genero: genero,
+                stock: stock,
+                descripcion: descripcion || "Fragancia seleccionada de AromaLParfum.",
+                salida: salida || "Consultar",
+                corazon: corazon || "Consultar",
+                fondo: fondo || "Consultar",
+                familia: familia || "Fragancia",
+                destacado: false,
+                nuevo: true,
+                vendido: false,
+                imagen_url: null
+            })
+            .select()
+            .single();
+
+    if(error){
+        console.error(
+            "Error creando producto:",
+            error
+        );
+
+        alert(
+            "❌ No se pudo crear el perfume:\n" +
+            error.message
+        );
+
+        return;
+    }
+
+    /*
+      Si seleccionamos una foto,
+      la subimos después de crear el producto.
+    */
+
+    let imagenUrl = null;
+
+    if(imagenInput.files && imagenInput.files[0]){
+
+        const file = imagenInput.files[0];
+
+        const extension =
+            file.name.split(".").pop().toLowerCase();
+
+        const nombreSeguro =
+            nombre
+            .toLowerCase()
+            .replace(/[^a-z0-9]/g, "-");
+
+        const ruta =
+            `productos/${producto.id}-${Date.now()}-${nombreSeguro}.${extension}`;
+
+        const { error: uploadError } =
+            await supabaseClient.storage
+                .from("perfumes")
+                .upload(
+                    ruta,
+                    file,
+                    {
+                        upsert:true,
+                        contentType:file.type
+                    }
+                );
+
+        if(uploadError){
+
+            console.error(
+                "Error subiendo imagen:",
+                uploadError
+            );
+
+            alert(
+                "⚠️ El perfume se creó, pero la foto no pudo subirse:\n" +
+                uploadError.message
+            );
+
+        }else{
+
+            const {
+                data: signedData,
+                error: signedError
+            } =
+                await supabaseClient.storage
+                    .from("perfumes")
+                    .createSignedUrl(
+                        ruta,
+                        60 * 60 * 24 * 365
+                    );
+
+            if(!signedError){
+
+                imagenUrl =
+                    signedData.signedUrl;
+
+                await supabaseClient
+                    .from("products")
+                    .update({
+                        imagen_url: imagenUrl
+                    })
+                    .eq("id", producto.id);
+
+            }
+        }
+    }
+
+    alert("✅ Perfume agregado correctamente.");
+
+    await cargarProductos();
+
+    renderAdmin();
+}
 async function adminLogout(){
 
     const { error } = await supabaseClient.auth.signOut();
@@ -389,6 +886,110 @@ async function adminLogout(){
     }
 
     render();
+}
+async function subirFoto(id){
+
+    const input = document.getElementById("img" + id);
+
+    if(!input.files || !input.files[0]){
+        alert("❌ Primero seleccioná una imagen.");
+        return;
+    }
+
+    const file = input.files[0];
+
+    if(!file.type.startsWith("image/")){
+        alert("❌ El archivo debe ser una imagen.");
+        return;
+    }
+
+    const extension = file.name.split(".").pop().toLowerCase();
+
+    const nombreSeguro =
+        file.name
+        .replace(/\.[^/.]+$/, "")
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "-");
+
+    const ruta =
+        `productos/${id}-${Date.now()}-${nombreSeguro}.${extension}`;
+
+    console.log("Subiendo imagen:", ruta);
+
+    const { error: uploadError } =
+        await supabaseClient.storage
+            .from("perfumes")
+            .upload(ruta, file, {
+                upsert: true,
+                contentType: file.type
+            });
+
+    if(uploadError){
+        console.error("Error subiendo imagen:", uploadError);
+
+        alert(
+            "❌ No se pudo subir la imagen:\n" +
+            uploadError.message
+        );
+
+        return;
+    }
+
+    /*
+      Generamos una URL firmada para que la imagen
+      pueda mostrarse aunque el bucket sea privado.
+    */
+
+    const { data: signedData, error: signedError } =
+        await supabaseClient.storage
+            .from("perfumes")
+            .createSignedUrl(ruta, 60 * 60 * 24 * 365);
+
+    if(signedError){
+        console.error(
+            "Error creando URL de imagen:",
+            signedError
+        );
+
+        alert(
+            "❌ La imagen se subió, pero no se pudo generar la URL."
+        );
+
+        return;
+    }
+
+    const imagenUrl = signedData.signedUrl;
+
+    const { error: updateError } =
+        await supabaseClient
+            .from("products")
+            .update({
+                imagen_url: imagenUrl
+            })
+            .eq("id", id);
+
+    if(updateError){
+        console.error(
+            "Error guardando imagen en producto:",
+            updateError
+        );
+
+        alert(
+            "❌ La imagen se subió, pero no se pudo guardar en el producto."
+        );
+
+        return;
+    }
+
+    const producto = products.find(p => p.id === id);
+
+    if(producto){
+        producto.img = imagenUrl;
+    }
+
+    alert("✅ Foto subida correctamente.");
+
+    renderAdmin();
 }
 async function adminSave(id){
 
