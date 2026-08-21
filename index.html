@@ -1,44 +1,1352 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="description" content="AromaLParfum — perfumes, fragancias y decants."><title>AromaLParfum | Perfumería</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="AromaLParfum — perfumes, fragancias y decants.">
+<title>AromaLParfum | Perfumería</title>
 <style>
-:root{--bg:#f7f5f1;--card:#fff;--ink:#171717;--muted:#777;--line:#e8e3db;--accent:#b48a45;--danger:#b21f32}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}button,input,select,textarea{font:inherit}button{cursor:pointer}.top{background:#111;color:#fff;text-align:center;padding:8px;font-size:12px;letter-spacing:1px}header{position:sticky;top:0;z-index:50;background:#fffffff5;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}.nav{max-width:1200px;margin:auto;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 18px}.brand{font:26px Georgia,serif;letter-spacing:2px}.brand small{display:block;font:9px Arial;letter-spacing:4px;text-align:center;color:var(--accent)}.nav-actions{display:flex;gap:8px}.icon-btn{border:0;background:transparent;font-size:22px;padding:10px;position:relative}.count{position:absolute;right:2px;top:2px;background:var(--accent);color:#fff;border-radius:50%;font-size:10px;width:18px;height:18px;display:grid;place-items:center}.hero{min-height:520px;display:grid;place-items:center;text-align:center;padding:70px 20px;background:linear-gradient(110deg,#181818,#3a3329);color:#fff;position:relative;overflow:hidden}.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 35%,#b48a4559,transparent 35%)}.hero>*{position:relative}.eyebrow{text-transform:uppercase;letter-spacing:4px;color:var(--accent);font-size:12px}.hero .eyebrow{color:#d9b878}.hero h1{font:clamp(48px,9vw,92px) Georgia,serif;margin:14px 0}.hero p{max-width:600px;margin:0 auto 30px;color:#ddd;line-height:1.7}.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;padding:13px 20px;border-radius:2px;text-transform:uppercase;letter-spacing:1px;font-size:12px}.btn.gold{background:var(--accent);border-color:var(--accent)}.btn.light{background:#fff;color:#111;border-color:#fff}.btn.danger{background:var(--danger);border-color:var(--danger)}.btn:disabled{opacity:.45;cursor:not-allowed}section{max-width:1200px;margin:auto;padding:65px 18px}.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:25px}.section-head h2{font:36px Georgia,serif;margin:0}.muted{color:var(--muted);font-size:14px}.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.cat{padding:28px 20px;background:#181818;color:#fff;border:0;text-align:left;min-height:120px}.cat strong{display:block;font:23px Georgia,serif;margin-bottom:10px}.cat span{color:#bbb;font-size:12px}.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0 25px}.search{flex:1;min-width:220px;padding:13px 15px;border:1px solid var(--line);background:#fff}.select{padding:13px;border:1px solid var(--line);background:#fff}.chips{display:flex;gap:8px;overflow:auto;padding-bottom:4px}.chip{white-space:nowrap;border:1px solid var(--line);background:#fff;padding:9px 14px;border-radius:99px}.chip.active{background:#111;color:#fff}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.product{background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}.pic{aspect-ratio:1;background:linear-gradient(135deg,#eee,#ddd);display:grid;place-items:center;position:relative}.pic img{width:100%;height:100%;object-fit:contain}.placeholder{font:24px Georgia,serif;color:#aaa;text-align:center;padding:20px}.heart{position:absolute;right:10px;top:10px;border:0;background:#fff;width:36px;height:36px;border-radius:50%;font-size:19px;box-shadow:0 3px 15px #0001}.heart.active{color:#b21f32}.info{padding:15px}.brandline{font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px}.product h3{font:20px Georgia,serif;margin:7px 0}.meta{font-size:12px;color:#777}.price{font-weight:bold;font-size:18px;margin:12px 0}.stock{font-size:11px;color:#4c7a54}.product .btn{width:100%;margin-top:5px}.banner{background:#171717;color:#fff;max-width:none}.banner-inner{max-width:1200px;margin:auto;padding:60px 18px;text-align:center}.banner h2{font:40px Georgia,serif;margin:8px}.banner p{color:#bbb}footer{background:#111;color:#fff;padding:50px 18px}.footer-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:35px}.footer p{color:#aaa;font-size:13px;line-height:1.8}.drawer,.modal{position:fixed;inset:0;z-index:100;display:none}.drawer.open,.modal.open{display:block}.shade{position:absolute;inset:0;background:#0008}.panel{position:absolute;background:#fff;height:100%;width:min(380px,90vw);padding:25px;overflow:auto}.drawer .panel{left:0}.cart .panel{right:0;width:min(460px,94vw)}.close{border:0;background:transparent;font-size:26px;float:right}.menu-links{margin-top:50px}.menu-links button{display:block;width:100%;padding:15px 0;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;font-size:15px}.submenu{padding-left:15px;display:none}.submenu.open{display:block}.cart-item{display:grid;grid-template-columns:60px 1fr auto;gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}.cart-thumb{width:60px;height:60px;background:#eee;display:grid;place-items:center;font-size:9px;text-align:center;overflow:hidden}.cart-thumb img{width:100%;height:100%;object-fit:contain}.qty{display:flex;align-items:center;gap:7px}.qty button{border:1px solid var(--line);background:#fff;width:28px;height:28px}.cart-total{border-top:1px solid var(--line);margin-top:20px;padding-top:20px;font-size:20px;font-weight:bold}.detail{max-width:1100px;margin:auto;padding:40px 18px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:45px}.gallery-main{aspect-ratio:1;background:#eee;display:grid;place-items:center;overflow:hidden}.gallery-main img{width:100%;height:100%;object-fit:contain}.thumbs{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}.thumb{width:75px;height:75px;background:#eee;border:1px solid var(--line);padding:0;overflow:hidden}.thumb.active{border:2px solid var(--accent)}.thumb img{width:100%;height:100%;object-fit:contain}.detail h1{font:48px Georgia,serif;margin:8px 0 15px}.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:25px 0}.note{border:1px solid var(--line);padding:15px;background:#fff}.note b{display:block;font-size:11px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}.info-list{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}.info-list div{padding:12px 0;border-bottom:1px solid var(--line);font-size:13px}.info-list b{display:block;color:#777;font-size:10px;text-transform:uppercase;margin-bottom:4px}.form{display:grid;gap:12px}.form input,.form textarea,.form select{padding:13px;border:1px solid var(--line);background:#fff}.form textarea{min-height:110px}.admin{max-width:1400px;margin:auto;padding:35px 18px}.admin-top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:25px}.admin-actions{display:flex;gap:10px;flex-wrap:wrap}.admin-wrap{overflow:auto;background:#fff;border:1px solid var(--line)}.admin table{width:100%;min-width:1250px;border-collapse:collapse}.admin th,.admin td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:12px;vertical-align:top}.admin input,.admin select,.admin textarea{width:100%;padding:8px;border:1px solid var(--line);background:#fff}.admin textarea{min-height:70px}.admin-img{width:70px;height:70px;object-fit:contain;background:#eee;border:1px solid var(--line);display:block;margin-bottom:8px}.admin-file{font-size:11px}.admin-message{padding:12px 15px;margin:15px 0;border:1px solid var(--line);background:#fff}.admin-message.ok{border-color:#9ac5a2;background:#eef8f0;color:#315d39}.admin-message.error{border-color:#d9a0a8;background:#fff0f2;color:#8c1f2e}.new-product{background:#fff;border:1px solid var(--line);padding:20px;margin-bottom:25px}.image-preview-grid,.image-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.image-preview{width:90px;height:90px;object-fit:contain;background:#eee;border:1px solid var(--line)}.image-mini{width:45px;height:45px;object-fit:contain;background:#eee;border:1px solid var(--line)}.empty{text-align:center;padding:60px 20px;color:#777}@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.cats{grid-template-columns:repeat(2,1fr)}.detail-grid{grid-template-columns:1fr}.footer-inner{grid-template-columns:1fr}.detail h1{font-size:38px}}@media(max-width:480px){.nav{height:62px}.brand{font-size:21px}.grid{gap:9px}.product h3{font-size:16px}.info{padding:10px}.hero{min-height:450px}.cats{grid-template-columns:1fr 1fr}.notes{grid-template-columns:1fr}.section-head h2{font-size:29px}}
-</style></head><body>
-<div class="top">ENVÍOS Y PEDIDOS — CONSULTÁ POR WHATSAPP</div><header><nav class="nav"><button class="icon-btn" onclick="openMenu()">☰</button><div class="brand">AromaLParfum<small>PERFUMERÍA</small></div><div class="nav-actions"><button class="icon-btn" onclick="showFavorites()">♡<span class="count" id="favCount">0</span></button><button class="icon-btn" onclick="openCart()">🛒<span class="count" id="cartCount">0</span></button></div></nav></header><main id="app"></main>
-<div class="drawer" id="menu"><div class="shade" onclick="closeMenu()"></div><aside class="panel"><button class="close" onclick="closeMenu()">×</button><div class="menu-links"><button onclick="goHome()">INICIO</button><button onclick="toggleSub()">PERFUMES　⌄</button><div class="submenu" id="submenu"><button onclick="catalog('Todos')">Todos los perfumes</button><button onclick="catalog('Hombre')">Perfumes de hombre</button><button onclick="catalog('Mujer')">Perfumes de mujer</button><button onclick="catalog('Árabe')">Perfumería árabe</button><button onclick="catalog('Argentina')">Perfumería argentina</button><button onclick="catalog('Nicho')">Perfumería de nicho</button><button onclick="catalog('Diseñador')">Perfumería de diseñador</button></div><button onclick="showFavorites()">FAVORITOS</button><button onclick="showContact()">CONTACTO</button><button onclick="showAbout()">ACERCA DE</button><button onclick="showAdmin()">ADMINISTRACIÓN</button></div></aside></div>
-<div class="drawer cart" id="cart"><div class="shade" onclick="closeCart()"></div><aside class="panel"><button class="close" onclick="closeCart()">×</button><h2>Tu carrito</h2><div id="cartItems"></div><div id="cartTotal"></div><button class="btn gold" style="width:100%;margin-top:20px" onclick="checkout()">FINALIZAR PEDIDO</button></aside></div>
-<div class="modal" id="modal"><div class="shade" onclick="closeModal()"></div><div class="panel" style="left:50%;top:50%;transform:translate(-50%,-50%);height:auto;max-height:90vh;width:min(700px,94vw);border-radius:4px"><button class="close" onclick="closeModal()">×</button><div id="modalBody"></div></div></div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+:root{--bg:#f7f5f1;--card:#fff;--ink:#171717;--muted:#777;--line:#e8e3db;--accent:#b48a45;--dark:#111;--danger:#b21f32}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,select,textarea{font:inherit}button{cursor:pointer}.top{background:#111;color:#fff;text-align:center;padding:8px;font-size:12px;letter-spacing:1px}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{max-width:1200px;margin:auto;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 18px}.brand{font-family:Georgia,serif;font-size:26px;letter-spacing:2px}.brand small{display:block;font:9px Arial;letter-spacing:4px;text-align:center;color:var(--accent)}
+.nav-actions{display:flex;gap:8px}.icon-btn{border:0;background:transparent;font-size:22px;padding:10px;position:relative}.count{position:absolute;right:2px;top:2px;background:var(--accent);color:#fff;border-radius:50%;font-size:10px;width:18px;height:18px;display:grid;place-items:center}
+.hero{min-height:520px;display:grid;place-items:center;text-align:center;padding:70px 20px;background:linear-gradient(110deg,#181818,#3a3329);color:#fff;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 75% 35%,rgba(180,138,69,.35),transparent 35%)}.hero>*{position:relative}.eyebrow{text-transform:uppercase;letter-spacing:4px;color:#b48a45;font-size:12px}.hero .eyebrow{color:#d9b878}.hero h1{font:clamp(48px,9vw,92px) Georgia,serif;margin:14px 0}.hero p{max-width:600px;margin:0 auto 30px;color:#ddd;line-height:1.7}.btn{border:1px solid var(--ink);background:var(--ink);color:#fff;padding:13px 20px;border-radius:2px;text-transform:uppercase;letter-spacing:1px;font-size:12px}.btn.gold{background:var(--accent);border-color:var(--accent)}.btn.light{background:#fff;color:#111;border-color:#fff}.btn.danger{background:var(--danger);border-color:var(--danger)}
+section{max-width:1200px;margin:auto;padding:65px 18px}.section-head{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:25px}.section-head h2{font:36px Georgia,serif;margin:0}.muted{color:var(--muted);font-size:14px}.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.cat{padding:28px 20px;background:#181818;color:#fff;border:0;text-align:left;min-height:120px}.cat strong{display:block;font:23px Georgia,serif;margin-bottom:10px}.cat span{color:#bbb;font-size:12px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;margin:15px 0 25px}.search{flex:1;min-width:220px;padding:13px 15px;border:1px solid var(--line);background:#fff}.select{padding:13px;border:1px solid var(--line);background:#fff}.chips{display:flex;gap:8px;overflow:auto;padding-bottom:4px}.chip{white-space:nowrap;border:1px solid var(--line);background:#fff;padding:9px 14px;border-radius:99px}.chip.active{background:#111;color:#fff}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}.product{background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}.pic{aspect-ratio:1/1;background:linear-gradient(135deg,#eee,#ddd);display:grid;place-items:center;position:relative}.pic img{width:100%;height:100%;object-fit:contain}.placeholder{font:24px Georgia,serif;color:#aaa;text-align:center;padding:20px}.heart{position:absolute;right:10px;top:10px;border:0;background:#fff;width:36px;height:36px;border-radius:50%;font-size:19px;box-shadow:0 3px 15px #0001}.heart.active{color:#b21f32}.info{padding:15px}.brandline{font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px}.product h3{font:20px Georgia,serif;margin:7px 0}.meta{font-size:12px;color:#777}.price{font-weight:bold;font-size:18px;margin:12px 0}.stock{font-size:11px;color:#4c7a54}.product .btn{width:100%;margin-top:5px}
+.banner{background:#171717;color:#fff;max-width:none}.banner-inner{max-width:1200px;margin:auto;padding:60px 18px;text-align:center}.banner h2{font:40px Georgia,serif;margin:8px}.banner p{color:#bbb}
+footer{background:#111;color:#fff;padding:50px 18px}.footer-inner{max-width:1200px;margin:auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:35px}.footer p,.footer a{color:#aaa;font-size:13px;line-height:1.8}.footer a{display:block;text-decoration:none}
+.drawer,.modal{position:fixed;inset:0;z-index:100;display:none}.drawer.open,.modal.open{display:block}.shade{position:absolute;inset:0;background:#0008}.panel{position:absolute;background:#fff;height:100%;width:min(380px,90vw);padding:25px;overflow:auto}.drawer .panel{left:0}.cart .panel{right:0;width:min(460px,94vw)}.close{border:0;background:transparent;font-size:26px;float:right}.menu-links{margin-top:50px}.menu-links button{display:block;width:100%;padding:15px 0;border:0;border-bottom:1px solid var(--line);background:transparent;text-align:left;font-size:15px}.submenu{padding-left:15px;display:none}.submenu.open{display:block}.cart-item{display:grid;grid-template-columns:60px 1fr auto;gap:12px;padding:15px 0;border-bottom:1px solid var(--line)}.cart-thumb{width:60px;height:60px;background:#eee;display:grid;place-items:center;font-size:9px;text-align:center;overflow:hidden}.cart-thumb img{width:100%;height:100%;object-fit:contain}.qty{display:flex;align-items:center;gap:7px}.qty button{border:1px solid var(--line);background:#fff;width:28px;height:28px}.cart-total{border-top:1px solid var(--line);margin-top:20px;padding-top:20px;font-size:20px;font-weight:bold}
+.detail{max-width:1100px;margin:auto;padding:40px 18px}.detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:45px}.gallery-main{aspect-ratio:1;background:#eee;display:grid;place-items:center}.gallery-main img{width:100%;height:100%;object-fit:contain}.thumbs{display:flex;gap:8px;margin-top:10px}.thumb{width:75px;height:75px;background:#eee;border:1px solid var(--line)}.detail h1{font:48px Georgia,serif;margin:8px 0 15px}.notes{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:25px 0}.note{border:1px solid var(--line);padding:15px;background:#fff}.note b{display:block;font-size:11px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}.info-list{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}.info-list div{padding:12px 0;border-bottom:1px solid var(--line);font-size:13px}.info-list b{display:block;color:#777;font-size:10px;text-transform:uppercase;margin-bottom:4px}
+.form{display:grid;gap:12px}.form input,.form textarea,.form select{padding:13px;border:1px solid var(--line);background:#fff}.form textarea{min-height:110px}
+.admin{max-width:1250px;margin:auto;padding:35px 18px}.admin-top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}.admin-actions{display:flex;gap:8px;flex-wrap:wrap}.admin table{width:100%;border-collapse:collapse;background:#fff;min-width:1100px}.admin-wrap{overflow:auto;border:1px solid var(--line)}.admin th,.admin td{padding:10px;border-bottom:1px solid var(--line);text-align:left;font-size:12px;vertical-align:top}.admin input,.admin select,.admin textarea{width:100%;padding:8px;border:1px solid var(--line);background:#fff}.admin textarea{min-width:170px;min-height:60px}.admin-img{width:70px;height:70px;object-fit:contain;background:#eee;border:1px solid var(--line)}.admin-file{width:180px}.admin-message{padding:12px;margin:15px 0;border:1px solid var(--line);background:#fff}.admin-message.ok{border-color:#9ac7a1;background:#f1faf2}.admin-message.error{border-color:#d99;background:#fff3f3}.hidden{display:none!important}.empty{text-align:center;padding:60px 20px;color:#777}.login-box{max-width:450px;margin:60px auto;background:#fff;padding:30px;border:1px solid var(--line)}.login-box h2{font:34px Georgia,serif}.admin-badge{font-size:12px;color:#4c7a54}
+
+/* ===== MEJORAS AROMALPARFUM: CHECKOUT, GALERÍA Y ADMIN MULTIFOTO ===== */
+.gallery-main{overflow:hidden}.thumb{padding:0;overflow:hidden;cursor:pointer}.thumb img{width:100%;height:100%;object-fit:contain}.thumb.active{border:2px solid var(--accent)}
+.checkout-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.checkout-box{border:1px solid var(--line);background:#faf9f6;padding:18px;margin:14px 0}.checkout-box h3{font:24px Georgia,serif;margin:0 0 13px}.radio-row{display:flex;flex-wrap:wrap;gap:10px}.radio-card{display:flex;gap:8px;align-items:center;border:1px solid var(--line);background:#fff;padding:11px 13px;cursor:pointer}.radio-card input{width:auto;min-height:auto}.summary-row{display:flex;justify-content:space-between;gap:15px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}.summary-total{display:flex;justify-content:space-between;gap:15px;padding-top:15px;font-size:20px;font-weight:bold}
+.admin-photo-grid{display:flex;flex-wrap:wrap;gap:6px;margin:7px 0;max-width:220px}.admin-photo-item{position:relative;width:62px;height:62px;background:#eee;border:1px solid var(--line)}.admin-photo-item img{width:100%;height:100%;object-fit:contain}.admin-photo-remove{position:absolute;right:2px;top:2px;width:20px;height:20px;border:0;border-radius:50%;background:#b21f32;color:#fff;font-size:12px;display:grid;place-items:center;padding:0}.admin-photo-main{position:absolute;left:2px;bottom:2px;background:#111;color:#fff;font-size:8px;padding:2px 4px}.new-photo-preview{display:grid;grid-template-columns:repeat(auto-fill,minmax(85px,1fr));gap:8px;margin-top:10px}.new-photo-preview img{width:100%;height:100px;object-fit:contain;background:#eee;border:1px solid var(--line)}.admin-checks{display:grid;gap:5px;font-size:11px}.admin-checks label{display:flex;align-items:center;gap:5px}.admin-checks input{width:auto}.admin-help{padding:12px 14px;background:#f7f1e7;border:1px solid #ead9bb;margin:12px 0;font-size:12px;line-height:1.6}.admin-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}.admin-stat{background:#fff;border:1px solid var(--line);padding:15px}.admin-stat span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:1px}.admin-stat strong{display:block;font-size:25px;margin-top:5px}.status-pill{display:inline-block;padding:5px 8px;border-radius:20px;font-size:10px}.status-pill.ok{background:#edf8f0;color:#2f6f40}.status-pill.out{background:#fff0f2;color:#8c1f2e}.upload-progress{font-size:10px;color:var(--muted);margin-top:5px}
+@media(max-width:850px){.checkout-grid{grid-template-columns:1fr}.admin-stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.admin-stats{grid-template-columns:1fr}.radio-row{display:grid}.radio-card{width:100%}}
+
+@media(max-width:850px){.grid{grid-template-columns:repeat(2,1fr)}.cats{grid-template-columns:repeat(2,1fr)}.detail-grid{grid-template-columns:1fr}.footer-inner{grid-template-columns:1fr}.detail h1{font-size:38px}}
+@media(max-width:480px){.nav{height:62px}.brand{font-size:21px}.grid{gap:9px}.product h3{font-size:16px}.info{padding:10px}.hero{min-height:450px}.cats{grid-template-columns:1fr 1fr}.notes{grid-template-columns:1fr}.section-head h2{font-size:29px}}
+</style>
+</head>
+<body>
+<div class="top">ENVÍOS Y PEDIDOS — CONSULTÁ POR WHATSAPP</div>
+
+<header>
+<nav class="nav">
+<button class="icon-btn" onclick="openMenu()" aria-label="Menú">☰</button>
+<div class="brand">AromaLParfum<small>PERFUMERÍA</small></div>
+<div class="nav-actions">
+<button class="icon-btn" onclick="showFavorites()">♡<span class="count" id="favCount">0</span></button>
+<button class="icon-btn" onclick="openCart()">🛒<span class="count" id="cartCount">0</span></button>
+</div>
+</nav>
+</header>
+
+<main id="app"></main>
+
+<div class="drawer" id="menu">
+<div class="shade" onclick="closeMenu()"></div>
+<aside class="panel">
+<button class="close" onclick="closeMenu()">×</button>
+<div class="menu-links">
+<button onclick="goHome()">INICIO</button>
+<button onclick="toggleSub()">PERFUMES　⌄</button>
+<div class="submenu" id="submenu">
+<button onclick="catalog('Todos')">Todos los perfumes</button>
+<button onclick="catalog('Hombre')">Perfumes de hombre</button>
+<button onclick="catalog('Mujer')">Perfumes de mujer</button>
+<button onclick="catalog('Árabe')">Perfumería árabe</button>
+<button onclick="catalog('Argentina')">Perfumería argentina</button>
+<button onclick="catalog('Nicho')">Perfumería de nicho</button>
+<button onclick="catalog('Diseñador')">Perfumería de diseñador</button>
+</div>
+<button onclick="showFavorites()">FAVORITOS</button>
+<button onclick="showContact()">CONTACTO</button>
+<button onclick="showAbout()">ACERCA DE</button>
+<button onclick="showAdmin()">ADMINISTRACIÓN</button>
+</div>
+</aside>
+</div>
+
+<div class="drawer cart" id="cart">
+<div class="shade" onclick="closeCart()"></div>
+<aside class="panel">
+<button class="close" onclick="closeCart()">×</button>
+<h2>Tu carrito</h2>
+<div id="cartItems"></div>
+<div id="cartTotal"></div>
+<button class="btn gold" style="width:100%;margin-top:20px" onclick="checkout()">FINALIZAR PEDIDO</button>
+</aside>
+</div>
+
+<div class="modal" id="modal">
+<div class="shade" onclick="closeModal()"></div>
+<div class="panel" style="left:50%;top:50%;transform:translate(-50%,-50%);height:auto;max-height:90vh;width:min(700px,94vw);border-radius:4px">
+<button class="close" onclick="closeModal()">×</button>
+<div id="modalBody"></div>
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
 "use strict";
-const SUPABASE_URL="https://klppiznssciyveufmoff.supabase.co",SUPABASE_KEY="sb_publishable_lMSak0Ze-NYWwq3SCpqEaA_7UrVFU3T",STORAGE_BUCKET="perfumes",ADMIN_EMAILS=["defanissantiago@gmail.com"];const supabaseClient=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
-let products=[],productImages={},cart=JSON.parse(localStorage.getItem("alp_cart")||"[]"),fav=JSON.parse(localStorage.getItem("alp_fav")||"[]"),filter="Todos",sort="default",search="";
-const money=n=>new Intl.NumberFormat("es-AR",{style:"currency",currency:"ARS",maximumFractionDigits:0}).format(Number(n)||0);const esc=v=>String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
-function save(){localStorage.setItem("alp_cart",JSON.stringify(cart));localStorage.setItem("alp_fav",JSON.stringify(fav));updateCounts()}function updateCounts(){let c=document.getElementById("cartCount"),f=document.getElementById("favCount");if(c)c.textContent=cart.reduce((a,x)=>a+x.qty,0);if(f)f.textContent=fav.length}function showMessage(t,type="ok"){let e=document.getElementById("adminMessage");if(e){e.style.display="block";e.className="admin-message "+type;e.textContent=t}}
-async function cargarImagenes(){productImages={};const {data,error}=await supabaseClient.from("product_images").select("*").order("orden",{ascending:true}).order("id",{ascending:true});if(error){console.warn("product_images:",error.message);return}for(const r of data||[]){productImages[r.product_id]??=[];let url=r.image_url?.startsWith("http")?r.image_url:"";if(!url&&r.image_url){let s=await supabaseClient.storage.from(STORAGE_BUCKET).createSignedUrl(r.image_url,2592000);url=s.data?.signedUrl||""}if(url)productImages[r.product_id].push({id:r.id,url,path:r.image_url,orden:r.orden||0})}}
-async function cargarProductos(){const {data,error}=await supabaseClient.from("products").select("*").order("id",{ascending:true});if(error){console.error(error);document.getElementById("app").innerHTML='<section><div class="empty"><h2>No se pudieron cargar los perfumes</h2></div></section>';return}products=(data||[]).map(p=>({id:p.id,nombre:p.nombre||"",precio:+p.precio||0,ml:+p.ml||0,categoria:p.categoria||"Otros",genero:p.genero||"Unisex",stock:+p.stock||0,img:p.imagen_url||"",descripcion:p.descripcion||"Fragancia seleccionada de AromaLParfum.",salida:p.salida||"Consultar",corazon:p.corazon||"Consultar",fondo:p.fondo||"Consultar",familia:p.familia||"Fragancia",destacado:!!p.destacado,nuevo:!!p.nuevo,vendido:!!p.vendido}));await cargarImagenes();products.forEach(p=>{let a=productImages[p.id]||[];if(a.length)p.img=a[0].url});console.log("Productos cargados:",products);render()}
-function getImages(p){let a=productImages[p.id]||[];return a.length?a.map(x=>x.url):p.img?[p.img]:[]}
-function render(){document.getElementById("app").innerHTML=home();updateCounts()}function home(){let a=products.filter(p=>p.destacado).slice(0,8);if(!a.length)a=products.slice(0,4);return `<div class="hero"><div><div class="eyebrow">AromaLParfum</div><h1>Encontrá tu<br>próxima fragancia.</h1><p>Descubrí perfumes árabes, argentinos, de diseñador y de nicho seleccionados para distintos estilos y momentos.</p><button class="btn light" onclick="catalog('Todos')">VER PERFUMES</button></div></div><section><div class="section-head"><div><div class="eyebrow">Explorá</div><h2>Categorías</h2></div></div><div class="cats"><button class="cat" onclick="catalog('Hombre')"><strong>Hombre</strong><span>Fragancias masculinas</span></button><button class="cat" onclick="catalog('Mujer')"><strong>Mujer</strong><span>Fragancias femeninas</span></button><button class="cat" onclick="catalog('Árabe')"><strong>Árabes</strong><span>Intensas y envolventes</span></button><button class="cat" onclick="catalog('Nicho')"><strong>Nicho</strong><span>Composiciones especiales</span></button></div></section><section><div class="section-head"><div><div class="eyebrow">Selección</div><h2>Destacados</h2></div><button class="btn" onclick="catalog('Todos')">VER TODO</button></div><div class="grid">${a.map(card).join("")}</div></section><div class="banner"><div class="banner-inner"><div class="eyebrow">Tu identidad, tu aroma</div><h2>Un perfume es más que una fragancia.</h2><p>Es una forma de expresión, un recuerdo y una parte de tu identidad.</p><button class="btn gold" onclick="showAbout()">CONOCÉ AROMALPARFUM</button></div></div>`}
-function catalog(x="Todos"){filter=x;search="";closeMenu();document.getElementById("app").innerHTML=renderCatalog();scrollTo(0,0)}function renderCatalog(){let a=products.filter(p=>(filter==="Todos"||p.categoria===filter||p.genero===filter)&&(!search||p.nombre.toLowerCase().includes(search.toLowerCase())));if(sort==="low")a.sort((x,y)=>x.precio-y.precio);if(sort==="high")a.sort((x,y)=>y.precio-x.precio);if(sort==="name")a.sort((x,y)=>x.nombre.localeCompare(y.nombre));return `<section><div class="section-head"><div><div class="eyebrow">Colección</div><h2>Perfumes</h2></div><span class="muted">${a.length} productos</span></div><div class="chips">${["Todos","Hombre","Mujer","Árabe","Argentina","Nicho","Diseñador"].map(x=>`<button class="chip ${filter===x?"active":""}" onclick="catalog('${x}')">${x}</button>`).join("")}</div><div class="toolbar"><input class="search" placeholder="Buscar por perfume o marca..." value="${esc(search)}" oninput="search=this.value;document.getElementById('app').innerHTML=renderCatalog()"><select class="select" onchange="sort=this.value;document.getElementById('app').innerHTML=renderCatalog()"><option value="default">Ordenar</option><option value="low">Precio menor a mayor</option><option value="high">Precio mayor a menor</option><option value="name">Nombre A-Z</option></select></div><div class="grid">${a.length?a.map(card).join(""):'<div class="empty" style="grid-column:1/-1">No encontramos perfumes.</div>'}</div></section>`}
-function card(p){let a=getImages(p),favv=fav.includes(p.id);return `<article class="product"><div class="pic">${a[0]?`<img src="${esc(a[0])}" alt="${esc(p.nombre)}" loading="lazy">`:`<div class="placeholder">${esc(p.nombre)}<br><small>${p.ml} ml</small></div>`}<button class="heart ${favv?"active":""}" onclick="toggleFav(${p.id})">${favv?"♥":"♡"}</button></div><div class="info"><div class="brandline">${esc(p.categoria)} · ${esc(p.genero)}</div><h3>${esc(p.nombre)}</h3><div class="meta">${p.ml} ml</div><div class="price">${money(p.precio)}</div><div class="stock">${p.stock>0?"● Disponible":"● Sin stock"}</div><button class="btn" onclick="productDetail(${p.id})">VER PERFUME</button></div></article>`}
-function productDetail(id){let p=products.find(x=>x.id===id);if(!p)return;let a=getImages(p);document.getElementById("app").innerHTML=`<div class="detail"><button class="btn" onclick="catalog(filter)">← VOLVER</button><div class="detail-grid" style="margin-top:25px"><div><div class="gallery-main" id="mainGallery">${a[0]?`<img src="${esc(a[0])}" alt="${esc(p.nombre)}">`:`<div class="placeholder">${esc(p.nombre)}<br>${p.ml} ml</div>`}</div><div class="thumbs">${a.map((u,i)=>`<button class="thumb ${i===0?"active":""}" onclick="setMainImage(${JSON.stringify(u)},this)"><img src="${esc(u)}" alt=""></button>`).join("")}</div></div><div><div class="eyebrow">${esc(p.categoria)} · ${esc(p.genero)}</div><h1>${esc(p.nombre)}</h1><div class="price" style="font-size:28px">${money(p.precio)}</div><p class="muted">${p.ml} ml · ${p.stock>0?"● Disponible":"● Sin stock"}</p><p style="line-height:1.7">${esc(p.descripcion)}</p><button class="btn gold" onclick="addCart(${p.id})" ${p.stock<=0?"disabled":""}>AGREGAR AL CARRITO</button><button class="btn" style="margin-left:8px" onclick="toggleFav(${p.id});productDetail(${p.id})">${fav.includes(p.id)?"♥ EN FAVORITOS":"♡ FAVORITOS"}</button><div class="notes"><div class="note"><b>Salida</b>${esc(p.salida)}</div><div class="note"><b>Corazón</b>${esc(p.corazon)}</div><div class="note"><b>Fondo</b>${esc(p.fondo)}</div></div><div class="info-list"><div><b>Familia olfativa</b>${esc(p.familia)}</div><div><b>Tamaño</b>${p.ml} ml</div><div><b>Stock</b>${p.stock}</div><div><b>Duración</b>Consultar</div><div><b>Proyección</b>Consultar</div><div><b>Uso</b>Diario / salidas / ocasiones especiales</div></div></div></div></div>`;scrollTo(0,0)}function setMainImage(u,b){document.getElementById("mainGallery").innerHTML=`<img src="${esc(u)}" alt="">`;document.querySelectorAll(".thumb").forEach(x=>x.classList.remove("active"));b.classList.add("active")}
-function toggleFav(id){fav.includes(id)?fav=fav.filter(x=>x!==id):fav.push(id);save();showFavorites()}function showFavorites(){closeMenu();let a=products.filter(p=>fav.includes(p.id));document.getElementById("app").innerHTML=`<section><div class="eyebrow">Guardados</div><h2>Favoritos</h2>${a.length?`<div class="grid">${a.map(card).join("")}</div>`:`<div class="empty"><h3>Todavía no tienes perfumes favoritos.</h3><button class="btn" onclick="catalog('Todos')">DESCUBRIR PERFUMES</button></div>`}</section>`}
-function addCart(id){let p=products.find(x=>x.id===id);if(!p||p.stock<=0)return alert("Sin stock disponible.");let x=cart.find(x=>x.id===id);if(x){if(x.qty>=p.stock)return alert("No hay más stock disponible.");x.qty++}else cart.push({id,qty:1});save();openCart()}function openCart(){document.getElementById("cart").classList.add("open");renderCart()}function closeCart(){document.getElementById("cart").classList.remove("open")}function renderCart(){let b=document.getElementById("cartItems");if(!b)return;if(!cart.length){b.innerHTML='<div class="empty">Tu carrito está vacío.</div>';document.getElementById("cartTotal").innerHTML="";return}let total=0;b.innerHTML=cart.map(x=>{let p=products.find(p=>p.id===x.id);if(!p)return"";let s=p.precio*x.qty;total+=s;return `<div class="cart-item"><div class="cart-thumb">${p.img?`<img src="${esc(p.img)}">`:esc(p.nombre)}</div><div><b>${esc(p.nombre)}</b><div class="muted">${money(p.precio)}</div><div class="qty"><button onclick="changeQty(${p.id},-1)">−</button>${x.qty}<button onclick="changeQty(${p.id},1)">+</button><button onclick="removeCart(${p.id})" style="border:0;background:none">🗑</button></div></div><b>${money(s)}</b></div>`}).join("");document.getElementById("cartTotal").innerHTML=`<div class="cart-total">Total: ${money(total)}</div>`}function changeQty(id,n){let x=cart.find(x=>x.id===id),p=products.find(p=>p.id===id);if(!x||!p)return;if(n>0&&x.qty>=p.stock)return alert("No hay más stock disponible.");x.qty+=n;if(x.qty<=0)cart=cart.filter(y=>y.id!==id);save();renderCart()}function removeCart(id){cart=cart.filter(x=>x.id!==id);save();renderCart()}
-function checkout(){if(!cart.length)return alert("El carrito está vacío.");let total=cart.reduce((s,x)=>{let p=products.find(p=>p.id===x.id);return s+(p?p.precio*x.qty:0)},0);document.getElementById("modalBody").innerHTML=`<h2>Finalizar pedido</h2><div class="form"><input id="cname" placeholder="Nombre y apellido"><input id="ctel" placeholder="Teléfono"><button class="btn gold" onclick="sendOrder()">ENVIAR PEDIDO POR WHATSAPP · ${money(total)}</button></div>`;document.getElementById("modal").classList.add("open")}function sendOrder(){let name=document.getElementById("cname").value||"Cliente",lines=cart.map(x=>{let p=products.find(p=>p.id===x.id);return `• ${p.nombre} (${p.ml} ml) x${x.qty} — ${money(p.precio*x.qty)}`}).join("\n"),total=cart.reduce((s,x)=>{let p=products.find(p=>p.id===x.id);return s+(p?p.precio*x.qty:0)},0);window.open("https://wa.me/5491144293913?text="+encodeURIComponent(`Hola, soy ${name}. Quiero hacer este pedido:\n${lines}\n\nTotal: ${money(total)}`),"_blank")}
-function showContact(){closeMenu();document.getElementById("app").innerHTML=`<section><div class="eyebrow">Estamos para ayudarte</div><h2>Contacto</h2><p class="muted">WhatsApp: 11 4429-3913</p><p class="muted">Instagram: @AromaLParfum</p></section>`}function showAbout(){closeMenu();document.getElementById("app").innerHTML=`<section><div class="eyebrow">Nuestra historia</div><h2>Acerca de AromaLParfum</h2><p style="max-width:800px;line-height:2">AromaLParfum nace de nuestra pasión por el mundo de las fragancias y de la idea de acercar perfumes únicos a cada persona.</p><p style="max-width:800px;line-height:2">Creamos este espacio para descubrir fragancias árabes, argentinas, de diseñador y de nicho.</p></section>`}
-async function showAdmin(){closeMenu();let {data:{session}}=await supabaseClient.auth.getSession();if(!session){document.getElementById("app").innerHTML=`<section style="max-width:500px;margin:auto"><div class="eyebrow">Área privada</div><h2>Administración</h2><div class="form"><input id="adminEmail" type="email" placeholder="Email"><input id="adminPassword" type="password" placeholder="Contraseña"><button class="btn gold" onclick="adminLogin()">INGRESAR</button><button class="btn" onclick="recoverPassword()">RECUPERAR CONTRASEÑA</button></div><p id="loginMessage" class="muted"></p></section>`;return}if(!ADMIN_EMAILS.includes((session.user.email||"").toLowerCase())){await supabaseClient.auth.signOut();return render()}renderAdmin()}
-async function adminLogin(){let email=document.getElementById("adminEmail").value.trim(),password=document.getElementById("adminPassword").value,message=document.getElementById("loginMessage");let {data,error}=await supabaseClient.auth.signInWithPassword({email,password});if(error){message.textContent="❌ Email o contraseña incorrectos.";return}if(!ADMIN_EMAILS.includes((data.user.email||"").toLowerCase())){await supabaseClient.auth.signOut();message.textContent="❌ Sin permisos de administrador.";return}renderAdmin()}async function signOut(){await supabaseClient.auth.signOut();render()}async function recoverPassword(){let email=document.getElementById("adminEmail")?.value.trim();if(!email)return alert("Primero escribí tu email.");let {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:location.origin+location.pathname});if(error)return alert("No se pudo enviar el correo: "+error.message);alert("Revisá tu correo.")}
-function renderAdmin(){document.getElementById("app").innerHTML=`<section class="admin"><div class="admin-top"><div><div class="eyebrow">Gestión de productos</div><h2>Administración</h2><p class="muted">Agregá perfumes y seleccioná varias fotos sin tocar el código.</p></div><div class="admin-actions"><button class="btn gold" onclick="openNewProduct()">+ AGREGAR PERFUME</button><button class="btn" onclick="cargarProductos().then(()=>renderAdmin())">ACTUALIZAR</button><button class="btn danger" onclick="signOut()">CERRAR SESIÓN</button></div></div><div id="adminMessage" class="admin-message" style="display:none"></div><div id="newProductBox"></div><div class="admin-wrap"><table><thead><tr><th>Fotos</th><th>Producto</th><th>Precio</th><th>ML</th><th>Stock</th><th>Categoría</th><th>Género</th><th>Descripción</th><th>Salida</th><th>Corazón</th><th>Fondo</th><th>Familia</th><th>Guardar</th><th>Eliminar</th></tr></thead><tbody>${products.map(adminRow).join("")}</tbody></table></div></section>`}
-function adminRow(p){let a=getImages(p);return `<tr id="row-${p.id}"><td><div class="image-list">${a.map(u=>`<img class="image-mini" src="${esc(u)}">`).join("")||'<span class="muted">Sin fotos</span>'}</div><input class="admin-file" type="file" accept="image/*" multiple onchange="uploadProductImages(${p.id},this.files)"><small class="muted">Elegí varias fotos.</small></td><td><input id="name-${p.id}" value="${esc(p.nombre)}"></td><td><input id="price-${p.id}" type="number" value="${p.precio}"></td><td><input id="ml-${p.id}" type="number" value="${p.ml}"></td><td><input id="stock-${p.id}" type="number" value="${p.stock}"></td><td><select id="cat-${p.id}">${["Árabe","Argentina","Nicho","Diseñador","Otros"].map(x=>`<option ${p.categoria===x?"selected":""}>${x}</option>`).join("")}</select></td><td><select id="gender-${p.id}">${["Hombre","Mujer","Unisex"].map(x=>`<option ${p.genero===x?"selected":""}>${x}</option>`).join("")}</select></td><td><textarea id="desc-${p.id}">${esc(p.descripcion)}</textarea></td><td><input id="out-${p.id}" value="${esc(p.salida)}"></td><td><input id="heart-${p.id}" value="${esc(p.corazon)}"></td><td><input id="base-${p.id}" value="${esc(p.fondo)}"></td><td><input id="family-${p.id}" value="${esc(p.familia)}"></td><td><button class="btn" onclick="adminSave(${p.id})">GUARDAR</button></td><td><button class="btn danger" onclick="deleteProduct(${p.id})">ELIMINAR</button></td></tr>`}
-function openNewProduct(){document.getElementById("newProductBox").innerHTML=`<div class="new-product"><h3>Agregar perfume</h3><div class="form"><input id="nuevoNombre" placeholder="Nombre"><input id="nuevoPrecio" type="number" placeholder="Precio"><input id="nuevoMl" type="number" placeholder="ML"><input id="nuevoStock" type="number" value="1" placeholder="Stock"><select id="nuevoCategoria"><option>Árabe</option><option>Argentina</option><option>Nicho</option><option>Diseñador</option><option>Otros</option></select><select id="nuevoGenero"><option>Hombre</option><option>Mujer</option><option>Unisex</option></select><input id="nuevoFamilia" placeholder="Familia olfativa"><textarea id="nuevoDescripcion" placeholder="Descripción"></textarea><input id="nuevoSalida" placeholder="Notas de salida"><input id="nuevoCorazon" placeholder="Notas de corazón"><input id="nuevoFondo" placeholder="Notas de fondo"><label><b>Fotos del perfume — podés seleccionar varias</b><input id="nuevoImagenes" type="file" accept="image/*" multiple onchange="previewNewImages(this.files)" style="display:block;margin-top:8px"></label><div id="newImagePreview" class="image-preview-grid"></div><div style="display:flex;gap:10px"><button class="btn gold" onclick="crearProducto()">GUARDAR PERFUME</button><button class="btn" onclick="document.getElementById('newProductBox').innerHTML=''">CANCELAR</button></div></div></div>`}
-function previewNewImages(files){let b=document.getElementById("newImagePreview");b.innerHTML="";[...files].forEach(f=>{let i=document.createElement("img");i.className="image-preview";i.src=URL.createObjectURL(f);b.appendChild(i)})}
-async function uploadImageFile(file){if(!file.type.startsWith("image/"))throw Error("El archivo no es una imagen.");if(file.size>8*1024*1024)throw Error("Máximo 8 MB por imagen.");let ext=(file.name.split(".").pop()||"jpg").toLowerCase(),safe=file.name.replace(/\.[^/.]+$/,'').toLowerCase().replace(/[^a-z0-9áéíóúñ_-]+/gi,'-').slice(0,50),path=`productos/${Date.now()}-${Math.random().toString(36).slice(2,8)}-${safe}.${ext}`;let {error}=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,file,{upsert:false,contentType:file.type});if(error)throw error;return path}
-async function saveImageRelation(id,path,orden){let {data,error}=await supabaseClient.from("product_images").insert({product_id:id,image_url:path,orden}).select().single();if(error)throw error;let s=await supabaseClient.storage.from(STORAGE_BUCKET).createSignedUrl(path,2592000);return {id:data.id,path,url:s.data?.signedUrl||""}}
-async function uploadProductImages(id,files){if(!files?.length)return;try{showMessage(`Subiendo ${files.length} foto(s)...`);let start=(productImages[id]||[]).length;for(let i=0;i<files.length;i++){let path=await uploadImageFile(files[i]),r=await saveImageRelation(id,path,start+i);productImages[id]??=[];if(r.url)productImages[id].push(r)}await cargarProductos();renderAdmin();showMessage("✅ Fotos subidas correctamente.")}catch(e){console.error(e);showMessage("❌ Error subiendo fotos: "+e.message,"error")}}
-async function crearProducto(){let nombre=document.getElementById("nuevoNombre").value.trim(),precio=+document.getElementById("nuevoPrecio").value,ml=+document.getElementById("nuevoMl").value,stock=+document.getElementById("nuevoStock").value,categoria=document.getElementById("nuevoCategoria").value,genero=document.getElementById("nuevoGenero").value,familia=document.getElementById("nuevoFamilia").value.trim(),descripcion=document.getElementById("nuevoDescripcion").value.trim(),salida=document.getElementById("nuevoSalida").value.trim(),corazon=document.getElementById("nuevoCorazon").value.trim(),fondo=document.getElementById("nuevoFondo").value.trim(),files=document.getElementById("nuevoImagenes").files;if(!nombre||!precio||!ml)return alert("Completá nombre, precio y ML.");let {data:p,error}=await supabaseClient.from("products").insert({nombre,precio,ml,categoria,genero,stock,descripcion:descripcion||"Fragancia seleccionada de AromaLParfum.",salida:salida||"Consultar",corazon:corazon||"Consultar",fondo:fondo||"Consultar",familia:familia||"Fragancia",destacado:false,nuevo:true,vendido:false,imagen_url:null}).select().single();if(error)return alert("❌ "+error.message);try{for(let i=0;i<files.length;i++){let path=await uploadImageFile(files[i]);await saveImageRelation(p.id,path,i)}}catch(e){alert("El perfume se creó, pero una foto no pudo subirse: "+e.message)}await cargarProductos();renderAdmin();showMessage("✅ Perfume creado correctamente.")}
-async function adminSave(id){let payload={nombre:document.getElementById("name-"+id).value.trim(),precio:+document.getElementById("price-"+id).value,ml:+document.getElementById("ml-"+id).value,stock:+document.getElementById("stock-"+id).value,categoria:document.getElementById("cat-"+id).value,genero:document.getElementById("gender-"+id).value,descripcion:document.getElementById("desc-"+id).value.trim(),salida:document.getElementById("out-"+id).value.trim(),corazon:document.getElementById("heart-"+id).value.trim(),fondo:document.getElementById("base-"+id).value.trim(),familia:document.getElementById("family-"+id).value.trim()};let {error}=await supabaseClient.from("products").update(payload).eq("id",id);if(error)return showMessage("❌ "+error.message,"error");Object.assign(products.find(x=>x.id===id),payload);showMessage("✅ Producto guardado correctamente.")}
-async function deleteProduct(id){let p=products.find(x=>x.id===id);if(!p||!confirm(`¿Eliminar ${p.nombre}?`))return;let {error}=await supabaseClient.from("products").delete().eq("id",id);if(error)return showMessage("❌ "+error.message,"error");products=products.filter(x=>x.id!==id);delete productImages[id];cart=cart.filter(x=>x.id!==id);fav=fav.filter(x=>x!==id);save();renderAdmin();showMessage("✅ Producto eliminado.")}
-function openMenu(){document.getElementById("menu").classList.add("open")}function closeMenu(){document.getElementById("menu").classList.remove("open")}function toggleSub(){document.getElementById("submenu").classList.toggle("open")}function closeModal(){document.getElementById("modal").classList.remove("open")}function goHome(){closeMenu();render();scrollTo(0,0)}
-updateCounts();cargarProductos();supabaseClient.auth.onAuthStateChange((event,session)=>console.log("Auth:",event,session?.user?.email||"sin sesión"));
-</script></body></html>
+
+/* =========================
+   SUPABASE
+========================= */
+const SUPABASE_URL = "https://klppiznssciyveufmoff.supabase.co";
+const SUPABASE_KEY = "sb_publishable_lMSak0Ze-NYWwq3SCpqEaA_7UrVFU3T";
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* El email que puede entrar al panel de administración */
+const ADMIN_EMAILS = ["defanissantiago@gmail.com"];
+
+/* Nombre del bucket de Storage que ya estás usando */
+const STORAGE_BUCKET = "perfumes";
+const PRODUCT_IMAGES_TABLE = "product_images";
+const WHATSAPP_NUMBER = "5491144293913";
+
+/* =========================
+   ESTADO
+========================= */
+let products = [];
+let productImages = {};
+let productColumns = new Set();
+let currentGalleryImages = [];
+let cart = JSON.parse(localStorage.getItem("alp_cart") || "[]");
+let fav = JSON.parse(localStorage.getItem("alp_fav") || "[]");
+let filter = "Todos";
+let sort = "default";
+let search = "";
+
+/* =========================
+   UTILIDADES
+========================= */
+const money = n => new Intl.NumberFormat("es-AR", {
+  style:"currency",
+  currency:"ARS",
+  maximumFractionDigits:0
+}).format(Number(n) || 0);
+
+function esc(value){
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function save(){
+  localStorage.setItem("alp_cart", JSON.stringify(cart));
+  localStorage.setItem("alp_fav", JSON.stringify(fav));
+  updateCounts();
+}
+
+function updateCounts(){
+  const cartCount = document.getElementById("cartCount");
+  const favCount = document.getElementById("favCount");
+  if(cartCount) cartCount.textContent = cart.reduce((a,x)=>a + x.qty,0);
+  if(favCount) favCount.textContent = fav.length;
+}
+
+function showMessage(text,type="ok"){
+  const el = document.getElementById("adminMessage");
+  if(!el) return;
+  el.className = "admin-message " + type;
+  el.textContent = text;
+}
+
+
+/* =========================
+   COMPATIBILIDAD DE COLUMNAS / MULTIFOTOS
+========================= */
+function supportsColumn(name){
+  return productColumns.has(name);
+}
+
+function filterProductPayload(payload){
+  const clean={};
+  for(const [key,value] of Object.entries(payload)){
+    if(productColumns.has(key)) clean[key]=value;
+  }
+  return clean;
+}
+
+function extractStoragePath(value){
+  if(!value) return "";
+  if(!/^https?:\/\//i.test(value)) return value.replace(/^perfumes\//,"");
+  try{
+    const url=new URL(value);
+    const signedMarker=`/storage/v1/object/sign/${STORAGE_BUCKET}/`;
+    const publicMarker=`/storage/v1/object/public/${STORAGE_BUCKET}/`;
+    if(url.pathname.includes(signedMarker)) return decodeURIComponent(url.pathname.split(signedMarker)[1]||"");
+    if(url.pathname.includes(publicMarker)) return decodeURIComponent(url.pathname.split(publicMarker)[1]||"");
+  }catch(e){}
+  return "";
+}
+
+async function createLongSignedUrl(path){
+  if(!path) return "";
+  const {data,error}=await supabaseClient.storage
+    .from(STORAGE_BUCKET)
+    .createSignedUrl(path,60*60*24*365*5);
+  if(error){
+    console.warn("No se pudo crear URL firmada:",error);
+    return "";
+  }
+  return data?.signedUrl||"";
+}
+
+async function cargarImagenes(){
+  productImages={};
+  const {data,error}=await supabaseClient
+    .from(PRODUCT_IMAGES_TABLE)
+    .select("*")
+    .order("orden",{ascending:true})
+    .order("id",{ascending:true});
+
+  if(error){
+    console.warn("No se pudo cargar product_images:",error.message);
+    return;
+  }
+
+  for(const relation of data||[]){
+    if(!productImages[relation.product_id]) productImages[relation.product_id]=[];
+    const raw=relation.image_url||"";
+    let url=raw;
+    let path=extractStoragePath(raw);
+
+    if(raw && !/^https?:\/\//i.test(raw)){
+      const signed=await createLongSignedUrl(raw);
+      if(signed) url=signed;
+    }
+
+    if(url){
+      productImages[relation.product_id].push({
+        id:relation.id,
+        url,
+        path:path||extractStoragePath(url),
+        orden:Number(relation.orden||0)
+      });
+    }
+  }
+}
+
+function getImages(product){
+  const related=productImages[product.id]||[];
+  if(related.length) return related.map(x=>x.url).filter(Boolean);
+  return product.img?[product.img]:[];
+}
+
+function getImageObjects(product){
+  return productImages[product.id]||[];
+}
+
+function getFirstImage(product){
+  return getImages(product)[0]||product.img||"";
+}
+
+/* =========================
+   CARGAR PRODUCTOS
+========================= */
+async function cargarProductos(shouldRender=true){
+  const {data,error}=await supabaseClient
+    .from("products")
+    .select("*")
+    .order("id",{ascending:true});
+
+  if(error){
+    console.error("Error cargando productos:",error);
+    document.getElementById("app").innerHTML =
+      '<section><div class="empty"><h2>No se pudieron cargar los perfumes</h2><p>Revisá la conexión con Supabase y las políticas RLS.</p></div></section>';
+    return;
+  }
+
+  productColumns=new Set(Object.keys((data||[])[0]||{}));
+
+  products=(data||[]).map(p=>({
+    id:p.id,
+    nombre:p.nombre||"",
+    precio:Number(p.precio)||0,
+    ml:Number(p.ml)||0,
+    categoria:p.categoria||"Otros",
+    genero:p.genero||"Unisex",
+    stock:Number(p.stock)||0,
+    img:p.imagen_url||"",
+    imagen_url:p.imagen_url||"",
+    descripcion:p.descripcion||"Fragancia seleccionada de AromaLParfum.",
+    salida:p.salida||"Consultar",
+    corazon:p.corazon||"Consultar",
+    fondo:p.fondo||"Consultar",
+    familia:p.familia||"Fragancia",
+    destacado:Boolean(p.destacado),
+    nuevo:Boolean(p.nuevo),
+    vendido:Boolean(p.vendido)
+  }));
+
+  await cargarImagenes();
+
+  products.forEach(p=>{
+    const images=getImages(p);
+    if(images.length) p.img=images[0];
+  });
+
+  console.log("Productos cargados:",products);
+  if(shouldRender) render();
+}
+
+/* =========================
+   NAVEGACIÓN
+========================= */
+function render(){
+  document.getElementById("app").innerHTML = home();
+  updateCounts();
+}
+
+function home(){
+  const featured = products.filter(p=>p.destacado).slice(0,8);
+  const featuredHtml = featured.length
+    ? featured.map(card).join("")
+    : products.slice(0,4).map(card).join("");
+
+  return `
+  <div class="hero">
+    <div>
+      <div class="eyebrow">AromaLParfum</div>
+      <h1>Encontrá tu<br>próxima fragancia.</h1>
+      <p>Descubrí perfumes árabes, argentinos, de diseñador y de nicho seleccionados para distintos estilos y momentos.</p>
+      <button class="btn light" onclick="catalog('Todos')">VER PERFUMES</button>
+    </div>
+  </div>
+
+  <section>
+    <div class="section-head">
+      <div><div class="eyebrow">Explorá</div><h2>Categorías</h2></div>
+    </div>
+    <div class="cats">
+      <button class="cat" onclick="catalog('Hombre')"><strong>Hombre</strong><span>Fragancias masculinas</span></button>
+      <button class="cat" onclick="catalog('Mujer')"><strong>Mujer</strong><span>Fragancias femeninas</span></button>
+      <button class="cat" onclick="catalog('Árabe')"><strong>Árabes</strong><span>Intensas y envolventes</span></button>
+      <button class="cat" onclick="catalog('Nicho')"><strong>Nicho</strong><span>Composiciones especiales</span></button>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div><div class="eyebrow">Selección</div><h2>Destacados</h2></div>
+      <button class="btn" onclick="catalog('Todos')">VER TODO</button>
+    </div>
+    <div class="grid">${featuredHtml}</div>
+  </section>
+
+  <div class="banner">
+    <div class="banner-inner">
+      <div class="eyebrow">Tu identidad, tu aroma</div>
+      <h2>Un perfume es más que una fragancia.</h2>
+      <p>Es una forma de expresión, un recuerdo y una parte de tu identidad.</p>
+      <button class="btn gold" onclick="showAbout()">CONOCÉ AROMALPARFUM</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div><h3>AromaLParfum</h3><p>Perfumería y fragancias seleccionadas.</p></div>
+      <div><h3>Contacto</h3><p>WhatsApp e Instagram.</p></div>
+      <div><h3>Información</h3><p>Consultá disponibilidad y medios de entrega.</p></div>
+    </div>
+  </footer>`;
+}
+
+function catalog(x="Todos"){
+  filter = x;
+  search = "";
+  closeMenu();
+  document.getElementById("app").innerHTML = renderCatalog();
+  window.scrollTo(0,0);
+}
+
+function renderCatalog(){
+  let a = products.filter(p =>
+    (filter==="Todos" || p.categoria===filter || p.genero===filter) &&
+    (!search || p.nombre.toLowerCase().includes(search.toLowerCase()))
+  );
+
+  if(sort==="low") a.sort((x,y)=>x.precio-y.precio);
+  if(sort==="high") a.sort((x,y)=>y.precio-x.precio);
+  if(sort==="name") a.sort((x,y)=>x.nombre.localeCompare(y.nombre));
+
+  return `
+  <section>
+    <div class="section-head">
+      <div><div class="eyebrow">Colección</div><h2>Perfumes</h2></div>
+      <span class="muted">${a.length} productos</span>
+    </div>
+
+    <div class="chips">
+      ${["Todos","Hombre","Mujer","Árabe","Argentina","Nicho","Diseñador"].map(x =>
+        `<button class="chip ${filter===x?"active":""}" onclick="catalog('${x}')">${x}</button>`
+      ).join("")}
+    </div>
+
+    <div class="toolbar">
+      <input class="search" placeholder="Buscar por perfume o marca..." value="${esc(search)}"
+        oninput="search=this.value;document.getElementById('app').innerHTML=renderCatalog()">
+      <select class="select" onchange="sort=this.value;document.getElementById('app').innerHTML=renderCatalog()">
+        <option value="default">Ordenar</option>
+        <option value="low" ${sort==="low"?"selected":""}>Precio menor a mayor</option>
+        <option value="high" ${sort==="high"?"selected":""}>Precio mayor a menor</option>
+        <option value="name" ${sort==="name"?"selected":""}>Nombre A-Z</option>
+      </select>
+    </div>
+
+    <div class="grid">
+      ${a.length ? a.map(card).join("") : `<div class="empty" style="grid-column:1/-1">No encontramos perfumes con esa búsqueda.</div>`}
+    </div>
+  </section>`;
+}
+
+/* =========================
+   TARJETAS
+========================= */
+function card(p){
+  const favorite = fav.includes(p.id);
+  const mainImage = getFirstImage(p);
+  const image = mainImage
+    ? `<img src="${esc(mainImage)}" alt="${esc(p.nombre)}" loading="lazy">`
+    : `<div class="placeholder">${esc(p.nombre)}<br><small>${p.ml} ml</small></div>`;
+
+  return `
+  <article class="product">
+    <div class="pic">
+      ${image}
+      <button class="heart ${favorite?"active":""}" onclick="toggleFav(${p.id})">${favorite?"♥":"♡"}</button>
+    </div>
+    <div class="info">
+      <div class="brandline">${esc(p.categoria)} · ${esc(p.genero)}</div>
+      <h3>${esc(p.nombre)}</h3>
+      <div class="meta">${p.ml} ml</div>
+      <div class="price">${money(p.precio)}</div>
+      <div class="stock">${p.stock > 0 ? "● Disponible" : "● Sin stock"}</div>
+      <button class="btn" onclick="productDetail(${p.id})">VER PERFUME</button>
+    </div>
+  </article>`;
+}
+
+/* =========================
+   DETALLE / FAVORITOS
+========================= */
+function productDetail(id){
+  const p=products.find(x=>x.id===id);
+  if(!p) return;
+
+  currentGalleryImages=getImages(p);
+  const main=currentGalleryImages[0]||"";
+
+  document.getElementById("app").innerHTML = `
+  <div class="detail">
+    <button class="btn" onclick="catalog(filter)">← VOLVER</button>
+    <div class="detail-grid" style="margin-top:25px">
+      <div>
+        <div class="gallery-main" id="mainGallery">
+          ${main ? `<img src="${esc(main)}" alt="${esc(p.nombre)}">`
+                  : `<div class="placeholder">${esc(p.nombre)}<br>${p.ml} ml</div>`}
+        </div>
+        ${currentGalleryImages.length>1 ? `
+        <div class="thumbs" id="galleryThumbs">
+          ${currentGalleryImages.map((url,index)=>`
+            <button class="thumb ${index===0?"active":""}" onclick="changeGalleryImage(${index})">
+              <img src="${esc(url)}" alt="${esc(p.nombre)} foto ${index+1}">
+            </button>`).join("")}
+        </div>` : ""}
+      </div>
+
+      <div>
+        <div class="eyebrow">${esc(p.categoria)} · ${esc(p.genero)}</div>
+        <h1>${esc(p.nombre)}</h1>
+        <div class="price" style="font-size:28px">${money(p.precio)}</div>
+        <p class="muted">${p.ml} ml · ${p.stock>0?"● Disponible":"● Sin stock"}</p>
+        <p style="line-height:1.7">${esc(p.descripcion)}</p>
+
+        <button class="btn gold" onclick="addCart(${p.id})" ${p.stock<=0?"disabled":""}>AGREGAR AL CARRITO</button>
+        <button class="btn" style="margin-left:8px" onclick="toggleFav(${p.id});productDetail(${p.id})">${fav.includes(p.id)?"♥ EN FAVORITOS":"♡ FAVORITOS"}</button>
+
+        <div class="notes">
+          <div class="note"><b>Salida</b>${esc(p.salida)}</div>
+          <div class="note"><b>Corazón</b>${esc(p.corazon)}</div>
+          <div class="note"><b>Fondo</b>${esc(p.fondo)}</div>
+        </div>
+
+        <div class="info-list">
+          <div><b>Familia olfativa</b>${esc(p.familia)}</div>
+          <div><b>Tamaño</b>${p.ml} ml</div>
+          <div><b>Stock</b>${p.stock}</div>
+          <div><b>Duración</b>Consultar</div>
+          <div><b>Proyección</b>Consultar</div>
+          <div><b>Uso</b>Diario / salidas / ocasiones especiales</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+  window.scrollTo(0,0);
+}
+
+function changeGalleryImage(index){
+  const url=currentGalleryImages[index];
+  if(!url) return;
+  const gallery=document.getElementById("mainGallery");
+  if(gallery) gallery.innerHTML=`<img src="${esc(url)}" alt="Imagen del perfume">`;
+  document.querySelectorAll("#galleryThumbs .thumb").forEach((btn,i)=>btn.classList.toggle("active",i===index));
+}
+
+function toggleFav(id){
+  fav.includes(id) ? fav=fav.filter(x=>x!==id) : fav.push(id);
+  save();
+  if(document.getElementById("app").innerHTML.includes("Destacados")) render();
+  else if(document.getElementById("app").innerHTML.includes("Favoritos")) showFavorites();
+  else catalog(filter);
+}
+
+function showFavorites(){
+  closeMenu();
+  const a = products.filter(p=>fav.includes(p.id));
+  document.getElementById("app").innerHTML = `
+  <section>
+    <div class="eyebrow">Guardados</div>
+    <h2>Favoritos</h2>
+    ${a.length
+      ? `<div class="grid">${a.map(card).join("")}</div>`
+      : `<div class="empty"><h3>Todavía no tienes perfumes favoritos.</h3><button class="btn" onclick="catalog('Todos')">DESCUBRIR PERFUMES</button></div>`}
+  </section>`;
+}
+
+/* =========================
+   CARRITO
+========================= */
+function addCart(id){
+  const p=products.find(x=>x.id===id);
+  if(!p || p.stock<=0) return alert("Este perfume no tiene stock disponible.");
+  const x=cart.find(x=>x.id===id);
+  if(x){
+    if(x.qty >= p.stock) return alert("No hay más stock disponible.");
+    x.qty++;
+  }else{
+    cart.push({id,qty:1});
+  }
+  save();
+  openCart();
+}
+
+function openCart(){
+  document.getElementById("cart").classList.add("open");
+  renderCart();
+}
+
+function closeCart(){
+  document.getElementById("cart").classList.remove("open");
+}
+
+function renderCart(){
+  const box=document.getElementById("cartItems");
+  if(!box) return;
+
+  if(!cart.length){
+    box.innerHTML='<div class="empty">Tu carrito está vacío.</div>';
+    document.getElementById("cartTotal").innerHTML="";
+    return;
+  }
+
+  let total=0;
+
+  box.innerHTML=cart.map(x=>{
+    const p=products.find(p=>p.id===x.id);
+    if(!p) return "";
+    const sub=p.precio*x.qty;
+    total+=sub;
+
+    return `
+    <div class="cart-item">
+      <div class="cart-thumb">
+        ${p.img ? `<img src="${esc(p.img)}" alt="">` : esc(p.nombre)}
+      </div>
+      <div>
+        <b>${esc(p.nombre)}</b>
+        <div class="muted">${money(p.precio)}</div>
+        <div class="qty">
+          <button onclick="changeQty(${p.id},-1)">−</button>
+          ${x.qty}
+          <button onclick="changeQty(${p.id},1)">+</button>
+          <button onclick="removeCart(${p.id})" style="border:0;background:none">🗑</button>
+        </div>
+      </div>
+      <b>${money(sub)}</b>
+    </div>`;
+  }).join("");
+
+  document.getElementById("cartTotal").innerHTML=`<div class="cart-total">Total: ${money(total)}</div>`;
+}
+
+function changeQty(id,n){
+  const x=cart.find(x=>x.id===id);
+  const p=products.find(p=>p.id===id);
+  if(!x || !p) return;
+
+  if(n>0 && x.qty>=p.stock) return alert("No hay más stock disponible.");
+
+  x.qty+=n;
+  if(x.qty<=0) cart=cart.filter(y=>y.id!==id);
+  save();
+  renderCart();
+}
+
+function removeCart(id){
+  cart=cart.filter(x=>x.id!==id);
+  save();
+  renderCart();
+}
+
+function checkout(){
+  if(!cart.length) return alert("El carrito está vacío.");
+
+  const total=cart.reduce((s,x)=>{
+    const p=products.find(p=>p.id===x.id);
+    return s+(p?p.precio*x.qty:0);
+  },0);
+
+  const orderSummary=cart.map(x=>{
+    const p=products.find(p=>p.id===x.id);
+    if(!p) return "";
+    return `<div class="summary-row"><span>${esc(p.nombre)} (${p.ml} ml) ×${x.qty}</span><b>${money(p.precio*x.qty)}</b></div>`;
+  }).join("");
+
+  document.getElementById("modalBody").innerHTML=`
+    <h2>Finalizar pedido</h2>
+    <p class="muted">No necesitás crear una cuenta. Solo completá los datos necesarios para preparar tu pedido.</p>
+
+    <div class="checkout-box">
+      <h3>Tu pedido</h3>
+      ${orderSummary}
+      <div class="summary-total"><span>Total</span><span>${money(total)}</span></div>
+    </div>
+
+    <div class="checkout-box">
+      <h3>Datos del cliente</h3>
+      <div class="form">
+        <div class="checkout-grid">
+          <input id="cname" placeholder="Nombre y apellido" autocomplete="name">
+          <input id="ctel" type="tel" placeholder="Número de teléfono" autocomplete="tel">
+        </div>
+        <input id="cemail" type="email" placeholder="Correo electrónico" autocomplete="email">
+      </div>
+    </div>
+
+    <div class="checkout-box">
+      <h3>Método de pago</h3>
+      <div class="radio-row">
+        <label class="radio-card"><input type="radio" name="paymentMethod" value="Transferencia"> Transferencia</label>
+        <label class="radio-card"><input type="radio" name="paymentMethod" value="Mercado Pago"> Mercado Pago</label>
+        <label class="radio-card"><input type="radio" name="paymentMethod" value="Efectivo"> Efectivo</label>
+        <label class="radio-card"><input type="radio" name="paymentMethod" value="Otro"> Otro</label>
+      </div>
+    </div>
+
+    <div class="checkout-box">
+      <h3>Entrega</h3>
+      <div class="radio-row">
+        <label class="radio-card"><input type="radio" name="shippingMethod" value="Sí" onchange="toggleShippingFields(true)"> Con envío</label>
+        <label class="radio-card"><input type="radio" name="shippingMethod" value="No" onchange="toggleShippingFields(false)" checked> Retiro / encuentro</label>
+      </div>
+
+      <div id="shippingFields" class="form hidden" style="margin-top:14px">
+        <input id="caddress" placeholder="Dirección / zona de envío">
+        <div class="checkout-grid">
+          <input id="ccity" placeholder="Ciudad / localidad">
+          <input id="cprov" placeholder="Provincia">
+        </div>
+        <input id="cp" placeholder="Código postal (opcional)">
+      </div>
+    </div>
+
+    <button class="btn gold" style="width:100%" onclick="sendOrder()">ENVIAR PEDIDO POR WHATSAPP · ${money(total)}</button>`;
+  document.getElementById("modal").classList.add("open");
+}
+
+function toggleShippingFields(show){
+  const box=document.getElementById("shippingFields");
+  if(box) box.classList.toggle("hidden",!show);
+}
+
+function selectedRadio(name){
+  return document.querySelector(`input[name="${name}"]:checked`)?.value||"";
+}
+
+function sendOrder(){
+  const name=document.getElementById("cname")?.value.trim()||"";
+  const tel=document.getElementById("ctel")?.value.trim()||"";
+  const email=document.getElementById("cemail")?.value.trim()||"";
+  const payment=selectedRadio("paymentMethod");
+  const shipping=selectedRadio("shippingMethod")||"No";
+
+  if(!name) return alert("Completá tu nombre y apellido.");
+  if(!tel) return alert("Completá tu número de teléfono.");
+  if(!email) return alert("Completá tu correo electrónico.");
+  if(!payment) return alert("Seleccioná un método de pago.");
+
+  let address="",city="",prov="",postal="";
+  if(shipping==="Sí"){
+    address=document.getElementById("caddress")?.value.trim()||"";
+    city=document.getElementById("ccity")?.value.trim()||"";
+    prov=document.getElementById("cprov")?.value.trim()||"";
+    postal=document.getElementById("cp")?.value.trim()||"";
+    if(!address||!city||!prov) return alert("Completá dirección, ciudad/localidad y provincia para el envío.");
+  }
+
+  const lines=cart.map(x=>{
+    const p=products.find(p=>p.id===x.id);
+    return p ? `• ${p.nombre} (${p.ml} ml) x${x.qty} — ${money(p.precio*x.qty)}` : "";
+  }).filter(Boolean).join("\n");
+
+  const total=cart.reduce((s,x)=>{
+    const p=products.find(p=>p.id===x.id);
+    return s+(p?p.precio*x.qty:0);
+  },0);
+
+  let msg=`Hola AromaLParfum, quiero hacer este pedido:\n\n🛍️ PRODUCTOS\n${lines}\n\n💰 TOTAL: ${money(total)}\n\n👤 DATOS DEL CLIENTE\nNombre: ${name}\nTeléfono: ${tel}\nCorreo: ${email}\nMétodo de pago: ${payment}\n¿Con envío?: ${shipping}`;
+
+  if(shipping==="Sí"){
+    msg+=`\nDirección / zona: ${address}\nCiudad / localidad: ${city}\nProvincia: ${prov}`;
+    if(postal) msg+=`\nCódigo postal: ${postal}`;
+  }
+
+  window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`,"_blank");
+}
+
+/* =========================
+   MENÚ / CONTACTO / ABOUT
+========================= */
+function openMenu(){document.getElementById("menu").classList.add("open")}
+function closeMenu(){document.getElementById("menu").classList.remove("open")}
+function toggleSub(){document.getElementById("submenu").classList.toggle("open")}
+function closeModal(){document.getElementById("modal").classList.remove("open")}
+function goHome(){closeMenu();render();window.scrollTo(0,0)}
+
+function showContact(){
+  closeMenu();
+  document.getElementById("app").innerHTML=`
+  <section>
+    <div class="eyebrow">Estamos para ayudarte</div>
+    <h2>Contacto</h2>
+    <div class="detail-grid">
+      <div>
+        <h3>WhatsApp</h3><p class="muted">+54 9 11 4429-3913</p>
+        <h3>Instagram</h3><p class="muted">@AromaLParfum</p>
+        <h3>Horarios</h3><p class="muted">Consultá por WhatsApp.</p>
+      </div>
+      <form class="form" onsubmit="event.preventDefault();alert('Mensaje preparado.')">
+        <input placeholder="Nombre">
+        <input type="email" placeholder="Email">
+        <textarea placeholder="Mensaje"></textarea>
+        <button class="btn gold">ENVIAR MENSAJE</button>
+      </form>
+    </div>
+  </section>`;
+}
+
+function showAbout(){
+  closeMenu();
+  document.getElementById("app").innerHTML=`
+  <section>
+    <div class="eyebrow">Nuestra historia</div>
+    <h2>Acerca de AromaLParfum</h2>
+    <p style="max-width:800px;line-height:2">AromaLParfum nace de nuestra pasión por el mundo de las fragancias y de la idea de acercar perfumes únicos a cada persona.</p>
+    <p style="max-width:800px;line-height:2">Creamos este espacio para que puedas descubrir fragancias árabes, argentinas, de diseñador y de nicho, seleccionadas para diferentes estilos, momentos y personalidades.</p>
+    <p style="max-width:800px;line-height:2">Para nosotros, un perfume no es simplemente una fragancia: es una forma de expresión, un recuerdo y una parte de nuestra identidad.</p>
+  </section>`;
+}
+
+/* =========================
+   ADMIN AUTH
+========================= */
+async function getCurrentUser(){
+  const {data,error}=await supabaseClient.auth.getUser();
+  if(error) return null;
+  return data.user || null;
+}
+
+async function showAdmin(){
+  closeMenu();
+
+  const user=await getCurrentUser();
+
+  if(!user){
+    showAdminLogin();
+    return;
+  }
+
+  if(!ADMIN_EMAILS.includes((user.email||"").toLowerCase())){
+    document.getElementById("app").innerHTML=`
+      <section class="login-box">
+        <h2>Sin autorización</h2>
+        <p class="muted">Tu usuario inició sesión, pero no tiene permisos de administrador.</p>
+        <button class="btn" onclick="signOut()">CERRAR SESIÓN</button>
+      </section>`;
+    return;
+  }
+
+  renderAdmin();
+}
+
+function showAdminLogin(){
+  document.getElementById("app").innerHTML=`
+  <section>
+    <div class="login-box">
+      <div class="eyebrow">Área privada</div>
+      <h2>Administración</h2>
+      <p class="muted">Ingresá con el usuario administrador de Supabase.</p>
+      <div id="loginMessage" class="admin-message hidden"></div>
+      <form class="form" onsubmit="adminLogin(event)">
+        <input id="adminEmail" type="email" placeholder="Email" required>
+        <input id="adminPassword" type="password" placeholder="Contraseña" required>
+        <button class="btn gold" type="submit">INGRESAR</button>
+      </form>
+      <button class="btn" style="margin-top:10px;width:100%" onclick="recoverPassword()">RECUPERAR CONTRASEÑA</button>
+    </div>
+  </section>`;
+}
+
+async function adminLogin(event){
+  event.preventDefault();
+
+  const email=document.getElementById("adminEmail").value.trim();
+  const password=document.getElementById("adminPassword").value;
+
+  const {data,error}=await supabaseClient.auth.signInWithPassword({email,password});
+
+  if(error){
+    console.error("Error de login:",error);
+    const box=document.getElementById("loginMessage");
+    box.className="admin-message error";
+    box.textContent="❌ Email o contraseña incorrectos.";
+    return;
+  }
+
+  if(!ADMIN_EMAILS.includes((data.user.email||"").toLowerCase())){
+    await supabaseClient.auth.signOut();
+    const box=document.getElementById("loginMessage");
+    box.className="admin-message error";
+    box.textContent="❌ Este usuario no tiene permisos de administrador.";
+    return;
+  }
+
+  renderAdmin();
+}
+
+async function signOut(){
+  await supabaseClient.auth.signOut();
+  render();
+}
+
+async function recoverPassword(){
+  const email=document.getElementById("adminEmail")?.value.trim();
+  if(!email) return alert("Primero escribí tu email.");
+
+  const redirect=window.location.origin + window.location.pathname;
+
+  const {error}=await supabaseClient.auth.resetPasswordForEmail(email,{redirectTo:redirect});
+
+  if(error){
+    console.error("Error recuperación:",error);
+    alert("No se pudo enviar el correo. Si aparece 'rate limit exceeded', esperá un tiempo antes de volver a solicitarlo.");
+    return;
+  }
+
+  alert("Si el email existe, Supabase enviará el correo de recuperación.");
+}
+
+/* =========================
+   PANEL ADMIN
+   - CREAR
+   - EDITAR
+   - ELIMINAR
+   - SUBIR IMAGEN
+========================= */
+function renderAdmin(){
+  closeCart();
+
+  const totalStock=products.reduce((s,p)=>s+p.stock,0);
+  const noStock=products.filter(p=>p.stock<=0).length;
+  const withPhotos=products.filter(p=>getImages(p).length>0).length;
+
+  document.getElementById("app").innerHTML=`
+  <section class="admin">
+    <div class="admin-top">
+      <div>
+        <div class="eyebrow">Gestión de productos</div>
+        <h2>Administración</h2>
+        <div class="admin-badge">● Sesión de administrador activa</div>
+      </div>
+      <div class="admin-actions">
+        <button class="btn gold" onclick="openNewProduct()">+ AGREGAR PERFUME</button>
+        <button class="btn" onclick="refreshAdmin()">ACTUALIZAR</button>
+        <button class="btn" onclick="goHome()">VER TIENDA</button>
+        <button class="btn danger" onclick="signOut()">CERRAR SESIÓN</button>
+      </div>
+    </div>
+
+    <div class="admin-stats">
+      <div class="admin-stat"><span>Productos</span><strong>${products.length}</strong></div>
+      <div class="admin-stat"><span>Stock total</span><strong>${totalStock}</strong></div>
+      <div class="admin-stat"><span>Sin stock</span><strong>${noStock}</strong></div>
+      <div class="admin-stat"><span>Con fotos</span><strong>${withPhotos}</strong></div>
+    </div>
+
+    <div class="admin-help">
+      Desde acá podés agregar perfumes nuevos, cambiar precios y stock, editar descripción/notas, subir varias fotos y eliminar productos sin tocar el código. Si una opción aparece deshabilitada es porque esa columna todavía no existe en tu tabla <b>products</b>.
+    </div>
+
+    <div id="adminMessage" class="admin-message hidden"></div>
+
+    <div class="admin-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Fotos</th>
+            <th>Producto</th>
+            <th>Precio</th>
+            <th>ML</th>
+            <th>Stock</th>
+            <th>Categoría</th>
+            <th>Género</th>
+            <th>Descripción</th>
+            <th>Salida</th>
+            <th>Corazón</th>
+            <th>Fondo</th>
+            <th>Familia</th>
+            <th>Estado</th>
+            <th>Opciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${products.map(adminRow).join("")}
+        </tbody>
+      </table>
+    </div>
+  </section>`;
+}
+
+async function refreshAdmin(){
+  showMessage("Actualizando productos...");
+  await cargarProductos(false);
+  renderAdmin();
+  showMessage("✅ Productos actualizados.","ok");
+}
+
+function adminRow(p){
+  const images=getImageObjects(p);
+  const fallback=!images.length && p.img ? `<div class="admin-photo-item"><img src="${esc(p.img)}" alt="${esc(p.nombre)}"><span class="admin-photo-main">principal</span></div>` : "";
+  const photoHtml=images.map((image,index)=>`
+    <div class="admin-photo-item">
+      <img src="${esc(image.url)}" alt="${esc(p.nombre)} foto ${index+1}">
+      ${index===0?'<span class="admin-photo-main">principal</span>':''}
+      <button class="admin-photo-remove" title="Eliminar foto" onclick='deleteProductImage(${image.id},${p.id},${JSON.stringify(image.path||"")})'>×</button>
+    </div>`).join("");
+
+  return `
+  <tr id="row-${p.id}">
+    <td>
+      <div class="admin-photo-grid">${photoHtml||fallback||'<span class="muted">Sin fotos</span>'}</div>
+      <input class="admin-file" id="file-${p.id}" type="file" accept="image/*" multiple onchange="uploadProductImages(${p.id},this.files)">
+      <div class="upload-progress" id="upload-status-${p.id}">Podés seleccionar varias fotos.</div>
+    </td>
+
+    <td><input id="name-${p.id}" value="${esc(p.nombre)}"></td>
+    <td><input id="price-${p.id}" type="number" min="0" value="${p.precio}"></td>
+    <td><input id="ml-${p.id}" type="number" min="1" value="${p.ml}"></td>
+    <td><input id="stock-${p.id}" type="number" min="0" value="${p.stock}"></td>
+
+    <td><select id="cat-${p.id}">${["Árabe","Argentina","Nicho","Diseñador","Otros"].map(x=>`<option ${p.categoria===x?"selected":""}>${x}</option>`).join("")}</select></td>
+    <td><select id="gender-${p.id}">${["Hombre","Mujer","Unisex"].map(x=>`<option ${p.genero===x?"selected":""}>${x}</option>`).join("")}</select></td>
+
+    <td><textarea id="desc-${p.id}">${esc(p.descripcion)}</textarea></td>
+    <td><input id="out-${p.id}" value="${esc(p.salida)}"></td>
+    <td><input id="heart-${p.id}" value="${esc(p.corazon)}"></td>
+    <td><input id="base-${p.id}" value="${esc(p.fondo)}"></td>
+    <td><input id="family-${p.id}" value="${esc(p.familia)}"></td>
+
+    <td>
+      <span class="status-pill ${p.stock>0?'ok':'out'}">${p.stock>0?'Disponible':'Sin stock'}</span>
+      <div class="admin-checks" style="margin-top:8px">
+        <label><input id="featured-${p.id}" type="checkbox" ${p.destacado?'checked':''} ${supportsColumn('destacado')?'':'disabled'}> Destacado</label>
+        <label><input id="new-${p.id}" type="checkbox" ${p.nuevo?'checked':''} ${supportsColumn('nuevo')?'':'disabled'}> Nuevo</label>
+      </div>
+    </td>
+
+    <td>
+      <button class="btn gold" onclick="adminSave(${p.id})">GUARDAR</button>
+      <button class="btn danger" style="margin-top:6px" onclick="deleteProduct(${p.id})">ELIMINAR</button>
+    </td>
+  </tr>`;
+}
+
+function openNewProduct(){
+  document.getElementById("modalBody").innerHTML=`
+  <h2>Agregar perfume</h2>
+  <p class="muted">Completá los datos. Podés seleccionar varias fotos y el perfume se guardará directamente en Supabase.</p>
+
+  <div id="newProductMessage" class="admin-message hidden"></div>
+
+  <form class="form" onsubmit="createProduct(event)">
+    <div class="checkout-grid">
+      <input id="newName" placeholder="Nombre del perfume" required>
+      <input id="newPrice" type="number" min="0" placeholder="Precio" required>
+      <input id="newMl" type="number" min="1" placeholder="ML" required>
+      <input id="newStock" type="number" min="0" placeholder="Stock" value="1">
+    </div>
+
+    <div class="checkout-grid">
+      <select id="newCategory"><option>Árabe</option><option>Argentina</option><option>Nicho</option><option>Diseñador</option><option>Otros</option></select>
+      <select id="newGender"><option>Hombre</option><option>Mujer</option><option>Unisex</option></select>
+    </div>
+
+    <textarea id="newDescription" placeholder="Descripción"></textarea>
+    <input id="newSalida" placeholder="Notas de salida">
+    <input id="newCorazon" placeholder="Notas de corazón">
+    <input id="newFondo" placeholder="Notas de fondo">
+    <input id="newFamilia" placeholder="Familia olfativa">
+
+    <div class="admin-help">
+      <b>Fotos:</b> podés elegir varias imágenes de una sola vez. Máximo 8 MB por foto.
+    </div>
+    <input id="newImages" type="file" accept="image/*" multiple onchange="previewNewProductImages(this.files)">
+    <div id="newImagesPreview" class="new-photo-preview"></div>
+
+    <div class="admin-checks">
+      <label><input id="newFeatured" type="checkbox" ${supportsColumn('destacado')?'':'disabled'}> Destacado</label>
+      <label><input id="newIsNew" type="checkbox" ${supportsColumn('nuevo')?'':'disabled'}> Nuevo</label>
+    </div>
+
+    <button class="btn gold" type="submit">CREAR PERFUME</button>
+  </form>`;
+
+  document.getElementById("modal").classList.add("open");
+}
+
+function previewNewProductImages(files){
+  const box=document.getElementById("newImagesPreview");
+  if(!box) return;
+  box.innerHTML="";
+  Array.from(files||[]).forEach(file=>{
+    if(!file.type.startsWith("image/")) return;
+    const img=document.createElement("img");
+    img.src=URL.createObjectURL(file);
+    img.alt="Vista previa";
+    box.appendChild(img);
+  });
+}
+
+async function createProduct(event){
+  event.preventDefault();
+  const btn=event.submitter;
+  if(btn){btn.disabled=true;btn.textContent="CREANDO...";}
+
+  try{
+    const name=document.getElementById("newName").value.trim();
+    const price=Number(document.getElementById("newPrice").value);
+    const ml=Number(document.getElementById("newMl").value);
+    const stock=Number(document.getElementById("newStock").value||0);
+    const category=document.getElementById("newCategory").value;
+    const gender=document.getElementById("newGender").value;
+    const files=Array.from(document.getElementById("newImages").files||[]);
+
+    if(!name) throw new Error("Escribí el nombre del perfume.");
+    if(!Number.isFinite(price)||price<0) throw new Error("El precio no es válido.");
+    if(!Number.isFinite(ml)||ml<=0) throw new Error("Los ML no son válidos.");
+    if(!Number.isFinite(stock)||stock<0) throw new Error("El stock no es válido.");
+
+    const payload=filterProductPayload({
+      nombre:name,
+      precio:price,
+      ml,
+      categoria:category,
+      genero:gender,
+      stock,
+      imagen_url:null,
+      descripcion:document.getElementById("newDescription").value.trim()||"Fragancia seleccionada de AromaLParfum.",
+      salida:document.getElementById("newSalida").value.trim()||"Consultar",
+      corazon:document.getElementById("newCorazon").value.trim()||"Consultar",
+      fondo:document.getElementById("newFondo").value.trim()||"Consultar",
+      familia:document.getElementById("newFamilia").value.trim()||"Fragancia",
+      destacado:document.getElementById("newFeatured").checked,
+      nuevo:document.getElementById("newIsNew").checked,
+      vendido:false
+    });
+
+    const {data,error}=await supabaseClient.from("products").insert(payload).select("*").single();
+    if(error) throw error;
+    if(!data?.id) throw new Error("Supabase no devolvió el ID del producto creado.");
+
+    let firstSignedUrl="";
+    for(let i=0;i<files.length;i++){
+      const uploaded=await uploadImageFile(files[i]);
+      const relation=await saveImageRelation(data.id,uploaded.path,i,uploaded.signedUrl);
+      if(i===0) firstSignedUrl=relation.url||uploaded.signedUrl;
+    }
+
+    if(firstSignedUrl && productColumns.has("imagen_url")){
+      const {error:imageUpdateError}=await supabaseClient.from("products").update({imagen_url:firstSignedUrl}).eq("id",data.id);
+      if(imageUpdateError) console.warn("No se pudo guardar imagen principal:",imageUpdateError);
+    }
+
+    closeModal();
+    await cargarProductos(false);
+    renderAdmin();
+    showMessage("✅ Perfume agregado correctamente.","ok");
+  }catch(error){
+    console.error("Error creando producto:",error);
+    const box=document.getElementById("newProductMessage");
+    if(box){box.className="admin-message error";box.textContent="❌ No se pudo crear el perfume: "+(error.message||error);}
+    else alert("No se pudo crear el perfume: "+(error.message||error));
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent="CREAR PERFUME";}
+  }
+}
+
+async function adminSave(id){
+  const p=products.find(x=>x.id===id);
+  if(!p) return;
+
+  try{
+    const payload=filterProductPayload({
+      nombre:document.getElementById("name-"+id).value.trim(),
+      precio:Number(document.getElementById("price-"+id).value),
+      ml:Number(document.getElementById("ml-"+id).value),
+      stock:Number(document.getElementById("stock-"+id).value),
+      categoria:document.getElementById("cat-"+id).value,
+      genero:document.getElementById("gender-"+id).value,
+      descripcion:document.getElementById("desc-"+id).value.trim(),
+      salida:document.getElementById("out-"+id).value.trim(),
+      corazon:document.getElementById("heart-"+id).value.trim(),
+      fondo:document.getElementById("base-"+id).value.trim(),
+      familia:document.getElementById("family-"+id).value.trim(),
+      destacado:document.getElementById("featured-"+id)?.checked,
+      nuevo:document.getElementById("new-"+id)?.checked
+    });
+
+    if(!payload.nombre) throw new Error("El nombre no puede estar vacío.");
+    if(payload.precio<0||!Number.isFinite(payload.precio)) throw new Error("Precio inválido.");
+    if(payload.ml<=0||!Number.isFinite(payload.ml)) throw new Error("ML inválidos.");
+    if(payload.stock<0||!Number.isFinite(payload.stock)) throw new Error("Stock inválido.");
+
+    const {data,error}=await supabaseClient.from("products").update(payload).eq("id",id).select("*");
+    if(error) throw error;
+    if(!data?.length) throw new Error("Supabase no actualizó ninguna fila. Revisá las políticas RLS de products.");
+
+    Object.assign(p,payload);
+    showMessage("✅ "+p.nombre+" guardado correctamente.","ok");
+  }catch(error){
+    console.error("Error actualizando producto:",error);
+    showMessage("❌ Error al guardar: "+(error.message||error),"error");
+  }
+}
+
+/* =========================
+   STORAGE / FOTOS
+========================= */
+async function uploadImageFile(file){
+  if(!file) throw new Error("No se seleccionó una imagen.");
+  if(!file.type.startsWith("image/")) throw new Error("El archivo seleccionado no es una imagen.");
+  if(file.size>8*1024*1024) throw new Error("La imagen es demasiado grande. Máximo 8 MB.");
+
+  const extension=(file.name.split(".").pop()||"jpg").toLowerCase();
+  const safeName=file.name.replace(/\.[^/.]+$/,"").toLowerCase().replace(/[^a-z0-9áéíóúñ_-]+/gi,"-").replace(/-+/g,"-").slice(0,50)||"imagen";
+  const path=`productos/${Date.now()}-${Math.random().toString(36).slice(2,8)}-${safeName}.${extension}`;
+
+  const {error}=await supabaseClient.storage.from(STORAGE_BUCKET).upload(path,file,{cacheControl:"3600",upsert:false,contentType:file.type});
+  if(error) throw new Error("No se pudo subir la imagen: "+error.message);
+
+  const signedUrl=await createLongSignedUrl(path);
+  if(!signedUrl) throw new Error("La imagen se subió, pero no se pudo crear su URL firmada.");
+  return {path,signedUrl};
+}
+
+async function saveImageRelation(productId,path,order,signedUrl=""){
+  const url=signedUrl||await createLongSignedUrl(path);
+  if(!url) throw new Error("No se pudo crear la URL de la foto.");
+
+  /* Se guarda la URL firmada para que la tienda pública pueda verla aunque el bucket sea privado. */
+  const {data,error}=await supabaseClient.from(PRODUCT_IMAGES_TABLE).insert({
+    product_id:productId,
+    image_url:url,
+    orden:order
+  }).select("*").single();
+  if(error) throw new Error("No se pudo relacionar la foto con el perfume: "+error.message);
+  return {id:data.id,path,url,orden:order};
+}
+
+async function uploadProductImages(id,files){
+  const selected=Array.from(files||[]);
+  if(!selected.length) return;
+  const status=document.getElementById("upload-status-"+id);
+
+  try{
+    if(status) status.textContent=`Subiendo ${selected.length} foto(s)...`;
+    let order=(productImages[id]||[]).length;
+    let firstNewUrl="";
+
+    for(const file of selected){
+      const uploaded=await uploadImageFile(file);
+      const relation=await saveImageRelation(id,uploaded.path,order++,uploaded.signedUrl);
+      if(!firstNewUrl) firstNewUrl=relation.url;
+    }
+
+    const p=products.find(x=>x.id===id);
+    if(p && !p.imagen_url && firstNewUrl && productColumns.has("imagen_url")){
+      const {error}=await supabaseClient.from("products").update({imagen_url:firstNewUrl}).eq("id",id);
+      if(error) console.warn("No se pudo guardar la foto principal:",error);
+    }
+
+    await cargarProductos(false);
+    renderAdmin();
+    showMessage("✅ Fotos subidas correctamente.","ok");
+  }catch(error){
+    console.error("Error subiendo imágenes:",error);
+    if(status) status.textContent="Error subiendo las fotos.";
+    showMessage("❌ "+(error.message||"No se pudieron subir las fotos."),"error");
+  }
+}
+
+async function deleteProductImage(relationId,productId,path){
+  if(!confirm("¿Querés eliminar esta foto?")) return;
+
+  try{
+    const {error}=await supabaseClient.from(PRODUCT_IMAGES_TABLE).delete().eq("id",relationId);
+    if(error) throw error;
+
+    const storagePath=path||"";
+    if(storagePath){
+      const removeResult=await supabaseClient.storage.from(STORAGE_BUCKET).remove([storagePath]);
+      if(removeResult.error) console.warn("La relación se eliminó, pero el archivo no pudo borrarse del Storage:",removeResult.error);
+    }
+
+    await cargarProductos(false);
+
+    /* Si se eliminó la principal, actualizamos imagen_url con la nueva primera foto. */
+    const p=products.find(x=>x.id===productId);
+    const nextMain=p?getFirstImage(p):"";
+    if(productColumns.has("imagen_url")){
+      const {error:mainError}=await supabaseClient.from("products").update({imagen_url:nextMain||null}).eq("id",productId);
+      if(mainError) console.warn("No se pudo actualizar imagen principal:",mainError);
+      if(p){p.imagen_url=nextMain||"";p.img=nextMain||"";}
+    }
+
+    renderAdmin();
+    showMessage("✅ Foto eliminada correctamente.","ok");
+  }catch(error){
+    console.error("Error eliminando foto:",error);
+    showMessage("❌ No se pudo eliminar la foto: "+(error.message||error),"error");
+  }
+}
+
+/* =========================
+   ELIMINAR
+========================= */
+async function deleteProduct(id){
+  const p=products.find(x=>x.id===id);
+  if(!p) return;
+  if(!confirm(`¿Seguro que querés eliminar "${p.nombre}"?`)) return;
+
+  try{
+    const images=getImageObjects(p);
+    const paths=images.map(x=>x.path).filter(Boolean);
+
+    if(images.length){
+      const {error:imageRowsError}=await supabaseClient.from(PRODUCT_IMAGES_TABLE).delete().eq("product_id",id);
+      if(imageRowsError) console.warn("No se pudieron eliminar todas las relaciones de fotos:",imageRowsError);
+    }
+
+    if(paths.length){
+      const removeResult=await supabaseClient.storage.from(STORAGE_BUCKET).remove(paths);
+      if(removeResult.error) console.warn("No se pudieron borrar todos los archivos del Storage:",removeResult.error);
+    }
+
+    const {data,error}=await supabaseClient.from("products").delete().eq("id",id).select("id");
+    if(error) throw error;
+    if(!data?.length) throw new Error("Supabase no eliminó ninguna fila. Revisá las políticas RLS.");
+
+    products=products.filter(x=>x.id!==id);
+    delete productImages[id];
+    cart=cart.filter(x=>x.id!==id);
+    fav=fav.filter(x=>x!==id);
+    save();
+    renderAdmin();
+    showMessage("✅ Producto eliminado correctamente.","ok");
+  }catch(error){
+    console.error("Error eliminando:",error);
+    showMessage("❌ No se pudo eliminar: "+(error.message||error),"error");
+  }
+}
+
+/* =========================
+   ARRANQUE
+========================= */
+updateCounts();
+cargarProductos();
+
+supabaseClient.auth.onAuthStateChange((event,session)=>{
+  console.log("Auth:",event,session?.user?.email || "sin sesión");
+});
+</script>
+
+<!--
+======================================================================
+AROMALPARFUM - NOTAS DE MANTENIMIENTO
+======================================================================
+Este archivo fue construido a partir del index completo de más de 1000 líneas
+y conserva las funciones existentes, agregando las mejoras solicitadas.
+
+ARQUITECTURA:
+- products: tabla principal de perfumes.
+- product_images: tabla de múltiples fotos.
+- perfumes: bucket privado de Supabase Storage.
+- Supabase Auth: protege el panel administrador.
+- localStorage: conserva carrito y favoritos en el navegador del cliente.
+
+CHECKOUT:
+- El cliente NO necesita crear una cuenta.
+- Se solicita nombre, teléfono, correo y método de pago.
+- Se pregunta si el pedido es con envío.
+- Solo si elige envío aparecen dirección, ciudad/localidad y provincia.
+- WhatsApp recibe productos, cantidades, total y datos del cliente.
+
+ADMINISTRACIÓN:
+- Alta de perfumes desde el panel.
+- Edición de nombre, precio, ML, stock, categoría, género, descripción y notas.
+- Múltiples imágenes por producto.
+- Eliminación de fotos individuales.
+- Eliminación completa de productos.
+- Las columnas opcionales destacado/nuevo solo se usan si existen en products.
+- Esto evita que la creación falle por columnas que todavía no estén creadas.
+
+STORAGE PRIVADO:
+- Las nuevas fotos se suben al bucket perfumes.
+- El administrador crea una URL firmada de larga duración al subir cada foto.
+- product_images guarda esa URL para que la tienda pública pueda mostrarla.
+- También se conserva internamente la ruta derivada para poder borrar archivos.
+
+SEGURIDAD:
+- Nunca colocar una service_role key dentro de este archivo.
+- La publishable key es la apropiada para frontend.
+- La seguridad real de insert/update/delete depende de RLS en Supabase.
+- El panel también comprueba ADMIN_EMAILS después del login.
+======================================================================
+-->
+
+</body>
+</html>
