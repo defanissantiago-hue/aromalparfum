@@ -550,6 +550,159 @@
       color: #fff;
     }
 
+    /* =========================================================
+       HERO CON PORTADA PERSONALIZADA A PANTALLA COMPLETA
+       La imagen subida desde Administración pasa a ser el fondo
+       real del hero. Si no hay portada, se conserva el escenario
+       automático con el perfume del catálogo.
+    ========================================================= */
+
+    .luxury-hero.hero-cover-active {
+      min-height: clamp(560px, 42vw, 760px);
+      background-image: var(--hero-cover-image);
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: var(--hero-cover-position, center center);
+      background-color: #e8d6c1;
+    }
+
+    .luxury-hero.hero-cover-active::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(90deg,
+          rgba(247, 241, 232, .97) 0%,
+          rgba(247, 241, 232, .92) 18%,
+          rgba(247, 241, 232, .78) 34%,
+          rgba(247, 241, 232, .42) 49%,
+          rgba(247, 241, 232, .12) 63%,
+          rgba(247, 241, 232, 0) 78%);
+    }
+
+    .luxury-hero.hero-cover-active::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg,
+          rgba(17, 14, 12, .02),
+          transparent 35%,
+          transparent 72%,
+          rgba(17, 14, 12, .08));
+    }
+
+    .hero-cover-active .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-cover-active .luxury-hero-grid {
+      min-height: clamp(560px, 42vw, 760px);
+      grid-template-columns: minmax(0, 610px) 1fr;
+      align-items: center;
+      gap: 0;
+      padding: 72px 0 104px;
+    }
+
+    .hero-cover-active .hero-copy {
+      max-width: 610px;
+      padding-right: clamp(12px, 3vw, 48px);
+      text-shadow: 0 1px 0 rgba(255, 255, 255, .28);
+    }
+
+    .hero-cover-active .hero-copy h1 {
+      max-width: 8.5ch;
+    }
+
+    .hero-cover-active .hero-copy p {
+      max-width: 520px;
+      color: #3d342c;
+    }
+
+    .hero-cover-active .hero-visual,
+    .hero-cover-active .hero-benefits {
+      display: none;
+    }
+
+    .hero-cover-active .hero-collection-tabs {
+      z-index: 5;
+      background: rgba(255, 252, 247, .90);
+      border-color: rgba(255, 255, 255, .78);
+      box-shadow: 0 16px 36px rgba(45, 33, 24, .10);
+    }
+
+    @media (max-width: 900px) {
+      .luxury-hero.hero-cover-active {
+        min-height: 650px;
+        background-position: var(--hero-cover-position-mobile, var(--hero-cover-position, 68% center));
+      }
+
+      .luxury-hero.hero-cover-active::before {
+        background:
+          linear-gradient(90deg,
+            rgba(247, 241, 232, .96) 0%,
+            rgba(247, 241, 232, .86) 58%,
+            rgba(247, 241, 232, .34) 78%,
+            rgba(247, 241, 232, .08) 100%),
+          linear-gradient(180deg,
+            rgba(247, 241, 232, .15),
+            transparent 52%,
+            rgba(247, 241, 232, .42));
+      }
+
+      .hero-cover-active .luxury-hero-grid {
+        min-height: 650px;
+        grid-template-columns: 1fr;
+        align-items: end;
+        padding: 64px 0 112px;
+      }
+
+      .hero-cover-active .hero-copy {
+        max-width: min(570px, 92%);
+        padding: 22px 0;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .luxury-hero.hero-cover-active {
+        min-height: 610px;
+      }
+
+      .luxury-hero.hero-cover-active::before {
+        background:
+          linear-gradient(180deg,
+            rgba(247, 241, 232, .88) 0%,
+            rgba(247, 241, 232, .74) 38%,
+            rgba(247, 241, 232, .44) 63%,
+            rgba(247, 241, 232, .70) 100%);
+      }
+
+      .hero-cover-active .luxury-hero-grid {
+        min-height: 610px;
+        align-items: end;
+        padding: 52px 0 105px;
+      }
+
+      .hero-cover-active .hero-copy {
+        max-width: 100%;
+        padding: 18px 0 8px;
+      }
+
+      .hero-cover-active .hero-copy h1 {
+        max-width: 9ch;
+        font-size: clamp(44px, 13vw, 58px);
+      }
+
+      .hero-cover-active .hero-copy p {
+        max-width: 38ch;
+      }
+    }
+
     .category-rail-wrap {
       margin-top: -1px;
       background: var(--bg-soft);
@@ -7610,6 +7763,63 @@ function getSiteCoverPath(
   );
 }
 
+function normalizeCoverPosition(
+  value
+)
+{
+  const safe =
+  String(
+    value || "center"
+  )
+  .toLowerCase();
+
+  if (
+    safe === "left" ||
+    safe === "right"
+  )
+  {
+    return safe;
+  }
+
+  return "center";
+}
+
+function getSiteCoverPosition(
+  slot
+)
+{
+  const positions =
+  getSiteSettingObject(
+    "cover_positions"
+  );
+
+  return normalizeCoverPosition(
+    positions?.[slot]
+  );
+}
+
+function coverPositionCss(
+  value
+)
+{
+  const position =
+  normalizeCoverPosition(
+    value
+  );
+
+  if (position === "left")
+  {
+    return "left center";
+  }
+
+  if (position === "right")
+  {
+    return "right center";
+  }
+
+  return "center center";
+}
+
 function getCollectionCoverUrl(
   slug
 )
@@ -7727,7 +7937,8 @@ function renderPageCoverBanner(
       <div class="page-cover-banner-media">
         <img
           src="${escapeAttribute(image)}"
-          alt="${escapeAttribute(title || "AromaLParfum")}">
+          alt="${escapeAttribute(title || "AromaLParfum")}"
+          style="object-position:${escapeAttribute(coverPositionCss(getSiteCoverPosition(slot)))}">
       </div>
     </div>
   `;
@@ -9121,23 +9332,39 @@ function renderHero(
   collections
 )
 {
-  const image =
+  const customCover =
   getCollectionCoverUrl(
     collection?.slug || ""
   )
   ||
   getSiteCoverUrl(
     "hero"
-  )
-  ||
-  (
+  );
+
+  const fallbackImage =
+  product
+  ?
+  getProductMainImage(
     product
-    ?
-    getProductMainImage(
-      product
+  )
+  :
+  "";
+
+  const image =
+  customCover
+  ||
+  fallbackImage;
+
+  const hasCustomCover =
+  Boolean(
+    customCover
+  );
+
+  const coverPosition =
+  coverPositionCss(
+    getSiteCoverPosition(
+      "hero"
     )
-    :
-    ""
   );
 
   const collectionName =
@@ -9158,8 +9385,17 @@ function renderHero(
     "hero.description"
   );
 
+  const heroStyle =
+  hasCustomCover
+  ?
+  `style="--hero-cover-image:url(&quot;${escapeAttribute(customCover)}&quot;);--hero-cover-position:${escapeAttribute(coverPosition)};--hero-cover-position-mobile:${escapeAttribute(coverPosition)};"`
+  :
+  "";
+
   return `
-    <section class="luxury-hero">
+    <section
+      class="luxury-hero ${hasCustomCover ? "hero-cover-active" : ""}"
+      ${heroStyle}>
       <div class="container">
         <div class="luxury-hero-grid">
           <div class="hero-copy">
@@ -9185,46 +9421,53 @@ function renderHero(
             </button>
           </div>
 
-          <div class="hero-visual">
-            <div class="hero-product-stage">
-              ${image
-                ?
-                `
-                  <img
-                    src="${escapeAttribute(image)}"
-                    alt="${escapeAttribute(product?.nombre || "Perfume")}">
-                `
-                :
-                `
-                  <div class="hero-product-fallback">
-                    ${escapeHtml(product?.nombre || "AromaLParfum")}
-                  </div>
-                `
-              }
-            </div>
-          </div>
+          ${hasCustomCover
+            ?
+            ""
+            :
+            `
+              <div class="hero-visual">
+                <div class="hero-product-stage">
+                  ${image
+                    ?
+                    `
+                      <img
+                        src="${escapeAttribute(image)}"
+                        alt="${escapeAttribute(product?.nombre || "Perfume")}">
+                    `
+                    :
+                    `
+                      <div class="hero-product-fallback">
+                        ${escapeHtml(product?.nombre || "AromaLParfum")}
+                      </div>
+                    `
+                  }
+                </div>
+              </div>
 
-          <div class="hero-benefits">
-            <div class="hero-benefit">
-              <span class="hero-benefit-icon">✦</span>
-              <span>${escapeHtml(t("hero.benefit1"))}</span>
-            </div>
+              <div class="hero-benefits">
+                <div class="hero-benefit">
+                  <span class="hero-benefit-icon">✦</span>
+                  <span>${escapeHtml(t("hero.benefit1"))}</span>
+                </div>
 
-            <div class="hero-benefit">
-              <span class="hero-benefit-icon">◌</span>
-              <span>${escapeHtml(t("hero.benefit2"))}</span>
-            </div>
+                <div class="hero-benefit">
+                  <span class="hero-benefit-icon">◌</span>
+                  <span>${escapeHtml(t("hero.benefit2"))}</span>
+                </div>
 
-            <div class="hero-benefit">
-              <span class="hero-benefit-icon">🎁</span>
-              <span>${escapeHtml(t("hero.benefit3"))}</span>
-            </div>
+                <div class="hero-benefit">
+                  <span class="hero-benefit-icon">🎁</span>
+                  <span>${escapeHtml(t("hero.benefit3"))}</span>
+                </div>
 
-            <div class="hero-benefit">
-              <span class="hero-benefit-icon">♡</span>
-              <span>${escapeHtml(t("hero.benefit4"))}</span>
-            </div>
-          </div>
+                <div class="hero-benefit">
+                  <span class="hero-benefit-icon">♡</span>
+                  <span>${escapeHtml(t("hero.benefit4"))}</span>
+                </div>
+              </div>
+            `
+          }
         </div>
       </div>
 
@@ -18328,6 +18571,11 @@ function renderAdminCoverCard(
     slot
   );
 
+  const position =
+  getSiteCoverPosition(
+    slot
+  );
+
   return `
     <div class="admin-cover-card">
       <h4>
@@ -18377,6 +18625,30 @@ function renderAdminCoverCard(
           data-admin-cover-upload="${escapeAttribute(slot)}">
       </div>
 
+      <div class="admin-field">
+        <label for="cover-position-${escapeAttribute(slot)}">
+          Posición de la imagen
+        </label>
+
+        <select
+          id="cover-position-${escapeAttribute(slot)}"
+          class="text-input">
+          <option value="left" ${position === "left" ? "selected" : ""}>
+            Izquierda
+          </option>
+          <option value="center" ${position === "center" ? "selected" : ""}>
+            Centro
+          </option>
+          <option value="right" ${position === "right" ? "selected" : ""}>
+            Derecha
+          </option>
+        </select>
+
+        <small class="muted">
+          Elegí dónde está el elemento principal de la foto. En la portada de inicio esto ayuda a evitar que el perfume se recorte.
+        </small>
+      </div>
+
       <div class="admin-cover-actions">
         <button
           class="btn small"
@@ -18384,6 +18656,14 @@ function renderAdminCoverCard(
           data-action="admin-save-cover-url"
           data-cover-slot="${escapeAttribute(slot)}">
           Guardar URL
+        </button>
+
+        <button
+          class="btn small soft"
+          type="button"
+          data-action="admin-save-cover-position"
+          data-cover-slot="${escapeAttribute(slot)}">
+          Guardar posición
         </button>
 
         <button
@@ -18987,6 +19267,53 @@ async function saveSiteCoverUrl(
 
     adminMessage(
       "Portada actualizada.",
+      "ok"
+    );
+  }
+  catch (error)
+  {
+    adminMessage(
+      error.message,
+      "error"
+    );
+  }
+}
+
+async function saveSiteCoverPosition(
+  slot
+)
+{
+  try
+  {
+    const select =
+    document.getElementById(
+      `cover-position-${slot}`
+    );
+
+    const position =
+    normalizeCoverPosition(
+      select?.value
+    );
+
+    const positions =
+    {
+      ...getSiteSettingObject(
+        "cover_positions"
+      ),
+    };
+
+    positions[slot] =
+    position;
+
+    await upsertSiteSetting(
+      "cover_positions",
+      positions
+    );
+
+    refreshAdminTab();
+
+    adminMessage(
+      "Posición de portada guardada.",
       "ok"
     );
   }
@@ -20593,6 +20920,15 @@ function openImageSearch(
         case "admin-save-cover-url":
         {
           await saveSiteCoverUrl(
+            element.dataset.coverSlot
+          );
+
+          break;
+        }
+
+        case "admin-save-cover-position":
+        {
+          await saveSiteCoverPosition(
             element.dataset.coverSlot
           );
 
