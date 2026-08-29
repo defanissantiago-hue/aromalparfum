@@ -3950,7 +3950,128 @@
       }
     }
 
-  </style>
+  
+
+/* =========================================================
+   PORTADAS EDITABLES DESDE ADMINISTRACIÓN
+========================================================= */
+.admin-cover-grid {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+
+.admin-cover-card {
+  border:1px solid var(--line);
+  background:var(--card);
+  padding:14px;
+  display:grid;
+  gap:10px;
+}
+
+.admin-cover-card h4 {
+  margin:0;
+  font-size:13px;
+  font-weight:700;
+}
+
+.admin-cover-preview {
+  width:100%;
+  aspect-ratio:16/9;
+  background:#eee9e2;
+  border:1px solid var(--line);
+  overflow:hidden;
+  display:grid;
+  place-items:center;
+  color:var(--muted);
+  font-size:10px;
+  text-align:center;
+}
+
+.admin-cover-preview img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.admin-cover-actions {
+  display:flex;
+  gap:7px;
+  flex-wrap:wrap;
+}
+
+.admin-cover-actions .btn {
+  flex:1 1 auto;
+}
+
+.admin-cover-file {
+  width:100%;
+  font-size:11px;
+}
+
+.collection-cover-admin {
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid var(--line);
+}
+
+.page-cover-banner {
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(260px,42%);
+  min-height:260px;
+  border:1px solid var(--line);
+  background:var(--card);
+  margin-bottom:26px;
+  overflow:hidden;
+}
+
+.page-cover-banner-copy {
+  padding:30px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+.page-cover-banner-media {
+  min-height:260px;
+  background:#eee9e2;
+}
+
+.page-cover-banner-media img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.advisor-teaser-visual.has-cover {
+  overflow:hidden;
+  padding:0;
+}
+
+.advisor-teaser-visual.has-cover img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+@media (max-width:760px) {
+  .admin-cover-grid {
+    grid-template-columns:1fr;
+  }
+
+  .page-cover-banner {
+    grid-template-columns:1fr;
+  }
+
+  .page-cover-banner-media {
+    min-height:210px;
+  }
+}
+
+</style>
 </head>
 <body>
   <div class="topbar">
@@ -5284,6 +5405,12 @@ const state =
   new Map(),
 
   siteSettings:
+  {},
+
+  siteCoverMeta:
+  {},
+
+  collectionCoverMeta:
   {},
 
   collections:
@@ -7460,6 +7587,152 @@ async function loadSiteSettings()
   }
 }
 
+
+function getSiteCoverUrl(
+  slot
+)
+{
+  return (
+    state.siteCoverMeta?.[slot]?.url
+    ||
+    ""
+  );
+}
+
+function getSiteCoverPath(
+  slot
+)
+{
+  return (
+    state.siteCoverMeta?.[slot]?.path
+    ||
+    ""
+  );
+}
+
+function getCollectionCoverUrl(
+  slug
+)
+{
+  return (
+    state.collectionCoverMeta?.[slug]?.url
+    ||
+    ""
+  );
+}
+
+function getCollectionCoverPath(
+  slug
+)
+{
+  return (
+    state.collectionCoverMeta?.[slug]?.path
+    ||
+    ""
+  );
+}
+
+async function loadSiteCoverUrls()
+{
+  state.siteCoverMeta = {};
+  state.collectionCoverMeta = {};
+
+  const covers =
+  getSiteSettingObject(
+    "cover_images"
+  );
+
+  const collectionCovers =
+  getSiteSettingObject(
+    "collection_covers"
+  );
+
+  for (
+    const [slot, raw] of
+    Object.entries(
+      covers || {}
+    )
+  )
+  {
+    if (!raw)
+    {
+      continue;
+    }
+
+    state.siteCoverMeta[slot] =
+    await resolveImageValue(
+      raw
+    );
+  }
+
+  for (
+    const [slug, raw] of
+    Object.entries(
+      collectionCovers || {}
+    )
+  )
+  {
+    if (!raw)
+    {
+      continue;
+    }
+
+    state.collectionCoverMeta[slug] =
+    await resolveImageValue(
+      raw
+    );
+  }
+}
+
+function renderPageCoverBanner(
+  slot,
+  eyebrow,
+  title,
+  description = ""
+)
+{
+  const image =
+  getSiteCoverUrl(
+    slot
+  );
+
+  if (!image)
+  {
+    return "";
+  }
+
+  return `
+    <div class="page-cover-banner">
+      <div class="page-cover-banner-copy">
+        <p class="eyebrow">
+          ${escapeHtml(eyebrow || "AromaLParfum")}
+        </p>
+
+        <h2 class="section-title">
+          ${escapeHtml(title || "AromaLParfum")}
+        </h2>
+
+        ${description
+          ?
+          `
+            <p class="section-subtitle">
+              ${escapeHtml(description)}
+            </p>
+          `
+          :
+          ""
+        }
+      </div>
+
+      <div class="page-cover-banner-media">
+        <img
+          src="${escapeAttribute(image)}"
+          alt="${escapeAttribute(title || "AromaLParfum")}">
+      </div>
+    </div>
+  `;
+}
+
 async function loadCollections()
 {
   const result =
@@ -7836,6 +8109,8 @@ async function loadAllData()
     );
 
     await loadProductImages();
+
+    await loadSiteCoverUrls();
 
     state.loading =
     false;
@@ -8847,13 +9122,23 @@ function renderHero(
 )
 {
   const image =
-  product
-  ?
-  getProductMainImage(
-    product
+  getCollectionCoverUrl(
+    collection?.slug || ""
   )
-  :
-  "";
+  ||
+  getSiteCoverUrl(
+    "hero"
+  )
+  ||
+  (
+    product
+    ?
+    getProductMainImage(
+      product
+    )
+    :
+    ""
+  );
 
   const collectionName =
   localizedCollectionName(
@@ -9432,6 +9717,10 @@ function renderProductCard(
 function renderPromoBuilders()
 {
   const decantImage =
+  getSiteCoverUrl(
+    "decants"
+  )
+  ||
   getFeaturedProducts()
   .map(
     product =>
@@ -9446,6 +9735,10 @@ function renderPromoBuilders()
   "";
 
   const giftImage =
+  getSiteCoverUrl(
+    "gifts"
+  )
+  ||
   getNewProducts()
   .concat(
     getFeaturedProducts()
@@ -9593,9 +9886,22 @@ function renderAdvisorTeaser()
             </div>
           </div>
 
-          <div class="advisor-teaser-visual" aria-hidden="true">
-            <div class="advisor-orbit">✦</div>
-          </div>
+          ${getSiteCoverUrl("advisor")
+            ?
+            `
+              <div class="advisor-teaser-visual has-cover" aria-hidden="true">
+                <img
+                  src="${escapeAttribute(getSiteCoverUrl("advisor"))}"
+                  alt="">
+              </div>
+            `
+            :
+            `
+              <div class="advisor-teaser-visual" aria-hidden="true">
+                <div class="advisor-orbit">✦</div>
+              </div>
+            `
+          }
 
           <button
             class="btn"
@@ -10057,6 +10363,8 @@ function renderBestSellersPage()
   return `
     <section class="section">
       <div class="container">
+        ${renderPageCoverBanner("best_sellers", t("best.eyebrow"), t("best.title"), t("best.description"))}
+
         <div class="section-title-row">
           <div>
             <p class="eyebrow">
@@ -10101,6 +10409,8 @@ function renderCollectionsPage()
   return `
     <section class="section">
       <div class="container">
+        ${renderPageCoverBanner("collections", t("collections.eyebrow"), t("collections.title"))}
+
         <div class="section-title-row">
           <div>
             <p class="eyebrow">
@@ -10622,6 +10932,8 @@ function renderPersonalCarePage()
   return `
     <section class="section">
       <div class="container">
+        ${renderPageCoverBanner("personal_care", t("category.care"), t("category.care"), state.language === "en" ? "Deodorants, body creams, mists, lotions and other personal care products." : "Desodorantes, cremas, body splash, lociones y otros productos de cuidado personal.")}
+
         <div class="section-title-row">
           <div>
             <p class="eyebrow">
@@ -10672,6 +10984,8 @@ function renderGiftSetsPage()
   return `
     <section class="section">
       <div class="container">
+        ${renderPageCoverBanner("gift_sets", t("category.giftsets"), t("category.giftsets"))}
+
         <div class="section-title-row">
           <div>
             <p class="eyebrow">
@@ -10722,6 +11036,8 @@ function renderDiscoveryPage()
   return `
     <section class="section">
       <div class="container">
+        ${renderPageCoverBanner("discovery", "Discovery Sets", "Discovery Sets", state.language === "en" ? "Discover several fragrances before choosing a full bottle." : "Probá varias fragancias antes de elegir un frasco completo.")}
+
         <div class="section-title-row">
           <div>
             <p class="eyebrow">
@@ -13369,6 +13685,8 @@ function renderGamesHubPage()
   return `
     <section class="section">
       <div class="container">
+        ${renderPageCoverBanner("games", t("games.eyebrow"), t("games.title"), t("games.description"))}
+
         <div class="section-title-row">
           <div>
             <p class="eyebrow">
@@ -17828,6 +18146,20 @@ function renderAdminSettings()
     "ai"
   );
 
+  const coverSlots =
+  [
+    { slot: "hero", label: "Portada principal · Fragancias para cada historia" },
+    { slot: "decants", label: "Portada · Armá tu combo de decants" },
+    { slot: "gifts", label: "Portada · Regalos que hablan por vos" },
+    { slot: "advisor", label: "Portada · Encontrá tu perfume ideal" },
+    { slot: "best_sellers", label: "Portada · Más vendidos" },
+    { slot: "collections", label: "Portada · Colecciones" },
+    { slot: "personal_care", label: "Portada · Cuidado personal" },
+    { slot: "gift_sets", label: "Portada · Sets de regalo" },
+    { slot: "discovery", label: "Portada · Discovery Sets" },
+    { slot: "games", label: "Portada · Aroma Games" },
+  ];
+
   return `
     <div class="settings-grid">
       <div class="settings-card">
@@ -17897,6 +18229,31 @@ function renderAdminSettings()
         </div>
       </div>
 
+
+
+      <div class="settings-card" style="grid-column:1/-1">
+        <h3>
+          Portadas e imágenes principales
+        </h3>
+
+        <p class="section-subtitle">
+          Desde acá podés cambiar las imágenes grandes de la página sin tocar el código. Podés subir una foto desde tu dispositivo o pegar una URL externa.
+        </p>
+
+        <div class="admin-cover-grid u-mt-14">
+          ${coverSlots
+            .map(
+              item =>
+              renderAdminCoverCard(
+                item.slot,
+                item.label
+              )
+            )
+            .join("")
+          }
+        </div>
+      </div>
+
       <div class="settings-card">
         <h3>
           Inteligencia artificial
@@ -17948,6 +18305,161 @@ function renderAdminSettings()
             ${escapeHtml(t("admin.save"))}
           </button>
         </div>
+      </div>
+    </div>
+  `;
+}
+
+
+function renderAdminCoverCard(
+  slot,
+  label
+)
+{
+  const current =
+  getSiteSettingObject(
+    "cover_images"
+  )[slot]
+  ||
+  "";
+
+  const preview =
+  getSiteCoverUrl(
+    slot
+  );
+
+  return `
+    <div class="admin-cover-card">
+      <h4>
+        ${escapeHtml(label)}
+      </h4>
+
+      <div class="admin-cover-preview">
+        ${preview
+          ?
+          `
+            <img
+              src="${escapeAttribute(preview)}"
+              alt="${escapeAttribute(label)}">
+          `
+          :
+          `
+            <span>
+              Sin imagen personalizada<br>
+              se usa la imagen automática actual
+            </span>
+          `
+        }
+      </div>
+
+      <div class="admin-field">
+        <label for="cover-url-${escapeAttribute(slot)}">
+          URL externa opcional
+        </label>
+
+        <input
+          id="cover-url-${escapeAttribute(slot)}"
+          class="text-input"
+          type="text"
+          value="${escapeAttribute(/^https?:\/\//i.test(current) ? current : "")}" 
+          placeholder="https://...">
+      </div>
+
+      <div class="admin-field">
+        <label>
+          Subir nueva imagen
+        </label>
+
+        <input
+          class="admin-cover-file"
+          type="file"
+          accept="image/*"
+          data-admin-cover-upload="${escapeAttribute(slot)}">
+      </div>
+
+      <div class="admin-cover-actions">
+        <button
+          class="btn small"
+          type="button"
+          data-action="admin-save-cover-url"
+          data-cover-slot="${escapeAttribute(slot)}">
+          Guardar URL
+        </button>
+
+        <button
+          class="btn danger small"
+          type="button"
+          data-action="admin-delete-cover"
+          data-cover-slot="${escapeAttribute(slot)}"
+          ${current ? "" : "disabled"}>
+          Quitar portada
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+function renderAdminCollectionCover(
+  collection
+)
+{
+  const slug =
+  collection?.slug
+  ||
+  "";
+
+  const current =
+  getSiteSettingObject(
+    "collection_covers"
+  )[slug]
+  ||
+  "";
+
+  const preview =
+  getCollectionCoverUrl(
+    slug
+  );
+
+  return `
+    <div class="collection-cover-admin">
+      <div class="admin-cover-preview">
+        ${preview
+          ?
+          `
+            <img
+              src="${escapeAttribute(preview)}"
+              alt="${escapeAttribute(localizedCollectionName(collection))}">
+          `
+          :
+          `
+            <span>
+              Sin portada personalizada para esta colección
+            </span>
+          `
+        }
+      </div>
+
+      <div class="admin-field u-mt-10">
+        <label>
+          Portada de esta colección
+        </label>
+
+        <input
+          class="admin-cover-file"
+          type="file"
+          accept="image/*"
+          data-admin-collection-cover-upload="${escapeAttribute(slug)}">
+      </div>
+
+      <div class="admin-cover-actions">
+        <button
+          class="btn danger small"
+          type="button"
+          data-action="admin-delete-collection-cover"
+          data-collection-slug="${escapeAttribute(slug)}"
+          ${current ? "" : "disabled"}>
+          Quitar portada
+        </button>
       </div>
     </div>
   `;
@@ -18251,6 +18763,315 @@ async function saveAiSettings()
   }
 }
 
+
+function sanitizeCoverSlot(
+  value
+)
+{
+  return String(
+    value || "cover"
+  )
+  .toLowerCase()
+  .replace(
+    /[^a-z0-9_-]/g,
+    "-"
+  )
+  .slice(
+    0,
+    80
+  )
+  ||
+  "cover";
+}
+
+async function uploadSiteCoverFile(
+  slot,
+  file,
+  settingKey = "cover_images"
+)
+{
+  if (
+    !file ||
+    !String(file.type || "").startsWith("image/")
+  )
+  {
+    throw new Error(
+      "Seleccioná un archivo de imagen válido."
+    );
+  }
+
+  if (
+    file.size > CONFIG.maxImageBytes
+  )
+  {
+    throw new Error(
+      "La imagen puede pesar como máximo 8 MB."
+    );
+  }
+
+  const safeSlot =
+  sanitizeCoverSlot(
+    slot
+  );
+
+  const extension =
+  sanitizeFileExtension(
+    file
+  );
+
+  const path =
+  "portadas/" +
+  safeSlot +
+  "/" +
+  makeId("cover") +
+  "." +
+  extension;
+
+  const upload =
+  await supabaseClient
+    .storage
+    .from(
+      CONFIG.storageBucket
+    )
+    .upload(
+      path,
+      file,
+      {
+        upsert: false,
+        contentType: file.type,
+      }
+    );
+
+  if (upload.error)
+  {
+    throw upload.error;
+  }
+
+  const settings =
+  {
+    ...getSiteSettingObject(
+      settingKey
+    ),
+  };
+
+  const previous =
+  settings[slot]
+  ||
+  "";
+
+  settings[slot] =
+  path;
+
+  try
+  {
+    await upsertSiteSetting(
+      settingKey,
+      settings
+    );
+  }
+  catch (error)
+  {
+    await supabaseClient
+      .storage
+      .from(
+        CONFIG.storageBucket
+      )
+      .remove([path]);
+
+    throw error;
+  }
+
+  const previousNormalized =
+  normalizeStoragePath(
+    previous
+  );
+
+  if (
+    previousNormalized.kind === "storage" &&
+    previousNormalized.value &&
+    previousNormalized.value !== path
+  )
+  {
+    const removeOld =
+    await supabaseClient
+      .storage
+      .from(
+        CONFIG.storageBucket
+      )
+      .remove([
+        previousNormalized.value,
+      ]);
+
+    if (removeOld.error)
+    {
+      console.warn(
+        "No se pudo eliminar la portada anterior:",
+        removeOld.error.message
+      );
+    }
+  }
+
+  await loadSiteCoverUrls();
+}
+
+async function saveSiteCoverUrl(
+  slot
+)
+{
+  try
+  {
+    const value =
+    getInputValue(
+      `cover-url-${slot}`
+    );
+
+    if (
+      value &&
+      !/^https?:\/\//i.test(value)
+    )
+    {
+      throw new Error(
+        "La URL debe comenzar con http:// o https://"
+      );
+    }
+
+    const settings =
+    {
+      ...getSiteSettingObject(
+        "cover_images"
+      ),
+    };
+
+    const previous =
+    settings[slot]
+    ||
+    "";
+
+    if (value)
+    {
+      settings[slot] = value;
+    }
+    else
+    {
+      delete settings[slot];
+    }
+
+    await upsertSiteSetting(
+      "cover_images",
+      settings
+    );
+
+    const previousNormalized =
+    normalizeStoragePath(
+      previous
+    );
+
+    if (
+      previousNormalized.kind === "storage" &&
+      previousNormalized.value
+    )
+    {
+      await supabaseClient
+        .storage
+        .from(
+          CONFIG.storageBucket
+        )
+        .remove([
+          previousNormalized.value,
+        ]);
+    }
+
+    await loadSiteCoverUrls();
+
+    refreshAdminTab();
+
+    adminMessage(
+      "Portada actualizada.",
+      "ok"
+    );
+  }
+  catch (error)
+  {
+    adminMessage(
+      error.message,
+      "error"
+    );
+  }
+}
+
+async function deleteSiteCover(
+  slot,
+  settingKey = "cover_images"
+)
+{
+  try
+  {
+    const settings =
+    {
+      ...getSiteSettingObject(
+        settingKey
+      ),
+    };
+
+    const previous =
+    settings[slot]
+    ||
+    "";
+
+    delete settings[slot];
+
+    await upsertSiteSetting(
+      settingKey,
+      settings
+    );
+
+    const previousNormalized =
+    normalizeStoragePath(
+      previous
+    );
+
+    if (
+      previousNormalized.kind === "storage" &&
+      previousNormalized.value
+    )
+    {
+      const removed =
+      await supabaseClient
+        .storage
+        .from(
+          CONFIG.storageBucket
+        )
+        .remove([
+          previousNormalized.value,
+        ]);
+
+      if (removed.error)
+      {
+        console.warn(
+          "Storage remove:",
+          removed.error.message
+        );
+      }
+    }
+
+    await loadSiteCoverUrls();
+
+    refreshAdminTab();
+
+    adminMessage(
+      "Portada eliminada. Se volverá a usar la imagen automática.",
+      "ok"
+    );
+  }
+  catch (error)
+  {
+    adminMessage(
+      error.message,
+      "error"
+    );
+  }
+}
+
 function renderAdminCollections()
 {
   return `
@@ -18297,6 +19118,8 @@ function renderAdminCollections()
                     id="collection-desc-en-${escapeAttribute(collection.id || collection.slug)}"
                     class="textarea-input">${escapeHtml(collection.descripcion_en || "")}</textarea>
                 </div>
+
+                ${renderAdminCollectionCover(collection)}
 
                 ${collection.id
                   ?
@@ -19767,6 +20590,35 @@ function openImageSearch(
           break;
         }
 
+        case "admin-save-cover-url":
+        {
+          await saveSiteCoverUrl(
+            element.dataset.coverSlot
+          );
+
+          break;
+        }
+
+        case "admin-delete-cover":
+        {
+          await deleteSiteCover(
+            element.dataset.coverSlot,
+            "cover_images"
+          );
+
+          break;
+        }
+
+        case "admin-delete-collection-cover":
+        {
+          await deleteSiteCover(
+            element.dataset.collectionSlug,
+            "collection_covers"
+          );
+
+          break;
+        }
+
         case "admin-save-collection":
         {
           await saveAdminCollection(
@@ -19905,6 +20757,98 @@ function openImageSearch(
         )
         {
           toggleShippingFields();
+
+          return;
+        }
+
+        if (
+          target.matches(
+            "[data-admin-cover-upload]"
+          )
+        )
+        {
+          const slot =
+          target.dataset.adminCoverUpload;
+
+          const file =
+          target.files?.[0];
+
+          if (file)
+          {
+            try
+            {
+              adminMessage(
+                "Subiendo portada...",
+                "ok"
+              );
+
+              await uploadSiteCoverFile(
+                slot,
+                file,
+                "cover_images"
+              );
+
+              refreshAdminTab();
+
+              adminMessage(
+                "Portada actualizada correctamente.",
+                "ok"
+              );
+            }
+            catch (error)
+            {
+              adminMessage(
+                error.message,
+                "error"
+              );
+            }
+          }
+
+          return;
+        }
+
+        if (
+          target.matches(
+            "[data-admin-collection-cover-upload]"
+          )
+        )
+        {
+          const slug =
+          target.dataset.adminCollectionCoverUpload;
+
+          const file =
+          target.files?.[0];
+
+          if (file)
+          {
+            try
+            {
+              adminMessage(
+                "Subiendo portada de colección...",
+                "ok"
+              );
+
+              await uploadSiteCoverFile(
+                slug,
+                file,
+                "collection_covers"
+              );
+
+              refreshAdminTab();
+
+              adminMessage(
+                "Portada de colección actualizada.",
+                "ok"
+              );
+            }
+            catch (error)
+            {
+              adminMessage(
+                error.message,
+                "error"
+              );
+            }
+          }
 
           return;
         }
