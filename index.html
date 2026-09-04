@@ -3996,6 +3996,190 @@
       }
     }
 
+
+    /* Aroma Games — jugador, ranking diario y premios */
+    .game-player-card,
+    .game-ranking-card,
+    .game-reward-card {
+      border: 1px solid var(--line);
+      background: var(--paper);
+      padding: 20px;
+    }
+
+    .game-ranking-layout {
+      display: grid;
+      grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+      gap: 16px;
+      margin: 0 0 22px;
+    }
+
+    .game-player-card h3,
+    .game-ranking-card h3,
+    .game-reward-card h3 {
+      margin: 0 0 8px;
+      font-family: var(--serif);
+      font-size: 24px;
+      font-weight: 400;
+    }
+
+    .game-player-card p,
+    .game-ranking-card p,
+    .game-reward-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.65;
+    }
+
+    .game-player-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 9px;
+      margin-top: 14px;
+      align-items: end;
+    }
+
+    .game-player-current {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-top: 14px;
+      padding: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+    }
+
+    .game-player-current strong {
+      display: block;
+      font-size: 12px;
+    }
+
+    .game-player-current small {
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .game-ranking-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 10px;
+    }
+
+    .game-ranking-table th,
+    .game-ranking-table td {
+      padding: 9px 7px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+    }
+
+    .game-ranking-table th {
+      color: var(--muted);
+      font-size: 8px;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+
+    .game-ranking-table td:nth-child(1) {
+      width: 46px;
+      font-family: var(--serif);
+      font-size: 16px;
+    }
+
+    .game-ranking-table td:nth-child(3),
+    .game-ranking-table td:nth-child(4),
+    .game-ranking-table th:nth-child(3),
+    .game-ranking-table th:nth-child(4) {
+      text-align: right;
+    }
+
+    .game-ranking-prize {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 12px;
+      padding: 8px 10px;
+      border: 1px solid var(--line-strong);
+      background: #f5eee3;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+    }
+
+    .game-score-earned {
+      margin: 12px 0 0;
+      padding: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      text-align: center;
+    }
+
+    .game-score-earned strong {
+      display: block;
+      font-family: var(--serif);
+      font-size: 30px;
+      font-weight: 400;
+    }
+
+    .game-score-earned span {
+      color: var(--muted);
+      font-size: 9px;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+    }
+
+    .game-admin-rewards {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .game-admin-reward {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+    }
+
+    .game-admin-reward-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: flex-end;
+    }
+
+    .checkout-discount-ok {
+      margin-top: 9px;
+      padding: 9px 10px;
+      border: 1px solid rgba(57, 112, 72, .25);
+      background: rgba(57, 112, 72, .07);
+      color: var(--success);
+      font-size: 10px;
+    }
+
+    @media (max-width: 760px) {
+      .game-ranking-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .game-player-form {
+        grid-template-columns: 1fr;
+      }
+
+      .game-admin-reward {
+        grid-template-columns: 1fr;
+      }
+
+      .game-admin-reward-actions {
+        justify-content: flex-start;
+      }
+    }
+
     /* Forms, checkout y admin */
     .text-input,
     .number-input,
@@ -5616,6 +5800,23 @@ const state =
 
   gameConfigs:
   [],
+
+  dailyLeaderboard:
+  [],
+
+  gameRewards:
+  [],
+
+  gamePlayer:
+  safeJsonParse(
+    localStorage.getItem(
+      "alp_game_player"
+    ),
+    null
+  ),
+
+  checkoutDiscount:
+  null,
 
   productTypes:
   [],
@@ -9051,6 +9252,7 @@ async function loadAllData()
         loadPopularity(),
         loadCollections(),
         loadGameConfigs(),
+        loadDailyLeaderboard(),
         loadProductTypes(),
         loadComboTemplates(),
         loadComboProducts(),
@@ -13099,6 +13301,49 @@ function renderDiscoveryPage()
 
           <div class="settings-card">
             <h3>
+              ${state.language === "en" ? "Discount code" : "Código de descuento"}
+            </h3>
+
+            <div class="admin-form-grid">
+              <div class="admin-field">
+                <label for="checkoutDiscountCode">
+                  ${state.language === "en" ? "Code" : "Código"}
+                </label>
+
+                <input
+                  id="checkoutDiscountCode"
+                  class="text-input"
+                  type="text"
+                  autocomplete="off"
+                  placeholder="AROMA-XXXXXXXX">
+              </div>
+
+              <div class="admin-field">
+                <label>&nbsp;</label>
+
+                <button
+                  class="btn secondary"
+                  type="button"
+                  data-action="validate-game-discount">
+                  ${state.language === "en" ? "Validate" : "Validar"}
+                </button>
+              </div>
+            </div>
+
+            ${state.checkoutDiscount
+              ?
+              `
+                <div class="checkout-discount-ok">
+                  ✓ ${state.language === "en" ? "10% discount validated." : "Descuento del 10% validado."}
+                </div>
+              `
+              :
+              ""
+            }
+          </div>
+
+          <div class="settings-card">
+            <h3>
               ${escapeHtml(t("checkout.summary"))}
             </h3>
 
@@ -13125,13 +13370,36 @@ function renderDiscoveryPage()
               .join("")
             }
 
+            ${state.checkoutDiscount
+              ?
+              `
+                <div class="builder-summary-item">
+                  <span>
+                    ${state.language === "en" ? "Game winner discount" : "Descuento ganador Aroma Games"}
+                  </span>
+
+                  <strong>
+                    -${money(total * 0.10)}
+                  </strong>
+                </div>
+              `
+              :
+              ""
+            }
+
             <div class="builder-total">
               <span>
                 ${escapeHtml(t("cart.total"))}
               </span>
 
               <strong>
-                ${money(total)}
+                ${money(
+                  state.checkoutDiscount
+                  ?
+                  total * 0.90
+                  :
+                  total
+                )}
               </strong>
             </div>
           </div>
@@ -13149,6 +13417,9 @@ function renderDiscoveryPage()
 
     function openCheckout()
     {
+      state.checkoutDiscount =
+      null;
+
       if (
         state.cart.length === 0
       )
@@ -13279,6 +13550,161 @@ function renderDiscoveryPage()
       return text;
     }
 
+    async function validateGameDiscount()
+    {
+      const code =
+      document.getElementById(
+        "checkoutDiscountCode"
+      )?.value.trim().toUpperCase()
+      ||
+      "";
+
+      const phone =
+      normalizeGamePhone(
+        document.getElementById(
+          "checkoutPhone"
+        )?.value
+      );
+
+      if (
+        !code ||
+        phone.length < 8
+      )
+      {
+        toast(
+          state.language === "en"
+          ?
+          "Enter your WhatsApp number and discount code first."
+          :
+          "Ingresá primero tu WhatsApp y el código de descuento.",
+          "error"
+        );
+
+        return;
+      }
+
+      const result =
+      await supabaseClient.rpc(
+        "validate_game_discount",
+        {
+          p_code:
+          code,
+
+          p_phone:
+          phone,
+        }
+      );
+
+      if (
+        result.error
+      )
+      {
+        state.checkoutDiscount =
+        null;
+
+        toast(
+          result.error.message,
+          "error"
+        );
+
+        return;
+      }
+
+      const data =
+      result.data
+      ||
+      {};
+
+      if (
+        !data.valid
+      )
+      {
+        state.checkoutDiscount =
+        null;
+
+        toast(
+          data.message
+          ||
+          (
+            state.language === "en"
+            ?
+            "Invalid or already used code."
+            :
+            "Código inválido, ajeno o ya utilizado."
+          ),
+          "error"
+        );
+
+        return;
+      }
+
+      state.checkoutDiscount =
+      {
+        code:
+        data.code,
+
+        percent:
+        asNumber(
+          data.percent,
+          10
+        ),
+
+        phone:
+        phone,
+
+        rewardId:
+        data.reward_id,
+      };
+
+      const modalBody =
+      document.querySelector(
+        ".modal-body"
+      );
+
+      if (
+        modalBody
+      )
+      {
+        modalBody.innerHTML =
+        renderCheckout();
+
+        const phoneInput =
+        document.getElementById(
+          "checkoutPhone"
+        );
+
+        if (
+          phoneInput
+        )
+        {
+          phoneInput.value =
+          phone;
+        }
+
+        const codeInput =
+        document.getElementById(
+          "checkoutDiscountCode"
+        );
+
+        if (
+          codeInput
+        )
+        {
+          codeInput.value =
+          code;
+        }
+      }
+
+      toast(
+        state.language === "en"
+        ?
+        "10% discount applied."
+        :
+        "Descuento del 10% aplicado.",
+        "success"
+      );
+    }
+
     function sendWhatsAppOrder()
     {
       const name =
@@ -13324,6 +13750,31 @@ function renderDiscoveryPage()
           "Complete your name, phone and email."
           :
           "Completá nombre, teléfono y correo.",
+          "error"
+        );
+
+        return;
+      }
+
+      if (
+        state.checkoutDiscount &&
+        normalizeGamePhone(
+          phone
+        ) !==
+        normalizeGamePhone(
+          state.checkoutDiscount.phone
+        )
+      )
+      {
+        state.checkoutDiscount =
+        null;
+
+        toast(
+          state.language === "en"
+          ?
+          "The discount belongs to another WhatsApp number. Validate it again."
+          :
+          "El descuento pertenece a otro WhatsApp. Volvé a validarlo.",
           "error"
         );
 
@@ -13403,7 +13854,7 @@ Email: ${email}
 PRODUCTS
 ${lines}
 
-TOTAL: ${money(getCartSubtotal())}
+TOTAL: ${money(state.checkoutDiscount ? getCartSubtotal() * 0.90 : getCartSubtotal())}
 
 PAYMENT
 ${payment}
@@ -13421,7 +13872,7 @@ Correo: ${email}
 PRODUCTOS
 ${lines}
 
-TOTAL: ${money(getCartSubtotal())}
+TOTAL: ${money(state.checkoutDiscount ? getCartSubtotal() * 0.90 : getCartSubtotal())}
 
 MÉTODO DE PAGO
 ${payment}
@@ -13451,6 +13902,28 @@ Dirección: ${address}
 Ciudad: ${city}
 Provincia: ${province}
 Código postal: ${postal || "No indicado"}`;
+      }
+
+      if (
+        state.checkoutDiscount
+      )
+      {
+        message +=
+        state.language === "en"
+        ?
+        `
+
+DISCOUNT
+Aroma Games winner: 10%
+Code: ${state.checkoutDiscount.code}
+Original subtotal: ${money(getCartSubtotal())}`
+        :
+        `
+
+DESCUENTO
+Ganador Aroma Games: 10%
+Código: ${state.checkoutDiscount.code}
+Subtotal original: ${money(getCartSubtotal())}`;
       }
 
       const whatsapp =
@@ -14882,6 +15355,11 @@ function renderGamesHubPage()
           </div>
         </div>
 
+        <div class="game-ranking-layout">
+          ${renderGamePlayerCard()}
+          ${renderDailyLeaderboard()}
+        </div>
+
         <div class="game-hub-grid">
           ${games
             .map(
@@ -14981,6 +15459,26 @@ async function startGame(
 )
 {
   clearGameTimer();
+
+  if (
+    !getGamePlayer()
+  )
+  {
+    toast(
+      state.language === "en"
+      ?
+      "Save your player name and WhatsApp before playing."
+      :
+      "Guardá tu nombre y WhatsApp antes de jugar.",
+      "error"
+    );
+
+    setRoute(
+      "games"
+    );
+
+    return;
+  }
 
   let product =
   null;
@@ -16128,6 +16626,36 @@ async function completeGame(
     );
   }
 
+  const scoreResult =
+  await submitDailyGameScore(
+    Boolean(
+      completed
+    ),
+    elapsed
+  );
+
+  const points =
+  scoreResult &&
+  typeof scoreResult === "object"
+  ?
+  asNumber(
+    scoreResult.points,
+    0
+  )
+  :
+  0;
+
+  const solvedToday =
+  scoreResult &&
+  typeof scoreResult === "object"
+  ?
+  asNumber(
+    scoreResult.solved_today,
+    0
+  )
+  :
+  0;
+
   openModal(
     completed
     ?
@@ -16155,12 +16683,42 @@ async function completeGame(
           ${formatGameTime(elapsed)}
         </p>
 
-        <button
-          class="btn"
-          type="button"
-          data-action="restart-game">
-          ${escapeHtml(t("games.restart"))}
-        </button>
+        ${completed && points
+          ?
+          `
+            <div class="game-score-earned">
+              <strong>+${formatInteger(points)}</strong>
+              <span>
+                ${state.language === "en" ? "points earned" : "puntos ganados"}
+              </span>
+            </div>
+
+            <p class="u-mt-14">
+              ${state.language === "en"
+                ? `Solved today: ${formatInteger(solvedToday)}`
+                : `Resueltos hoy: ${formatInteger(solvedToday)}`
+              }
+            </p>
+          `
+          :
+          ""
+        }
+
+        <div class="u-flex-center-gap u-mt-14">
+          <button
+            class="btn"
+            type="button"
+            data-action="restart-game">
+            ${escapeHtml(t("games.restart"))}
+          </button>
+
+          <button
+            class="btn secondary"
+            type="button"
+            data-route="games">
+            ${state.language === "en" ? "See ranking" : "Ver ranking"}
+          </button>
+        </div>
       </div>
     `
   );
@@ -20513,9 +21071,361 @@ async function saveAdminCollection(
   );
 }
 
+
+async function loadGameRewardsAdmin()
+{
+  if (
+    !state.admin.currentUser
+  )
+  {
+    state.gameRewards =
+    [];
+
+    return;
+  }
+
+  try
+  {
+    const result =
+    await supabaseClient.rpc(
+      "get_game_rewards_admin"
+    );
+
+    if (
+      result.error
+    )
+    {
+      console.warn(
+        "get_game_rewards_admin:",
+        result.error.message
+      );
+
+      state.gameRewards =
+      [];
+
+      return;
+    }
+
+    state.gameRewards =
+    Array.isArray(
+      result.data
+    )
+    ?
+    result.data
+    :
+    [];
+  }
+  catch (
+    error
+  )
+  {
+    console.warn(
+      "get_game_rewards_admin:",
+      error
+    );
+
+    state.gameRewards =
+    [];
+  }
+}
+
+async function awardYesterdayGameWinner()
+{
+  const result =
+  await supabaseClient.rpc(
+    "award_game_winner",
+    {
+      p_reward_date:
+      null,
+    }
+  );
+
+  if (
+    result.error
+  )
+  {
+    adminMessage(
+      result.error.message,
+      "error"
+    );
+
+    return;
+  }
+
+  await loadGameRewardsAdmin();
+
+  refreshAdminTab();
+
+  const data =
+  result.data
+  ||
+  {};
+
+  if (
+    data.status === "no_scores"
+  )
+  {
+    adminMessage(
+      state.language === "en"
+      ?
+      "There were no valid scores yesterday."
+      :
+      "Ayer no hubo puntajes válidos.",
+      "error"
+    );
+
+    return;
+  }
+
+  adminMessage(
+    state.language === "en"
+    ?
+    "Yesterday's winner reward is ready."
+    :
+    "El premio del ganador de ayer ya está listo.",
+    "ok"
+  );
+}
+
+function getGameRewardById(
+  rewardId
+)
+{
+  return (
+    state.gameRewards
+    ||
+    []
+  ).find(
+    reward =>
+    Number(
+      reward.id
+    ) ===
+    Number(
+      rewardId
+    )
+  )
+  ||
+  null;
+}
+
+function sendGameRewardWhatsApp(
+  rewardId
+)
+{
+  const reward =
+  getGameRewardById(
+    rewardId
+  );
+
+  if (
+    !reward
+  )
+  {
+    return;
+  }
+
+  const phone =
+  normalizeGamePhone(
+    reward.player_phone
+  );
+
+  const message =
+  `🏆 ¡Ganaste el ranking diario de AromaLParfum!
+
+Fuiste quien más juegos resolvió el ${reward.reward_date}.
+
+Tu premio es 10% de descuento en tu próxima compra.
+
+Código: ${reward.discount_code}
+
+El código es personal y puede usarse una sola vez.`;
+
+  window.open(
+    "https://wa.me/" +
+    phone +
+    "?text=" +
+    encodeURIComponent(
+      message
+    ),
+    "_blank",
+    "noopener"
+  );
+}
+
+async function updateGameRewardStatus(
+  rewardId,
+  mode
+)
+{
+  const functionName =
+  mode === "used"
+  ?
+  "mark_game_reward_used"
+  :
+  "mark_game_reward_sent";
+
+  const result =
+  await supabaseClient.rpc(
+    functionName,
+    {
+      p_reward_id:
+      Number(
+        rewardId
+      ),
+    }
+  );
+
+  if (
+    result.error
+  )
+  {
+    adminMessage(
+      result.error.message,
+      "error"
+    );
+
+    return;
+  }
+
+  await loadGameRewardsAdmin();
+
+  refreshAdminTab();
+
+  adminMessage(
+    mode === "used"
+    ?
+    "Código marcado como utilizado."
+    :
+    "Premio marcado como enviado.",
+    "ok"
+  );
+}
+
+function renderAdminGameRewards()
+{
+  const rewards =
+  state.gameRewards
+  ||
+  [];
+
+  return `
+    <div class="settings-card u-mb-16">
+      <h3>
+        ${state.language === "en" ? "Daily 10% reward" : "Premio diario 10%"}
+      </h3>
+
+      <p class="section-subtitle">
+        ${state.language === "en"
+          ? "Generate the winner after the day closes. The code stays valid until it is used."
+          : "Generá el ganador cuando el día ya terminó. El código queda válido hasta que se use."
+        }
+      </p>
+
+      <div class="u-mt-14">
+        <button
+          class="btn"
+          type="button"
+          data-action="admin-award-yesterday">
+          🏆 ${state.language === "en" ? "Reward yesterday's winner" : "Premiar ganador de ayer"}
+        </button>
+      </div>
+
+      <div class="game-admin-rewards">
+        ${rewards.length
+          ?
+          rewards
+          .slice(
+            0,
+            14
+          )
+          .map(
+            reward =>
+            `
+              <div class="game-admin-reward">
+                <div>
+                  <strong>
+                    ${escapeHtml(reward.player_name || "Jugador")}
+                  </strong>
+
+                  <div class="muted u-mt-6">
+                    ${escapeHtml(String(reward.reward_date || ""))}
+                    · ${formatInteger(reward.solved || 0)} resueltos
+                    · ${formatInteger(reward.points || 0)} puntos
+                  </div>
+
+                  <div class="u-mt-6">
+                    Código:
+                    <strong>${escapeHtml(reward.discount_code || "")}</strong>
+                    ·
+                    ${reward.used
+                      ? "✅ Usado"
+                      : reward.sent
+                      ? "📩 Enviado"
+                      : "⏳ Pendiente"
+                    }
+                  </div>
+                </div>
+
+                <div class="game-admin-reward-actions">
+                  <button
+                    class="btn small secondary"
+                    type="button"
+                    data-action="admin-send-game-reward"
+                    data-reward-id="${reward.id}">
+                    WhatsApp
+                  </button>
+
+                  ${!reward.sent
+                    ?
+                    `
+                      <button
+                        class="btn small secondary"
+                        type="button"
+                        data-action="admin-mark-game-reward-sent"
+                        data-reward-id="${reward.id}">
+                        Marcar enviado
+                      </button>
+                    `
+                    :
+                    ""
+                  }
+
+                  ${!reward.used
+                    ?
+                    `
+                      <button
+                        class="btn small"
+                        type="button"
+                        data-action="admin-mark-game-reward-used"
+                        data-reward-id="${reward.id}">
+                        Marcar usado
+                      </button>
+                    `
+                    :
+                    ""
+                  }
+                </div>
+              </div>
+            `
+          )
+          .join("")
+          :
+          `
+            <p class="muted u-mt-14">
+              Todavía no hay premios generados.
+            </p>
+          `
+        }
+      </div>
+    </div>
+  `;
+}
+
 function renderAdminGames()
 {
   return `
+    ${renderAdminGameRewards()}
+
     <div class="settings-grid">
       ${[
         "puzzle",
@@ -21505,6 +22415,13 @@ function openImageSearch(
           break;
         }
 
+        case "validate-game-discount":
+        {
+          await validateGameDiscount();
+
+          break;
+        }
+
         case "send-whatsapp-order":
         {
           sendWhatsAppOrder();
@@ -21669,6 +22586,20 @@ function openImageSearch(
           break;
         }
 
+        case "save-game-player":
+        {
+          saveGamePlayerFromForm();
+
+          break;
+        }
+
+        case "clear-game-player":
+        {
+          clearGamePlayer();
+
+          break;
+        }
+
         case "start-game":
         {
           await startGame(
@@ -21804,7 +22735,50 @@ function openImageSearch(
           ||
           "products";
 
+          if (
+            state.admin.tab === "games"
+          )
+          {
+            await loadGameRewardsAdmin();
+          }
+
           refreshAdminTab();
+
+          break;
+        }
+
+        case "admin-award-yesterday":
+        {
+          await awardYesterdayGameWinner();
+
+          break;
+        }
+
+        case "admin-send-game-reward":
+        {
+          sendGameRewardWhatsApp(
+            element.dataset.rewardId
+          );
+
+          break;
+        }
+
+        case "admin-mark-game-reward-sent":
+        {
+          await updateGameRewardStatus(
+            element.dataset.rewardId,
+            "sent"
+          );
+
+          break;
+        }
+
+        case "admin-mark-game-reward-used":
+        {
+          await updateGameRewardStatus(
+            element.dataset.rewardId,
+            "used"
+          );
 
           break;
         }
