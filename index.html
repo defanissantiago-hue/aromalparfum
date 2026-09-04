@@ -15787,7 +15787,7 @@ function renderGamePlayerCard()
           <div class="game-player-current">
             <div>
               <strong>${escapeHtml(player.name)}</strong>
-              <small>WhatsApp terminado en ${escapeHtml(player.phone.slice(-4))}</small>
+              <small>${state.language === "en" ? "Private WhatsApp saved" : "WhatsApp guardado de forma privada"}</small>
             </div>
 
             <button
@@ -21774,6 +21774,11 @@ function renderAdminGameRewards()
                     ${escapeHtml(String(reward.reward_date || ""))}
                     · ${formatInteger(reward.solved || 0)} resueltos
                     · ${formatInteger(reward.points || 0)} puntos
+                  </div>
+
+                  <div class="u-mt-6">
+                    WhatsApp:
+                    <strong>${escapeHtml(reward.player_phone || "")}</strong>
                   </div>
 
                   <div class="u-mt-6">
