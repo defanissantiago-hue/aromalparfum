@@ -15417,6 +15417,429 @@ function renderGamesHubPage()
   `;
 }
 
+
+function normalizeGamePhone(
+  value
+)
+{
+  return String(
+    value
+    ||
+    ""
+  )
+  .replace(
+    /\D/g,
+    ""
+  );
+}
+
+function getGamePlayer()
+{
+  const player =
+  state.gamePlayer
+  ||
+  null;
+
+  if (
+    !player
+  )
+  {
+    return null;
+  }
+
+  const name =
+  String(
+    player.name
+    ||
+    ""
+  ).trim();
+
+  const phone =
+  normalizeGamePhone(
+    player.phone
+  );
+
+  if (
+    name.length < 2 ||
+    phone.length < 8
+  )
+  {
+    return null;
+  }
+
+  return {
+    name,
+    phone,
+  };
+}
+
+function saveGamePlayerFromForm()
+{
+  const name =
+  document.getElementById(
+    "gamePlayerName"
+  )?.value.trim()
+  ||
+  "";
+
+  const phone =
+  normalizeGamePhone(
+    document.getElementById(
+      "gamePlayerPhone"
+    )?.value
+  );
+
+  if (
+    name.length < 2 ||
+    phone.length < 8
+  )
+  {
+    toast(
+      state.language === "en"
+      ?
+      "Enter your name and a valid WhatsApp number."
+      :
+      "Ingresá tu nombre y un WhatsApp válido.",
+      "error"
+    );
+
+    return;
+  }
+
+  state.gamePlayer =
+  {
+    name,
+    phone,
+  };
+
+  localStorage.setItem(
+    "alp_game_player",
+    JSON.stringify(
+      state.gamePlayer
+    )
+  );
+
+  toast(
+    state.language === "en"
+    ?
+    "Player saved."
+    :
+    "Jugador guardado.",
+    "success"
+  );
+
+  renderCurrentRoute();
+}
+
+function clearGamePlayer()
+{
+  state.gamePlayer =
+  null;
+
+  localStorage.removeItem(
+    "alp_game_player"
+  );
+
+  renderCurrentRoute();
+}
+
+async function loadDailyLeaderboard()
+{
+  try
+  {
+    const result =
+    await supabaseClient.rpc(
+      "get_daily_game_leaderboard",
+      {
+        p_date:
+        null,
+      }
+    );
+
+    if (
+      result.error
+    )
+    {
+      console.warn(
+        "daily leaderboard:",
+        result.error.message
+      );
+
+      state.dailyLeaderboard =
+      [];
+
+      return;
+    }
+
+    state.dailyLeaderboard =
+    Array.isArray(
+      result.data
+    )
+    ?
+    result.data
+    :
+    [];
+  }
+  catch (
+    error
+  )
+  {
+    console.warn(
+      "daily leaderboard:",
+      error
+    );
+
+    state.dailyLeaderboard =
+    [];
+  }
+}
+
+async function submitDailyGameScore(
+  completed,
+  elapsed
+)
+{
+  const player =
+  getGamePlayer();
+
+  if (
+    !completed ||
+    !player
+  )
+  {
+    return null;
+  }
+
+  try
+  {
+    const result =
+    await supabaseClient.rpc(
+      "submit_daily_game_score",
+      {
+        p_player_name:
+        player.name,
+
+        p_player_phone:
+        player.phone,
+
+        p_game_type:
+        state.game.type,
+
+        p_product_id:
+        Number(
+          state.game.productId
+        )
+        ||
+        null,
+
+        p_duration_seconds:
+        Math.max(
+          1,
+          Number(
+            elapsed
+          )
+          ||
+          1
+        ),
+
+        p_attempts:
+        Math.max(
+          1,
+          Number(
+            state.game.moves
+          )
+          ||
+          1
+        ),
+      }
+    );
+
+    if (
+      result.error
+    )
+    {
+      console.warn(
+        "submit_daily_game_score:",
+        result.error.message
+      );
+
+      return null;
+    }
+
+    await loadDailyLeaderboard();
+
+    return result.data
+    ||
+    null;
+  }
+  catch (
+    error
+  )
+  {
+    console.warn(
+      "submit_daily_game_score:",
+      error
+    );
+
+    return null;
+  }
+}
+
+function renderDailyLeaderboard()
+{
+  const rows =
+  state.dailyLeaderboard
+  ||
+  [];
+
+  return `
+    <div class="game-ranking-card">
+      <h3>
+        ${state.language === "en" ? "Today's ranking" : "Ranking de hoy"}
+      </h3>
+
+      <p>
+        ${state.language === "en"
+          ? "The player who solves the most games today wins 10% off. Points break ties."
+          : "Quien resuelva más juegos hoy gana 10% OFF. Los puntos sirven para desempatar."
+        }
+      </p>
+
+      <span class="game-ranking-prize">
+        🏆 #1 del día = 10% OFF
+      </span>
+
+      ${rows.length
+        ?
+        `
+          <table class="game-ranking-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>${state.language === "en" ? "Player" : "Jugador"}</th>
+                <th>${state.language === "en" ? "Solved" : "Resueltos"}</th>
+                <th>${state.language === "en" ? "Points" : "Puntos"}</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              ${rows
+                .slice(
+                  0,
+                  10
+                )
+                .map(
+                  (
+                    row,
+                    index
+                  ) =>
+                  `
+                    <tr>
+                      <td>${index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1}</td>
+                      <td>${escapeHtml(row.player_name || "Jugador")}</td>
+                      <td>${formatInteger(row.solved || 0)}</td>
+                      <td>${formatInteger(row.points || 0)}</td>
+                    </tr>
+                  `
+                )
+                .join("")
+              }
+            </tbody>
+          </table>
+        `
+        :
+        `
+          <div class="empty-state u-mt-14">
+            <p>
+              ${state.language === "en"
+                ? "No valid scores yet today."
+                : "Todavía no hay puntajes válidos hoy."
+              }
+            </p>
+          </div>
+        `
+      }
+    </div>
+  `;
+}
+
+function renderGamePlayerCard()
+{
+  const player =
+  getGamePlayer();
+
+  return `
+    <div class="game-player-card">
+      <h3>
+        ${state.language === "en" ? "Your player" : "Tu jugador"}
+      </h3>
+
+      <p>
+        ${state.language === "en"
+          ? "We use your WhatsApp only to send the private 10% prize if you win the day."
+          : "Usamos tu WhatsApp solamente para enviarte por privado el premio del 10% si ganás el día."
+        }
+      </p>
+
+      ${player
+        ?
+        `
+          <div class="game-player-current">
+            <div>
+              <strong>${escapeHtml(player.name)}</strong>
+              <small>WhatsApp terminado en ${escapeHtml(player.phone.slice(-4))}</small>
+            </div>
+
+            <button
+              class="btn small secondary"
+              type="button"
+              data-action="clear-game-player">
+              ${state.language === "en" ? "Change" : "Cambiar"}
+            </button>
+          </div>
+        `
+        :
+        `
+          <div class="game-player-form">
+            <div class="admin-field">
+              <label for="gamePlayerName">
+                ${state.language === "en" ? "Name / nickname" : "Nombre / apodo"}
+              </label>
+
+              <input
+                id="gamePlayerName"
+                class="text-input"
+                type="text"
+                maxlength="40"
+                placeholder="${state.language === "en" ? "Your name" : "Tu nombre"}">
+            </div>
+
+            <div class="admin-field">
+              <label for="gamePlayerPhone">
+                WhatsApp
+              </label>
+
+              <input
+                id="gamePlayerPhone"
+                class="text-input"
+                type="tel"
+                maxlength="25"
+                placeholder="11...">
+            </div>
+
+            <button
+              class="btn"
+              type="button"
+              data-action="save-game-player">
+              ${state.language === "en" ? "Save" : "Guardar"}
+            </button>
+          </div>
+        `
+      }
+    </div>
+  `;
+}
+
 function getGameEligibleProducts()
 {
   return state.products.filter(
