@@ -4180,6 +4180,54 @@
       }
     }
 
+
+    /* Publicidad manual de Aroma Games — solo en el hub de Juegos */
+    .game-ad-zone {
+      width: min(100%, 760px);
+      margin: 26px auto;
+      padding: 10px 12px 12px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .52);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .game-ad-zone.is-bottom {
+      margin-top: 34px;
+    }
+
+    .game-ad-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 7px;
+      letter-spacing: 1.2px;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .game-ad-unit {
+      display: block;
+      width: 100%;
+      min-height: 74px;
+    }
+
+    .game-ad-zone:has(.game-ad-unit[data-ad-status="unfilled"]) {
+      display: none;
+    }
+
+    @media (max-width: 760px) {
+      .game-ad-zone {
+        width: 100%;
+        margin: 20px auto;
+        padding: 8px 8px 10px;
+      }
+
+      .game-ad-unit {
+        min-height: 60px;
+      }
+    }
+
     /* Forms, checkout y admin */
     .text-input,
     .number-input,
@@ -4454,6 +4502,8 @@
 }
 
 </style>
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6139181395452058"
+     crossorigin="anonymous"></script>
 </head>
 <body>
   <div class="topbar">
@@ -9538,6 +9588,17 @@ function renderCurrentRoute()
   applyLanguageToChrome();
 
   updateHeaderCounts();
+
+  if (
+    state.route === "games"
+  )
+  {
+    setTimeout(
+      () =>
+      activateGameAds(),
+      0
+    );
+  }
 }
 
 function renderMobileMenu()
@@ -15254,6 +15315,337 @@ function getGameConfig(
   fallback.puzzle;
 }
 
+
+function getGameAdsSettings()
+{
+  const ads =
+  getSiteSettingObject(
+    "game_ads"
+  );
+
+  return {
+    enabled:
+    ads.enabled === true,
+
+    client:
+    String(
+      ads.client
+      ||
+      ""
+    ).trim(),
+
+    slotTop:
+    String(
+      ads.slot_top
+      ||
+      ""
+    ).trim(),
+
+    slotBottom:
+    String(
+      ads.slot_bottom
+      ||
+      ""
+    ).trim(),
+  };
+}
+
+function normalizeAdSenseClient(
+  value
+)
+{
+  const client =
+  String(
+    value
+    ||
+    ""
+  ).trim();
+
+  return /^ca-pub-\d{10,25}$/.test(
+    client
+  )
+  ?
+  client
+  :
+  "";
+}
+
+function normalizeAdSenseSlot(
+  value
+)
+{
+  const slot =
+  String(
+    value
+    ||
+    ""
+  )
+  .replace(
+    /\D/g,
+    ""
+  )
+  .slice(
+    0,
+    30
+  );
+
+  return slot;
+}
+
+function gameAdsReady()
+{
+  const ads =
+  getGameAdsSettings();
+
+  return Boolean(
+    ads.enabled &&
+    normalizeAdSenseClient(
+      ads.client
+    ) &&
+    normalizeAdSenseSlot(
+      ads.slotTop
+    ) &&
+    normalizeAdSenseSlot(
+      ads.slotBottom
+    )
+  );
+}
+
+function renderGameAdSlot(
+  position
+)
+{
+  if (
+    !gameAdsReady()
+  )
+  {
+    return "";
+  }
+
+  const ads =
+  getGameAdsSettings();
+
+  const client =
+  normalizeAdSenseClient(
+    ads.client
+  );
+
+  const slot =
+  position === "bottom"
+  ?
+  normalizeAdSenseSlot(
+    ads.slotBottom
+  )
+  :
+  normalizeAdSenseSlot(
+    ads.slotTop
+  );
+
+  return `
+    <aside
+      class="game-ad-zone ${position === "bottom" ? "is-bottom" : ""}"
+      aria-label="${state.language === "en" ? "Advertisement" : "Publicidad"}">
+      <span class="game-ad-label">
+        ${state.language === "en" ? "Advertisement" : "Publicidad"}
+      </span>
+
+      <ins
+        class="adsbygoogle game-ad-unit"
+        data-ad-client="${escapeAttribute(client)}"
+        data-ad-slot="${escapeAttribute(slot)}"
+        data-ad-format="horizontal"
+        data-full-width-responsive="true"></ins>
+    </aside>
+  `;
+}
+
+function ensureGameAdsScript(
+  client
+)
+{
+  const validClient =
+  normalizeAdSenseClient(
+    client
+  );
+
+  if (
+    !validClient
+  )
+  {
+    return Promise.reject(
+      new Error(
+        "AdSense client inválido."
+      )
+    );
+  }
+
+  const existing =
+  document.getElementById(
+    "alpAdSenseScript"
+  )
+  ||
+  Array.from(
+    document.scripts
+  ).find(
+    script =>
+    String(
+      script.src
+      ||
+      ""
+    ).includes(
+      "pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"
+    )
+  );
+
+  if (
+    existing
+  )
+  {
+    return new Promise(
+      resolve =>
+      {
+        if (
+          existing.dataset.loaded === "true" ||
+          document.readyState === "complete"
+        )
+        {
+          resolve();
+
+          return;
+        }
+
+        existing.addEventListener(
+          "load",
+          () => resolve(),
+          {
+            once:
+            true,
+          }
+        );
+
+        existing.addEventListener(
+          "error",
+          () => resolve(),
+          {
+            once:
+            true,
+          }
+        );
+
+        setTimeout(
+          resolve,
+          3500
+        );
+      }
+    );
+  }
+
+  return new Promise(
+    resolve =>
+    {
+      const script =
+      document.createElement(
+        "script"
+      );
+
+      script.id =
+      "alpAdSenseScript";
+
+      script.async =
+      true;
+
+      script.crossOrigin =
+      "anonymous";
+
+      script.src =
+      "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client="
+      +
+      encodeURIComponent(
+        validClient
+      );
+
+      script.addEventListener(
+        "load",
+        () =>
+        {
+          script.dataset.loaded =
+          "true";
+
+          resolve();
+        },
+        {
+          once:
+          true,
+        }
+      );
+
+      script.addEventListener(
+        "error",
+        () => resolve(),
+        {
+          once:
+          true,
+        }
+      );
+
+      document.head.appendChild(
+        script
+      );
+    }
+  );
+}
+
+async function activateGameAds()
+{
+  if (
+    state.route !== "games" ||
+    !gameAdsReady()
+  )
+  {
+    return;
+  }
+
+  const ads =
+  getGameAdsSettings();
+
+  await ensureGameAdsScript(
+    ads.client
+  );
+
+  document
+  .querySelectorAll(
+    ".game-ad-unit:not([data-alp-ad-loaded])"
+  )
+  .forEach(
+    unit =>
+    {
+      unit.dataset.alpAdLoaded =
+      "true";
+
+      try
+      {
+        (
+          window.adsbygoogle =
+          window.adsbygoogle
+          ||
+          []
+        ).push(
+          {}
+        );
+      }
+      catch (
+        error
+      )
+      {
+        console.warn(
+          "AdSense:",
+          error
+        );
+      }
+    }
+  );
+}
+
 function renderGamesHubPage()
 {
   const games =
@@ -15360,6 +15752,8 @@ function renderGamesHubPage()
           ${renderDailyLeaderboard()}
         </div>
 
+        ${renderGameAdSlot("top")}
+
         <div class="game-hub-grid">
           ${games
             .map(
@@ -15412,6 +15806,8 @@ function renderGamesHubPage()
             .join("")
           }
         </div>
+
+        ${renderGameAdSlot("bottom")}
       </div>
     </section>
   `;
@@ -20313,6 +20709,11 @@ function renderAdminSettings()
     "ai"
   );
 
+  const gameAds =
+  getSiteSettingObject(
+    "game_ads"
+  );
+
   const coverSlots =
   [
     { slot: "hero", label: "Portada principal · Fragancias para cada historia" },
@@ -20364,6 +20765,55 @@ function renderAdminSettings()
             class="btn"
             type="button"
             data-action="admin-save-shipping-settings">
+            ${escapeHtml(t("admin.save"))}
+          </button>
+        </div>
+      </div>
+
+      <div class="settings-card">
+        <h3>
+          Publicidad · Aroma Games
+        </h3>
+
+        <p class="section-subtitle">
+          Solo se muestran dos bloques manuales dentro de la pantalla principal de Juegos. Durante una partida no aparece publicidad.
+        </p>
+
+        <div class="admin-form u-mt-14">
+          <label class="admin-check">
+            <input
+              id="setting-game-ads-enabled"
+              type="checkbox"
+              ${gameAds.enabled === true ? "checked" : ""}>
+            Activar publicidad
+          </label>
+
+          ${renderSettingInput(
+            "setting-game-ads-client",
+            "ID de editor AdSense (ca-pub-...)",
+            gameAds.client || ""
+          )}
+
+          ${renderSettingInput(
+            "setting-game-ads-slot-top",
+            "ID bloque superior",
+            gameAds.slot_top || ""
+          )}
+
+          ${renderSettingInput(
+            "setting-game-ads-slot-bottom",
+            "ID bloque inferior",
+            gameAds.slot_bottom || ""
+          )}
+
+          <small class="muted">
+            Usá bloques de anuncios manuales. Si querés que la publicidad exista únicamente en Juegos, desactivá Auto ads para este sitio desde AdSense.
+          </small>
+
+          <button
+            class="btn"
+            type="button"
+            data-action="admin-save-game-ads-settings">
             ${escapeHtml(t("admin.save"))}
           </button>
         </div>
@@ -20848,6 +21298,106 @@ async function saveShippingSettings()
       "Configuración de envío guardada.",
       "ok"
     );
+  }
+  catch (
+    error
+  )
+  {
+    adminMessage(
+      error.message,
+      "error"
+    );
+  }
+}
+
+
+async function saveGameAdsSettings()
+{
+  try
+  {
+    const enabled =
+    getInputChecked(
+      "setting-game-ads-enabled"
+    );
+
+    const clientRaw =
+    getInputValue(
+      "setting-game-ads-client"
+    );
+
+    const slotTop =
+    normalizeAdSenseSlot(
+      getInputValue(
+        "setting-game-ads-slot-top"
+      )
+    );
+
+    const slotBottom =
+    normalizeAdSenseSlot(
+      getInputValue(
+        "setting-game-ads-slot-bottom"
+      )
+    );
+
+    const client =
+    clientRaw
+    ?
+    normalizeAdSenseClient(
+      clientRaw
+    )
+    :
+    "";
+
+    if (
+      enabled &&
+      !client
+    )
+    {
+      throw new Error(
+        "El ID de AdSense debe tener formato ca-pub-..."
+      );
+    }
+
+    if (
+      enabled &&
+      (
+        !slotTop ||
+        !slotBottom
+      )
+    )
+    {
+      throw new Error(
+        "Ingresá los dos IDs de bloque de anuncios."
+      );
+    }
+
+    await upsertSiteSetting(
+      "game_ads",
+      {
+        enabled:
+        enabled,
+
+        client:
+        client,
+
+        slot_top:
+        slotTop,
+
+        slot_bottom:
+        slotBottom,
+      }
+    );
+
+    adminMessage(
+      enabled
+      ?
+      "Publicidad de Juegos guardada. Los anuncios se mostrarán cuando AdSense tenga tu sitio y bloques habilitados."
+      :
+      "Publicidad de Juegos desactivada.",
+      "ok"
+    );
+
+    refreshAdminTab();
   }
   catch (
     error
@@ -23282,6 +23832,13 @@ function openImageSearch(
         case "admin-save-shipping-settings":
         {
           await saveShippingSettings();
+
+          break;
+        }
+
+        case "admin-save-game-ads-settings":
+        {
+          await saveGameAdsSettings();
 
           break;
         }
