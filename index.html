@@ -970,6 +970,51 @@
       margin-bottom: 20px;
     }
 
+    .catalog-pagination {
+      margin-top: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .catalog-page-btn {
+      min-width: 34px;
+      height: 34px;
+      padding: 0 10px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xs);
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .catalog-page-btn:hover {
+      border-color: var(--accent);
+    }
+
+    .catalog-page-btn.active {
+      background: var(--dark);
+      border-color: var(--dark);
+      color: #fff;
+    }
+
+    .catalog-page-btn:disabled {
+      opacity: .35;
+      cursor: default;
+    }
+
+    .catalog-page-info {
+      width: 100%;
+      text-align: center;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
     .search-input,
     .select-input,
     .text-input,
@@ -5614,6 +5659,21 @@ const state =
   catalogSearch:
   "",
 
+  catalogPage:
+  1,
+
+  catalogPageSize:
+  24,
+
+  allProductImagesLoaded:
+  false,
+
+  productGalleryLoaded:
+  new Set(),
+
+  productGalleryLoading:
+  new Map(),
+
   heroCollectionIndex:
   0,
 
@@ -7401,6 +7461,639 @@ function normalizeProduct(
   };
 }
 
+
+async function mapWithConcurrency(
+  items,
+  limit,
+  worker
+)
+{
+  const list =
+  Array.from(
+    items
+    ||
+    []
+  );
+
+  const concurrency =
+  Math.max(
+    1,
+    Math.min(
+      Number(
+        limit
+      )
+      ||
+      1,
+      list.length
+      ||
+      1
+    )
+  );
+
+  let cursor =
+  0;
+
+  const runners =
+  Array.from(
+    {
+      length:
+      concurrency,
+    },
+    async () =>
+    {
+      while (
+        true
+      )
+      {
+        const index =
+        cursor;
+
+        cursor +=
+        1;
+
+        if (
+          index >=
+          list.length
+        )
+        {
+          return;
+        }
+
+        await worker(
+          list[
+            index
+          ],
+          index
+        );
+      }
+    }
+  );
+
+  await Promise.all(
+    runners
+  );
+}
+
+async function loadMainProductImages()
+{
+  state.productImages =
+  {};
+
+  state.productImageMeta =
+  {};
+
+  state.allProductImagesLoaded =
+  false;
+
+  state.productGalleryLoaded =
+  new Set();
+
+  state.productGalleryLoading =
+  new Map();
+
+  const storageItems =
+  [];
+
+  for (
+    const product of
+    state.products
+  )
+  {
+    if (
+      !product.imagen_url
+    )
+    {
+      continue;
+    }
+
+    const normalized =
+    normalizeStoragePath(
+      product.imagen_url
+    );
+
+    const id =
+    Number(
+      product.id
+    );
+
+    if (
+      normalized.kind ===
+      "external"
+    )
+    {
+      state.productImages[
+        id
+      ] =
+      [
+        normalized.value,
+      ];
+
+      state.productImageMeta[
+        id
+      ] =
+      [
+        {
+          id:
+          null,
+
+          product_id:
+          id,
+
+          path:
+          "",
+
+          raw:
+          product.imagen_url,
+
+          url:
+          normalized.value,
+
+          orden:
+          0,
+
+          legacy:
+          true,
+
+          mainOnly:
+          true,
+        },
+      ];
+
+      continue;
+    }
+
+    if (
+      normalized.kind ===
+      "storage"
+    )
+    {
+      storageItems.push(
+        {
+          product:
+          product,
+
+          path:
+          normalized.value,
+        }
+      );
+    }
+  }
+
+  const chunkSize =
+  100;
+
+  for (
+    let start = 0;
+    start < storageItems.length;
+    start += chunkSize
+  )
+  {
+    const chunk =
+    storageItems.slice(
+      start,
+      start +
+      chunkSize
+    );
+
+    const paths =
+    chunk.map(
+      item =>
+      item.path
+    );
+
+    const batch =
+    await supabaseClient
+      .storage
+      .from(
+        CONFIG.storageBucket
+      )
+      .createSignedUrls(
+        paths,
+        CONFIG.signedUrlSeconds
+      );
+
+    if (
+      batch.error
+    )
+    {
+      console.warn(
+        "Firma múltiple de imágenes:",
+        batch.error.message
+      );
+
+      await mapWithConcurrency(
+        chunk,
+        12,
+        async item =>
+        {
+          const resolved =
+          await resolveImageValue(
+            item.path
+          );
+
+          if (
+            !resolved.url
+          )
+          {
+            return;
+          }
+
+          const id =
+          Number(
+            item.product.id
+          );
+
+          state.productImages[
+            id
+          ] =
+          [
+            resolved.url,
+          ];
+
+          state.productImageMeta[
+            id
+          ] =
+          [
+            {
+              id:
+              null,
+
+              product_id:
+              id,
+
+              path:
+              item.path,
+
+              raw:
+              item.product.imagen_url,
+
+              url:
+              resolved.url,
+
+              orden:
+              0,
+
+              legacy:
+              true,
+
+              mainOnly:
+              true,
+            },
+          ];
+        }
+      );
+
+      continue;
+    }
+
+    const signed =
+    batch.data
+    ||
+    [];
+
+    for (
+      let index = 0;
+      index < chunk.length;
+      index += 1
+    )
+    {
+      const item =
+      chunk[
+        index
+      ];
+
+      const signedItem =
+      signed[
+        index
+      ]
+      ||
+      {};
+
+      const url =
+      signedItem.signedUrl
+      ||
+      signedItem.signedURL
+      ||
+      "";
+
+      if (
+        !url
+      )
+      {
+        continue;
+      }
+
+      const id =
+      Number(
+        item.product.id
+      );
+
+      state.productImages[
+        id
+      ] =
+      [
+        url,
+      ];
+
+      state.productImageMeta[
+        id
+      ] =
+      [
+        {
+          id:
+          null,
+
+          product_id:
+          id,
+
+          path:
+          item.path,
+
+          raw:
+          item.product.imagen_url,
+
+          url:
+          url,
+
+          orden:
+          0,
+
+          legacy:
+          true,
+
+          mainOnly:
+          true,
+        },
+      ];
+    }
+  }
+}
+
+async function ensureProductGallery(
+  productId
+)
+{
+  const id =
+  Number(
+    productId
+  );
+
+  if (
+    !id ||
+    state.productGalleryLoaded.has(
+      id
+    )
+  )
+  {
+    return;
+  }
+
+  if (
+    state.productGalleryLoading.has(
+      id
+    )
+  )
+  {
+    return state.productGalleryLoading.get(
+      id
+    );
+  }
+
+  const promise =
+  (
+    async () =>
+    {
+      const result =
+      await supabaseClient
+        .from(
+          CONFIG.productImagesTable
+        )
+        .select(
+          "*"
+        )
+        .eq(
+          "product_id",
+          id
+        )
+        .order(
+          "orden",
+          {
+            ascending:
+            true,
+          }
+        )
+        .order(
+          "id",
+          {
+            ascending:
+            true,
+          }
+        );
+
+      if (
+        result.error
+      )
+      {
+        console.warn(
+          "product_images detalle:",
+          result.error.message
+        );
+
+        state.productGalleryLoaded.add(
+          id
+        );
+
+        return;
+      }
+
+      const rows =
+      result.data
+      ||
+      [];
+
+      if (
+        rows.length === 0
+      )
+      {
+        state.productGalleryLoaded.add(
+          id
+        );
+
+        return;
+      }
+
+      const resolvedRows =
+      [];
+
+      await mapWithConcurrency(
+        rows,
+        8,
+        async row =>
+        {
+          const resolved =
+          await resolveImageValue(
+            row.image_url
+          );
+
+          resolvedRows.push(
+            {
+              row:
+              row,
+
+              resolved:
+              resolved,
+            }
+          );
+        }
+      );
+
+      resolvedRows.sort(
+        (
+          a,
+          b
+        ) =>
+        {
+          const orderDiff =
+          asNumber(
+            a.row.orden,
+            0
+          )
+          -
+          asNumber(
+            b.row.orden,
+            0
+          );
+
+          if (
+            orderDiff !== 0
+          )
+          {
+            return orderDiff;
+          }
+
+          return (
+            asNumber(
+              a.row.id,
+              0
+            )
+            -
+            asNumber(
+              b.row.id,
+              0
+            )
+          );
+        }
+      );
+
+      const urls =
+      [];
+
+      const meta =
+      [];
+
+      for (
+        const item of
+        resolvedRows
+      )
+      {
+        const row =
+        item.row;
+
+        const resolved =
+        item.resolved;
+
+        if (
+          resolved.url &&
+          !urls.includes(
+            resolved.url
+          )
+        )
+        {
+          urls.push(
+            resolved.url
+          );
+        }
+
+        meta.push(
+          {
+            id:
+            row.id,
+
+            product_id:
+            id,
+
+            path:
+            resolved.path
+            ||
+            normalizeStoragePath(
+              row.image_url
+            ).value,
+
+            raw:
+            row.image_url,
+
+            url:
+            resolved.url,
+
+            orden:
+            asNumber(
+              row.orden,
+              0
+            ),
+          }
+        );
+      }
+
+      if (
+        urls.length
+      )
+      {
+        state.productImages[
+          id
+        ] =
+        urls;
+      }
+
+      state.productImageMeta[
+        id
+      ] =
+      meta;
+
+      state.productGalleryLoaded.add(
+        id
+      );
+    }
+  )();
+
+  state.productGalleryLoading.set(
+    id,
+    promise
+  );
+
+  try
+  {
+    await promise;
+  }
+  finally
+  {
+    state.productGalleryLoading.delete(
+      id
+    );
+  }
+
+  if (
+    state.route ===
+    "product" &&
+    Number(
+      state.routePayload?.id
+    ) ===
+    id
+  )
+  {
+    renderCurrentRoute();
+  }
+}
+
 async function loadProductImages()
 {
   state.productImages =
@@ -7446,17 +8139,56 @@ async function loadProductImages()
     return;
   }
 
+  const rows =
+  result.data
+  ||
+  [];
+
+  const resolvedRows =
+  new Array(
+    rows.length
+  );
+
+  await mapWithConcurrency(
+    rows,
+    12,
+    async (
+      row,
+      index
+    ) =>
+    {
+      resolvedRows[
+        index
+      ] =
+      {
+        row:
+        row,
+
+        resolved:
+        await resolveImageValue(
+          row.image_url
+        ),
+      };
+    }
+  );
+
   for (
-    const row of
-    result.data
-    ||
-    []
+    const item of
+    resolvedRows
   )
   {
+    if (
+      !item
+    )
+    {
+      continue;
+    }
+
+    const row =
+    item.row;
+
     const resolved =
-    await resolveImageValue(
-      row.image_url
-    );
+    item.resolved;
 
     const productId =
     asNumber(
@@ -7532,86 +8264,94 @@ async function loadProductImages()
   }
 
   await loadLegacyProductImages();
+
+  state.allProductImagesLoaded =
+  true;
 }
 
 async function loadLegacyProductImages()
 {
-  for (
-    const product of
-    state.products
-  )
-  {
-    const id =
-    Number(
-      product.id
-    );
-
-    const current =
-    state.productImages[
-      id
-    ]
-    ||
-    [];
-
-    if (
-      current.length > 0
-    )
+  const missing =
+  state.products.filter(
+    product =>
     {
-      continue;
-    }
+      const id =
+      Number(
+        product.id
+      );
 
-    if (
-      !product.imagen_url
-    )
-    {
-      continue;
-    }
-
-    const resolved =
-    await resolveImageValue(
-      product.imagen_url
-    );
-
-    if (
-      resolved.url
-    )
-    {
+      const current =
       state.productImages[
         id
-      ] =
-      [
-        resolved.url,
-      ];
+      ]
+      ||
+      [];
 
-      state.productImageMeta[
-        id
-      ] =
-      [
-        {
-          id:
-          null,
-
-          product_id:
-          id,
-
-          path:
-          resolved.path,
-
-          raw:
-          product.imagen_url,
-
-          url:
-          resolved.url,
-
-          orden:
-          0,
-
-          legacy:
-          true,
-        },
-      ];
+      return (
+        current.length === 0 &&
+        Boolean(
+          product.imagen_url
+        )
+      );
     }
-  }
+  );
+
+  await mapWithConcurrency(
+    missing,
+    12,
+    async product =>
+    {
+      const id =
+      Number(
+        product.id
+      );
+
+      const resolved =
+      await resolveImageValue(
+        product.imagen_url
+      );
+
+      if (
+        resolved.url
+      )
+      {
+        state.productImages[
+          id
+        ] =
+        [
+          resolved.url,
+        ];
+
+        state.productImageMeta[
+          id
+        ] =
+        [
+          {
+            id:
+            null,
+
+            product_id:
+            id,
+
+            path:
+            resolved.path,
+
+            raw:
+            product.imagen_url,
+
+            url:
+            resolved.url,
+
+            orden:
+            0,
+
+            legacy:
+            true,
+          },
+        ];
+      }
+    }
+  );
 }
 
 function getProductImages(
@@ -8319,7 +9059,7 @@ async function loadAllData()
       ]
     );
 
-    await loadProductImages();
+    await loadMainProductImages();
 
     await loadSiteCoverUrls();
 
@@ -8526,6 +9266,10 @@ function renderCurrentRoute()
     {
       app.innerHTML =
       renderProductDetailPage(
+        state.routePayload.id
+      );
+
+      ensureProductGallery(
         state.routePayload.id
       );
 
@@ -9910,7 +10654,8 @@ function renderProductCard(
               <img
                 src="${escapeAttribute(image)}"
                 alt="${escapeAttribute(product.nombre)}"
-                loading="lazy">
+                loading="lazy"
+                decoding="async">
             `
             :
             `
@@ -10463,6 +11208,51 @@ function renderCatalogPage()
   const list =
   getCatalogProducts();
 
+  const pageSize =
+  Math.max(
+    1,
+    asNumber(
+      state.catalogPageSize,
+      24
+    )
+  );
+
+  const totalPages =
+  Math.max(
+    1,
+    Math.ceil(
+      list.length /
+      pageSize
+    )
+  );
+
+  state.catalogPage =
+  Math.min(
+    totalPages,
+    Math.max(
+      1,
+      asNumber(
+        state.catalogPage,
+        1
+      )
+    )
+  );
+
+  const pageStart =
+  (
+    state.catalogPage -
+    1
+  )
+  *
+  pageSize;
+
+  const pageItems =
+  list.slice(
+    pageStart,
+    pageStart +
+    pageSize
+  );
+
   const chips =
   [
     "Todos",
@@ -10476,6 +11266,104 @@ function renderCatalogPage()
     "Nicho",
     "Diseñador",
   ];
+
+  const visiblePages =
+  [];
+
+  if (
+    totalPages <=
+    7
+  )
+  {
+    for (
+      let page = 1;
+      page <= totalPages;
+      page += 1
+    )
+    {
+      visiblePages.push(
+        page
+      );
+    }
+  }
+  else
+  {
+    const candidates =
+    new Set(
+      [
+        1,
+        totalPages,
+        state.catalogPage - 2,
+        state.catalogPage - 1,
+        state.catalogPage,
+        state.catalogPage + 1,
+        state.catalogPage + 2,
+      ]
+      .filter(
+        page =>
+        page >= 1 &&
+        page <= totalPages
+      )
+    );
+
+    visiblePages.push(
+      ...Array.from(
+        candidates
+      )
+      .sort(
+        (
+          a,
+          b
+        ) =>
+        a - b
+      )
+    );
+  }
+
+  const pageButtons =
+  [];
+
+  let previousPage =
+  null;
+
+  for (
+    const page of
+    visiblePages
+  )
+  {
+    if (
+      previousPage !== null &&
+      page -
+      previousPage >
+      1
+    )
+    {
+      pageButtons.push(
+        `
+          <span
+            class="catalog-page-info"
+            style="width:auto;margin:0 2px">
+            …
+          </span>
+        `
+      );
+    }
+
+    pageButtons.push(
+      `
+        <button
+          class="catalog-page-btn ${page === state.catalogPage ? "active" : ""}"
+          type="button"
+          data-action="catalog-page"
+          data-page="${page}">
+          ${page}
+        </button>
+      `
+    );
+
+    previousPage =
+    page;
+  }
 
   return `
     <section class="section">
@@ -10493,6 +11381,12 @@ function renderCatalogPage()
             <p class="section-subtitle">
               ${formatInteger(list.length)}
               ${state.language === "en" ? "products" : "productos"}
+              ${list.length
+                ?
+                ` · ${state.language === "en" ? "Page" : "Página"} ${state.catalogPage} ${state.language === "en" ? "of" : "de"} ${totalPages}`
+                :
+                ""
+              }
             </p>
           </div>
         </div>
@@ -10573,7 +11467,7 @@ function renderCatalogPage()
           ?
           `
             <div class="catalog-grid">
-              ${list
+              ${pageItems
                 .map(
                   product =>
                   renderProductCard(
@@ -10583,6 +11477,45 @@ function renderCatalogPage()
                 .join("")
               }
             </div>
+
+            ${totalPages > 1
+              ?
+              `
+                <nav
+                  class="catalog-pagination"
+                  aria-label="${escapeAttribute(state.language === "en" ? "Catalog pages" : "Páginas del catálogo")}">
+
+                  <button
+                    class="catalog-page-btn"
+                    type="button"
+                    data-action="catalog-page"
+                    data-page="${Math.max(1, state.catalogPage - 1)}"
+                    ${state.catalogPage <= 1 ? "disabled" : ""}>
+                    ←
+                  </button>
+
+                  ${pageButtons.join("")}
+
+                  <button
+                    class="catalog-page-btn"
+                    type="button"
+                    data-action="catalog-page"
+                    data-page="${Math.min(totalPages, state.catalogPage + 1)}"
+                    ${state.catalogPage >= totalPages ? "disabled" : ""}>
+                    →
+                  </button>
+
+                  <div class="catalog-page-info">
+                    ${state.language === "en"
+                      ? `Showing ${pageStart + 1}–${Math.min(pageStart + pageSize, list.length)} of ${list.length}`
+                      : `Mostrando ${pageStart + 1}–${Math.min(pageStart + pageSize, list.length)} de ${list.length}`
+                    }
+                  </div>
+                </nav>
+              `
+              :
+              ""
+            }
           `
           :
           `
@@ -10930,7 +11863,8 @@ function renderProductDetailPage(
                 `
                   <img
                     src="${escapeAttribute(mainImage)}"
-                    alt="${escapeAttribute(product.nombre)}">
+                    alt="${escapeAttribute(product.nombre)}"
+                    decoding="async">
                 `
                 :
                 `
@@ -10956,7 +11890,9 @@ function renderProductDetailPage(
                           data-image-url="${escapeAttribute(url)}">
                           <img
                             src="${escapeAttribute(url)}"
-                            alt="">
+                            alt=""
+                            loading="lazy"
+                            decoding="async">
                         </button>
                       `
                     )
@@ -16067,6 +17003,13 @@ async function renderAdminRoute()
   state.admin.currentUser =
   session.user;
 
+  if (
+    !state.allProductImagesLoaded
+  )
+  {
+    await loadProductImages();
+  }
+
   app.innerHTML =
   renderAdminDashboard();
 }
@@ -20340,6 +21283,9 @@ function openImageSearch(
       state.catalogFilter =
       "Todos";
 
+      state.catalogPage =
+      1;
+
       setRoute(
         "catalog"
       );
@@ -20367,6 +21313,9 @@ function openImageSearch(
         element.dataset.filter
         ||
         "Todos";
+
+        state.catalogPage =
+        1;
       }
 
       if (
@@ -20577,7 +21526,36 @@ function openImageSearch(
           ||
           "Todos";
 
+          state.catalogPage =
+          1;
+
           renderCurrentRoute();
+
+          break;
+        }
+
+        case "catalog-page":
+        {
+          state.catalogPage =
+          Math.max(
+            1,
+            asNumber(
+              element.dataset.page,
+              1
+            )
+          );
+
+          renderCurrentRoute();
+
+          window.scrollTo(
+            {
+              top:
+              0,
+
+              behavior:
+              "smooth",
+            }
+          );
 
           break;
         }
@@ -20592,6 +21570,9 @@ function openImageSearch(
 
           state.catalogSort =
           "default";
+
+          state.catalogPage =
+          1;
 
           renderCurrentRoute();
 
@@ -21066,6 +22047,9 @@ function openImageSearch(
           ||
           "default";
 
+          state.catalogPage =
+          1;
+
           renderCurrentRoute();
 
           return;
@@ -21258,6 +22242,9 @@ function openImageSearch(
         {
           state.catalogSearch =
           target.value;
+
+          state.catalogPage =
+          1;
 
           const selectionStart =
           target.selectionStart;
