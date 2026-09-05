@@ -4228,6 +4228,56 @@
       }
     }
 
+
+    /* Video de temporada — administración y preview */
+    .admin-video-preview {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 1px solid var(--line);
+      background: #111;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      margin: 10px 0 14px;
+    }
+
+    .admin-video-preview video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      background: #111;
+    }
+
+    .admin-video-preview span {
+      padding: 20px;
+      color: #aaa;
+      text-align: center;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+
+    .admin-video-source-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+      padding: 7px 9px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--muted);
+      font-size: 8px;
+      letter-spacing: .7px;
+      text-transform: uppercase;
+    }
+
+    .admin-video-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
     /* Forms, checkout y admin */
     .text-input,
     .number-input,
@@ -5841,6 +5891,15 @@ const state =
 
   siteCoverMeta:
   {},
+
+  seasonalVideoMeta:
+  {
+    path:
+    "",
+
+    url:
+    "",
+  },
 
   collectionCoverMeta:
   {},
@@ -8833,6 +8892,61 @@ function getCollectionCoverPath(
   );
 }
 
+
+async function loadSeasonalVideoUrl()
+{
+  state.seasonalVideoMeta =
+  {
+    path:
+    "",
+
+    url:
+    "",
+  };
+
+  const video =
+  getSiteSettingObject(
+    "seasonal_video"
+  );
+
+  const raw =
+  video.path
+  ||
+  video.url
+  ||
+  "";
+
+  if (
+    !raw
+  )
+  {
+    return;
+  }
+
+  state.seasonalVideoMeta =
+  await resolveImageValue(
+    raw
+  );
+}
+
+function getSeasonalVideoUrl()
+{
+  return (
+    state.seasonalVideoMeta?.url
+    ||
+    ""
+  );
+}
+
+function getSeasonalVideoPath()
+{
+  return (
+    state.seasonalVideoMeta?.path
+    ||
+    ""
+  );
+}
+
 async function loadSiteCoverUrls()
 {
   state.siteCoverMeta = {};
@@ -9313,7 +9427,12 @@ async function loadAllData()
 
     await loadMainProductImages();
 
-    await loadSiteCoverUrls();
+    await Promise.all(
+      [
+        loadSiteCoverUrls(),
+        loadSeasonalVideoUrl(),
+      ]
+    );
 
     state.loading =
     false;
@@ -10645,9 +10764,12 @@ function renderSeasonalVideo()
     "seasonal_video"
   );
 
+  const source =
+  getSeasonalVideoUrl();
+
   if (
     video.enabled !== true ||
-    !video.url
+    !source
   )
   {
     return "";
@@ -10669,6 +10791,19 @@ function renderSeasonalVideo()
     :
     "Perfumes de temporada"
   );
+
+  const autoplay =
+  video.autoplay === true;
+
+  const muted =
+  autoplay
+  ?
+  true
+  :
+  video.muted === true;
+
+  const loop =
+  video.loop !== false;
 
   return `
     <section class="seasonal-video">
@@ -10693,7 +10828,10 @@ function renderSeasonalVideo()
               controls
               playsinline
               preload="metadata"
-              src="${escapeAttribute(video.url)}">
+              ${autoplay ? "autoplay" : ""}
+              ${muted ? "muted" : ""}
+              ${loop ? "loop" : ""}
+              src="${escapeAttribute(source)}">
             </video>
           </div>
         </div>
@@ -20824,7 +20962,11 @@ function renderAdminSettings()
           Video de temporada
         </h3>
 
-        <div class="admin-form">
+        <p class="section-subtitle">
+          Podés pegar una URL externa o subir tu propio video desde la computadora. Si subís un archivo, la web lo guarda en Supabase Storage y genera una URL privada al cargar la página.
+        </p>
+
+        <div class="admin-form u-mt-14">
           <label class="admin-check">
             <input
               id="setting-video-enabled"
@@ -20833,16 +20975,111 @@ function renderAdminSettings()
             Activar video
           </label>
 
-          ${renderSettingInput("setting-video-url", "URL del video", video.url || "")}
-          ${renderSettingInput("setting-video-title-es", "Título ES", video.title_es || "Perfumes de temporada")}
-          ${renderSettingInput("setting-video-title-en", "Title EN", video.title_en || "Seasonal Fragrances")}
+          <div class="admin-video-source-badge">
+            ${video.path
+              ? "Archivo subido a Supabase"
+              : video.url
+              ? "URL externa"
+              : "Sin video configurado"
+            }
+          </div>
 
-          <button
-            class="btn"
-            type="button"
-            data-action="admin-save-video-settings">
-            ${escapeHtml(t("admin.save"))}
-          </button>
+          <div class="admin-video-preview">
+            ${getSeasonalVideoUrl()
+              ?
+              `
+                <video
+                  controls
+                  playsinline
+                  preload="metadata"
+                  src="${escapeAttribute(getSeasonalVideoUrl())}">
+                </video>
+              `
+              :
+              `
+                <span>
+                  Todavía no hay un video cargado.<br>
+                  Podés subir un MP4/WebM o guardar una URL externa.
+                </span>
+              `
+            }
+          </div>
+
+          ${renderSettingInput(
+            "setting-video-url",
+            "URL externa del video (opcional)",
+            video.path ? "" : (video.url || "")
+          )}
+
+          <div class="admin-field">
+            <label>
+              Subir tu propio video
+            </label>
+
+            <input
+              id="setting-video-file"
+              class="text-input"
+              type="file"
+              accept="video/mp4,video/webm,video/quicktime"
+              data-admin-seasonal-video-upload>
+
+            <small class="muted">
+              Recomendado: MP4 o WebM. Máximo 50 MB. Para que cargue rápido, conviene un video corto y comprimido.
+            </small>
+          </div>
+
+          ${renderSettingInput(
+            "setting-video-title-es",
+            "Título ES",
+            video.title_es || "Perfumes de temporada"
+          )}
+
+          ${renderSettingInput(
+            "setting-video-title-en",
+            "Title EN",
+            video.title_en || "Seasonal Fragrances"
+          )}
+
+          <label class="admin-check">
+            <input
+              id="setting-video-autoplay"
+              type="checkbox"
+              ${video.autoplay === true ? "checked" : ""}>
+            Reproducir automáticamente
+          </label>
+
+          <label class="admin-check">
+            <input
+              id="setting-video-muted"
+              type="checkbox"
+              ${video.muted === true || video.autoplay === true ? "checked" : ""}>
+            Iniciar silenciado
+          </label>
+
+          <label class="admin-check">
+            <input
+              id="setting-video-loop"
+              type="checkbox"
+              ${video.loop !== false ? "checked" : ""}>
+            Repetir en bucle
+          </label>
+
+          <div class="admin-video-actions">
+            <button
+              class="btn"
+              type="button"
+              data-action="admin-save-video-settings">
+              Guardar configuración / URL
+            </button>
+
+            <button
+              class="btn danger"
+              type="button"
+              data-action="admin-delete-seasonal-video"
+              ${video.path || video.url ? "" : "disabled"}>
+              Quitar video
+            </button>
+          </div>
         </div>
       </div>
 
@@ -21410,34 +21647,473 @@ async function saveGameAdsSettings()
   }
 }
 
-async function saveVideoSettings()
+function sanitizeVideoExtension(
+  file
+)
 {
+  const fileName =
+  String(
+    file?.name
+    ||
+    ""
+  );
+
+  const byName =
+  fileName.includes(".")
+  ?
+  fileName
+  .split(".")
+  .pop()
+  .toLowerCase()
+  .replace(
+    /[^a-z0-9]/g,
+    ""
+  )
+  :
+  "";
+
+  if (
+    ["mp4", "webm", "mov"].includes(
+      byName
+    )
+  )
+  {
+    return byName;
+  }
+
+  if (
+    file?.type === "video/webm"
+  )
+  {
+    return "webm";
+  }
+
+  if (
+    file?.type === "video/quicktime"
+  )
+  {
+    return "mov";
+  }
+
+  return "mp4";
+}
+
+async function uploadSeasonalVideoFile(
+  file
+)
+{
+  if (
+    !file ||
+    !String(
+      file.type
+      ||
+      ""
+    ).startsWith(
+      "video/"
+    )
+  )
+  {
+    throw new Error(
+      "Seleccioná un archivo de video válido."
+    );
+  }
+
+  const maxVideoBytes =
+  50 * 1024 * 1024;
+
+  if (
+    file.size > maxVideoBytes
+  )
+  {
+    throw new Error(
+      "El video puede pesar como máximo 50 MB."
+    );
+  }
+
+  const extension =
+  sanitizeVideoExtension(
+    file
+  );
+
+  const path =
+  "site-media/seasonal/" +
+  makeId(
+    "video"
+  ) +
+  "." +
+  extension;
+
+  const upload =
+  await supabaseClient
+    .storage
+    .from(
+      CONFIG.storageBucket
+    )
+    .upload(
+      path,
+      file,
+      {
+        upsert:
+        false,
+
+        contentType:
+        file.type
+        ||
+        "video/mp4",
+
+        cacheControl:
+        "3600",
+      }
+    );
+
+  if (
+    upload.error
+  )
+  {
+    throw upload.error;
+  }
+
+  const previous =
+  getSiteSettingObject(
+    "seasonal_video"
+  );
+
+  const previousPath =
+  normalizeStoragePath(
+    previous.path
+    ||
+    ""
+  );
+
+  const next =
+  {
+    ...previous,
+
+    enabled:
+    true,
+
+    source_type:
+    "upload",
+
+    path:
+    path,
+
+    url:
+    "",
+
+    title_es:
+    getInputValue(
+      "setting-video-title-es"
+    )
+    ||
+    previous.title_es
+    ||
+    "Perfumes de temporada",
+
+    title_en:
+    getInputValue(
+      "setting-video-title-en"
+    )
+    ||
+    previous.title_en
+    ||
+    "Seasonal Fragrances",
+
+    autoplay:
+    getInputChecked(
+      "setting-video-autoplay"
+    ),
+
+    muted:
+    getInputChecked(
+      "setting-video-muted"
+    ),
+
+    loop:
+    getInputChecked(
+      "setting-video-loop"
+    ),
+  };
+
   try
   {
     await upsertSiteSetting(
       "seasonal_video",
+      next
+    );
+  }
+  catch (
+    error
+  )
+  {
+    await supabaseClient
+      .storage
+      .from(
+        CONFIG.storageBucket
+      )
+      .remove(
+        [
+          path,
+        ]
+      );
+
+    throw error;
+  }
+
+  if (
+    previousPath.kind === "storage" &&
+    previousPath.value &&
+    previousPath.value !== path
+  )
+  {
+    const removeOld =
+    await supabaseClient
+      .storage
+      .from(
+        CONFIG.storageBucket
+      )
+      .remove(
+        [
+          previousPath.value,
+        ]
+      );
+
+    if (
+      removeOld.error
+    )
+    {
+      console.warn(
+        "No se pudo borrar el video anterior:",
+        removeOld.error.message
+      );
+    }
+  }
+
+  await loadSeasonalVideoUrl();
+}
+
+async function deleteSeasonalVideo()
+{
+  try
+  {
+    const current =
+    getSiteSettingObject(
+      "seasonal_video"
+    );
+
+    const currentPath =
+    normalizeStoragePath(
+      current.path
+      ||
+      ""
+    );
+
+    await upsertSiteSetting(
+      "seasonal_video",
       {
+        ...current,
+
         enabled:
-        getInputChecked(
-          "setting-video-enabled"
-        ),
+        false,
+
+        source_type:
+        "",
+
+        path:
+        "",
 
         url:
-        getInputValue(
-          "setting-video-url"
-        ),
-
-        title_es:
-        getInputValue(
-          "setting-video-title-es"
-        ),
-
-        title_en:
-        getInputValue(
-          "setting-video-title-en"
-        ),
+        "",
       }
     );
+
+    if (
+      currentPath.kind === "storage" &&
+      currentPath.value
+    )
+    {
+      const remove =
+      await supabaseClient
+        .storage
+        .from(
+          CONFIG.storageBucket
+        )
+        .remove(
+          [
+            currentPath.value,
+          ]
+        );
+
+      if (
+        remove.error
+      )
+      {
+        console.warn(
+          "No se pudo borrar el video de Storage:",
+          remove.error.message
+        );
+      }
+    }
+
+    await loadSeasonalVideoUrl();
+
+    refreshAdminTab();
+
+    adminMessage(
+      "Video de temporada eliminado.",
+      "ok"
+    );
+  }
+  catch (
+    error
+  )
+  {
+    adminMessage(
+      error.message,
+      "error"
+    );
+  }
+}
+
+async function saveVideoSettings()
+{
+  try
+  {
+    const current =
+    getSiteSettingObject(
+      "seasonal_video"
+    );
+
+    const externalUrl =
+    getInputValue(
+      "setting-video-url"
+    ).trim();
+
+    if (
+      externalUrl &&
+      !/^https?:\/\//i.test(
+        externalUrl
+      )
+    )
+    {
+      throw new Error(
+        "La URL del video debe comenzar con http:// o https://"
+      );
+    }
+
+    const previousPath =
+    normalizeStoragePath(
+      current.path
+      ||
+      ""
+    );
+
+    const useExternalUrl =
+    Boolean(
+      externalUrl
+    );
+
+    const next =
+    {
+      ...current,
+
+      enabled:
+      getInputChecked(
+        "setting-video-enabled"
+      ),
+
+      source_type:
+      useExternalUrl
+      ?
+      "url"
+      :
+      current.path
+      ?
+      "upload"
+      :
+      "",
+
+      path:
+      useExternalUrl
+      ?
+      ""
+      :
+      (
+        current.path
+        ||
+        ""
+      ),
+
+      url:
+      useExternalUrl
+      ?
+      externalUrl
+      :
+      "",
+
+      title_es:
+      getInputValue(
+        "setting-video-title-es"
+      ),
+
+      title_en:
+      getInputValue(
+        "setting-video-title-en"
+      ),
+
+      autoplay:
+      getInputChecked(
+        "setting-video-autoplay"
+      ),
+
+      muted:
+      getInputChecked(
+        "setting-video-muted"
+      ),
+
+      loop:
+      getInputChecked(
+        "setting-video-loop"
+      ),
+    };
+
+    await upsertSiteSetting(
+      "seasonal_video",
+      next
+    );
+
+    if (
+      useExternalUrl &&
+      previousPath.kind === "storage" &&
+      previousPath.value
+    )
+    {
+      const remove =
+      await supabaseClient
+        .storage
+        .from(
+          CONFIG.storageBucket
+        )
+        .remove(
+          [
+            previousPath.value,
+          ]
+        );
+
+      if (
+        remove.error
+      )
+      {
+        console.warn(
+          "No se pudo borrar el video anterior:",
+          remove.error.message
+        );
+      }
+    }
+
+    await loadSeasonalVideoUrl();
+
+    refreshAdminTab();
 
     adminMessage(
       state.language === "en"
@@ -23850,6 +24526,13 @@ function openImageSearch(
           break;
         }
 
+        case "admin-delete-seasonal-video":
+        {
+          await deleteSeasonalVideo();
+
+          break;
+        }
+
         case "admin-save-ai-settings":
         {
           await saveAiSettings();
@@ -24036,6 +24719,51 @@ function openImageSearch(
         )
         {
           toggleShippingFields();
+
+          return;
+        }
+
+        if (
+          target.matches(
+            "[data-admin-seasonal-video-upload]"
+          )
+        )
+        {
+          const file =
+          target.files?.[0];
+
+          if (
+            file
+          )
+          {
+            try
+            {
+              adminMessage(
+                "Subiendo video...",
+                "ok"
+              );
+
+              await uploadSeasonalVideoFile(
+                file
+              );
+
+              refreshAdminTab();
+
+              adminMessage(
+                "Video subido correctamente.",
+                "ok"
+              );
+            }
+            catch (
+              error
+            )
+            {
+              adminMessage(
+                error.message,
+                "error"
+              );
+            }
+          }
 
           return;
         }
