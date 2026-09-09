@@ -5643,6 +5643,11 @@ const CONFIG =
   storageBucket:
   "perfumes",
 
+  // Las imágenes del sitio son públicas. Esto evita URLs firmadas distintas
+  // en cada visita y mejora muchísimo el cache del CDN/navegador.
+  storagePublic:
+  true,
+
   productImagesTable:
   "product_images",
 
@@ -6054,6 +6059,16 @@ const state =
 
     editingProductId:
     null,
+
+    // Admin liviano: nunca renderizamos cientos de filas de una sola vez.
+    productSearch:
+    "",
+
+    productPage:
+    1,
+
+    productPageSize:
+    20,
   },
 
   loading:
@@ -7488,11 +7503,8 @@ async function resolveImageValue(
   )
   {
     return {
-      path:
-      "",
-
-      url:
-      "",
+      path: "",
+      url: "",
     };
   }
 
@@ -7502,14 +7514,37 @@ async function resolveImageValue(
   )
   {
     return {
-      path:
-      "",
-
-      url:
-      normalized.value,
+      path: "",
+      url: normalized.value,
     };
   }
 
+  // Para archivos públicos NO hacemos una petición a Supabase para firmar la URL.
+  // getPublicUrl solamente construye una URL estable, ideal para CDN y browser cache.
+  if (
+    CONFIG.storagePublic === true
+  )
+  {
+    const publicResult =
+    supabaseClient
+      .storage
+      .from(
+        CONFIG.storageBucket
+      )
+      .getPublicUrl(
+        normalized.value
+      );
+
+    return {
+      path: normalized.value,
+      url:
+      publicResult.data?.publicUrl
+      ||
+      "",
+    };
+  }
+
+  // Fallback por si alguna vez volvés a usar un bucket privado.
   const result =
   await supabaseClient
     .storage
@@ -7526,24 +7561,19 @@ async function resolveImageValue(
   )
   {
     console.warn(
-      "No se pudo firmar imagen:",
+      "No se pudo resolver imagen:",
       normalized.value,
       result.error.message
     );
 
     return {
-      path:
-      normalized.value,
-
-      url:
-      "",
+      path: normalized.value,
+      url: "",
     };
   }
 
   return {
-    path:
-    normalized.value,
-
+    path: normalized.value,
     url:
     result.data?.signedUrl
     ||
@@ -7559,7 +7589,7 @@ async function loadProducts()
       "products"
     )
     .select(
-      "*"
+      "id,nombre,marca,precio,ml,stock,categoria,genero,descripcion,salida,corazon,fondo,familia,duracion,proyeccion,recomendacion_uso,estaciones,ocasiones,destacado,nuevo,vendido,tipo_producto,tipo_producto_slug,subcategoria,imagen_url,created_at,new_until"
     )
     .order(
       "id",
@@ -7846,24 +7876,14 @@ async function mapWithConcurrency(
 
 async function loadMainProductImages()
 {
-  state.productImages =
-  {};
+  state.productImages = {};
+  state.productImageMeta = {};
+  state.allProductImagesLoaded = false;
+  state.productGalleryLoaded = new Set();
+  state.productGalleryLoading = new Map();
 
-  state.productImageMeta =
-  {};
-
-  state.allProductImagesLoaded =
-  false;
-
-  state.productGalleryLoaded =
-  new Set();
-
-  state.productGalleryLoading =
-  new Map();
-
-  const storageItems =
-  [];
-
+  // Solo resolvemos la imagen principal guardada en products.imagen_url.
+  // Con bucket público esto NO hace requests para firmar URLs.
   for (
     const product of
     state.products
@@ -7876,266 +7896,41 @@ async function loadMainProductImages()
       continue;
     }
 
-    const normalized =
-    normalizeStoragePath(
+    const resolved =
+    await resolveImageValue(
       product.imagen_url
     );
+
+    if (
+      !resolved.url
+    )
+    {
+      continue;
+    }
 
     const id =
     Number(
       product.id
     );
 
-    if (
-      normalized.kind ===
-      "external"
-    )
-    {
-      state.productImages[
-        id
-      ] =
-      [
-        normalized.value,
-      ];
+    state.productImages[id] =
+    [
+      resolved.url,
+    ];
 
-      state.productImageMeta[
-        id
-      ] =
-      [
-        {
-          id:
-          null,
-
-          product_id:
-          id,
-
-          path:
-          "",
-
-          raw:
-          product.imagen_url,
-
-          url:
-          normalized.value,
-
-          orden:
-          0,
-
-          legacy:
-          true,
-
-          mainOnly:
-          true,
-        },
-      ];
-
-      continue;
-    }
-
-    if (
-      normalized.kind ===
-      "storage"
-    )
-    {
-      storageItems.push(
-        {
-          product:
-          product,
-
-          path:
-          normalized.value,
-        }
-      );
-    }
-  }
-
-  const chunkSize =
-  100;
-
-  for (
-    let start = 0;
-    start < storageItems.length;
-    start += chunkSize
-  )
-  {
-    const chunk =
-    storageItems.slice(
-      start,
-      start +
-      chunkSize
-    );
-
-    const paths =
-    chunk.map(
-      item =>
-      item.path
-    );
-
-    const batch =
-    await supabaseClient
-      .storage
-      .from(
-        CONFIG.storageBucket
-      )
-      .createSignedUrls(
-        paths,
-        CONFIG.signedUrlSeconds
-      );
-
-    if (
-      batch.error
-    )
-    {
-      console.warn(
-        "Firma múltiple de imágenes:",
-        batch.error.message
-      );
-
-      await mapWithConcurrency(
-        chunk,
-        12,
-        async item =>
-        {
-          const resolved =
-          await resolveImageValue(
-            item.path
-          );
-
-          if (
-            !resolved.url
-          )
-          {
-            return;
-          }
-
-          const id =
-          Number(
-            item.product.id
-          );
-
-          state.productImages[
-            id
-          ] =
-          [
-            resolved.url,
-          ];
-
-          state.productImageMeta[
-            id
-          ] =
-          [
-            {
-              id:
-              null,
-
-              product_id:
-              id,
-
-              path:
-              item.path,
-
-              raw:
-              item.product.imagen_url,
-
-              url:
-              resolved.url,
-
-              orden:
-              0,
-
-              legacy:
-              true,
-
-              mainOnly:
-              true,
-            },
-          ];
-        }
-      );
-
-      continue;
-    }
-
-    const signed =
-    batch.data
-    ||
-    [];
-
-    for (
-      let index = 0;
-      index < chunk.length;
-      index += 1
-    )
-    {
-      const item =
-      chunk[
-        index
-      ];
-
-      const signedItem =
-      signed[
-        index
-      ]
-      ||
-      {};
-
-      const url =
-      signedItem.signedUrl
-      ||
-      signedItem.signedURL
-      ||
-      "";
-
-      if (
-        !url
-      )
+    state.productImageMeta[id] =
+    [
       {
-        continue;
-      }
-
-      const id =
-      Number(
-        item.product.id
-      );
-
-      state.productImages[
-        id
-      ] =
-      [
-        url,
-      ];
-
-      state.productImageMeta[
-        id
-      ] =
-      [
-        {
-          id:
-          null,
-
-          product_id:
-          id,
-
-          path:
-          item.path,
-
-          raw:
-          item.product.imagen_url,
-
-          url:
-          url,
-
-          orden:
-          0,
-
-          legacy:
-          true,
-
-          mainOnly:
-          true,
-        },
-      ];
-    }
+        id: null,
+        product_id: id,
+        path: resolved.path,
+        raw: product.imagen_url,
+        url: resolved.url,
+        orden: 0,
+        legacy: true,
+        mainOnly: true,
+      },
+    ];
   }
 }
 
@@ -8179,7 +7974,7 @@ async function ensureProductGallery(
           CONFIG.productImagesTable
         )
         .select(
-          "*"
+          "id,product_id,image_url,orden"
         )
         .eq(
           "product_id",
@@ -8418,7 +8213,7 @@ async function loadProductImages()
       CONFIG.productImagesTable
     )
     .select(
-      "*"
+      "id,product_id,image_url,orden"
     )
     .order(
       "orden",
@@ -9057,7 +8852,7 @@ async function loadCollections()
       "thematic_collections"
     )
     .select(
-      "*"
+      "id,slug,nombre_es,nombre_en,descripcion_es,descripcion_en,tipo,estacion,ocasion,emoji,orden,activo"
     )
     .eq(
       "activo",
@@ -9106,7 +8901,7 @@ async function loadGameConfigs()
       "aroma_games"
     )
     .select(
-      "*"
+      "id,tipo,tiempo_limite,piezas,diferencias,orden,activo"
     )
     .eq(
       "activo",
@@ -9149,7 +8944,7 @@ async function loadProductTypes()
       "product_types"
     )
     .select(
-      "*"
+      "slug,nombre_es,nombre_en,grupo,orden,activo"
     )
     .eq(
       "activo",
@@ -9192,7 +8987,7 @@ async function loadComboTemplates()
       "combo_templates"
     )
     .select(
-      "*"
+      "id,nombre,tipo,max_productos,activo"
     )
     .eq(
       "activo",
@@ -9228,7 +9023,7 @@ async function loadComboProducts()
       "combo_products"
     )
     .select(
-      "*"
+      "combo_id,product_id,ml_opciones,activo"
     )
     .eq(
       "activo",
@@ -9264,7 +9059,7 @@ async function loadDecantSizes()
       "decant_sizes"
     )
     .select(
-      "*"
+      "ml,factor,costo_envase,orden,activo"
     )
     .eq(
       "activo",
@@ -9349,7 +9144,7 @@ async function loadGiftOptions()
       "gift_options"
     )
     .select(
-      "*"
+      "slug,nombre_es,nombre_en,precio_adicional,max_productos,orden,activo"
     )
     .eq(
       "activo",
@@ -11179,7 +10974,9 @@ function renderPromoBuilders()
                 <div class="promo-visual" aria-hidden="true">
                   <img
                     src="${escapeAttribute(decantImage)}"
-                    alt="">
+                    alt=""
+                    loading="lazy"
+                    decoding="async">
                 </div>
               `
               :
@@ -11218,7 +11015,9 @@ function renderPromoBuilders()
                 <div class="promo-visual" aria-hidden="true">
                   <img
                     src="${escapeAttribute(giftImage)}"
-                    alt="">
+                    alt=""
+                    loading="lazy"
+                    decoding="async">
                 </div>
               `
               :
@@ -11281,7 +11080,9 @@ function renderAdvisorTeaser()
               <div class="advisor-teaser-visual has-cover" aria-hidden="true">
                 <img
                   src="${escapeAttribute(getSiteCoverUrl("advisor"))}"
-                  alt="">
+                  alt=""
+                  loading="lazy"
+                  decoding="async">
               </div>
             `
             :
@@ -12045,7 +11846,9 @@ function renderCollectionsPage()
                             <div class="promo-visual">
                               <img
                                 src="${escapeAttribute(image)}"
-                                alt="${escapeAttribute(product.nombre)}">
+                                alt="${escapeAttribute(product.nombre)}"
+                                loading="lazy"
+                                decoding="async">
                             </div>
                           `
                           :
@@ -14559,7 +14362,9 @@ function renderDecantProductRow(
           `
             <img
               src="${escapeAttribute(image)}"
-              alt="${escapeAttribute(product.nombre)}">
+              alt="${escapeAttribute(product.nombre)}"
+              loading="lazy"
+              decoding="async">
           `
           :
           "✦"
@@ -15048,7 +14853,9 @@ function renderGiftProductRow(
           `
             <img
               src="${escapeAttribute(image)}"
-              alt="${escapeAttribute(product.nombre)}">
+              alt="${escapeAttribute(product.nombre)}"
+              loading="lazy"
+              decoding="async">
           `
           :
           "✦"
@@ -18441,6 +18248,71 @@ async function getCurrentSession()
   null;
 }
 
+async function reloadAdminData()
+{
+  adminMessage(
+    state.language === "en" ? "Refreshing..." : "Actualizando...",
+    "ok"
+  );
+
+  try
+  {
+    switch (state.admin.tab)
+    {
+      case "settings":
+        await loadSiteSettings();
+        await Promise.all([
+          loadSiteCoverUrls(),
+          loadSeasonalVideoUrl(),
+        ]);
+        break;
+
+      case "collections":
+        await Promise.all([
+          loadCollections(),
+          loadSiteSettings(),
+        ]);
+        await loadSiteCoverUrls();
+        break;
+
+      case "games":
+        await Promise.all([
+          loadGameConfigs(),
+          loadDailyLeaderboard(),
+          loadGameRewardsAdmin(),
+        ]);
+        break;
+
+      case "stats":
+        await Promise.all([
+          loadPopularity(),
+          loadDailyLeaderboard(),
+        ]);
+        break;
+
+      case "new":
+      case "products":
+      default:
+        await loadProducts();
+        break;
+    }
+
+    refreshAdminTab();
+
+    adminMessage(
+      state.language === "en" ? "Updated." : "Actualizado.",
+      "ok"
+    );
+  }
+  catch (error)
+  {
+    adminMessage(
+      error?.message || String(error),
+      "error"
+    );
+  }
+}
+
 async function renderAdminRoute()
 {
   const app =
@@ -18448,65 +18320,54 @@ async function renderAdminRoute()
     "app"
   );
 
-  if (
-    !app
-  )
+  if (!app)
   {
     return;
   }
 
-  app.innerHTML =
-  `
-    <div class="loading-state">
-      <div class="spinner"></div>
-      <p>
-        ${escapeHtml(t("common.loading"))}
-      </p>
-    </div>
-  `;
+  // Si ya tenemos una sesión admin válida en memoria, no volvemos a pedirla
+  // en cada render del panel. onAuthStateChange mantiene este valor al día.
+  let user =
+  state.admin.currentUser;
 
-  const session =
-  await getCurrentSession();
-
-  if (
-    !session
-  )
+  if (!user)
   {
-    state.admin.currentUser =
-    null;
-
     app.innerHTML =
-    renderAdminLogin();
+    `
+      <div class="loading-state">
+        <div class="spinner"></div>
+        <p>${escapeHtml(t("common.loading"))}</p>
+      </div>
+    `;
 
-    return;
+    const session =
+    await getCurrentSession();
+
+    if (!session)
+    {
+      state.admin.currentUser = null;
+      app.innerHTML = renderAdminLogin();
+      return;
+    }
+
+    user = session.user;
   }
 
-  if (
-    !isAdminEmail(
-      session.user?.email
-    )
-  )
+  if (!isAdminEmail(user?.email))
   {
     await supabaseClient.auth.signOut();
-
-    state.admin.currentUser =
-    null;
+    state.admin.currentUser = null;
 
     app.innerHTML =
     `
       <section class="section">
         <div class="container">
           <div class="empty-state">
-            <h3>
-              ${state.language === "en" ? "Access denied" : "Sin permisos"}
-            </h3>
-
-            <p>
-              ${state.language === "en"
-                ? "This account is not authorized to manage AromaLParfum."
-                : "Esta cuenta no está autorizada para administrar AromaLParfum."
-              }
-            </p>
+            <h3>${state.language === "en" ? "Access denied" : "Sin permisos"}</h3>
+            <p>${state.language === "en"
+              ? "This account is not authorized to manage AromaLParfum."
+              : "Esta cuenta no está autorizada para administrar AromaLParfum."
+            }</p>
           </div>
         </div>
       </section>
@@ -18515,18 +18376,12 @@ async function renderAdminRoute()
     return;
   }
 
-  state.admin.currentUser =
-  session.user;
+  state.admin.currentUser = user;
 
-  if (
-    !state.allProductImagesLoaded
-  )
-  {
-    await loadProductImages();
-  }
-
-  app.innerHTML =
-  renderAdminDashboard();
+  // IMPORTANTE: no llamamos loadProductImages() acá. Esa función trae todas
+  // las fotos secundarias de todo el catálogo. El admin usa la foto principal
+  // ya cargada y consulta la galería de un producto solo cuando se solicita.
+  app.innerHTML = renderAdminDashboard();
 }
 
 function renderAdminLogin()
@@ -18989,9 +18844,184 @@ function adminMessage(
   `;
 }
 
+function getAdminFilteredProducts()
+{
+  const term =
+  normalizeText(
+    state.admin.productSearch
+  );
+
+  if (!term)
+  {
+    return state.products;
+  }
+
+  return state.products.filter(
+    product =>
+    {
+      const haystack =
+      normalizeText(
+        [
+          product.id,
+          product.nombre,
+          product.marca,
+          product.categoria,
+          product.genero,
+          product.tipo_producto,
+          product.ml,
+        ]
+        .filter(value => value !== null && value !== undefined)
+        .join(" ")
+      );
+
+      return haystack.includes(term);
+    }
+  );
+}
+
+function getAdminProductPageData()
+{
+  const list =
+  getAdminFilteredProducts();
+
+  const pageSize =
+  Math.max(
+    10,
+    asNumber(
+      state.admin.productPageSize,
+      20
+    )
+  );
+
+  const totalPages =
+  Math.max(
+    1,
+    Math.ceil(
+      list.length / pageSize
+    )
+  );
+
+  state.admin.productPage =
+  Math.min(
+    totalPages,
+    Math.max(
+      1,
+      asNumber(
+        state.admin.productPage,
+        1
+      )
+    )
+  );
+
+  const start =
+  (state.admin.productPage - 1) * pageSize;
+
+  return {
+    list,
+    pageSize,
+    totalPages,
+    start,
+    items: list.slice(start, start + pageSize),
+  };
+}
+
+function renderAdminProductPagination(totalPages)
+{
+  if (totalPages <= 1)
+  {
+    return "";
+  }
+
+  const page =
+  state.admin.productPage;
+
+  const buttons =
+  [];
+
+  const from =
+  Math.max(1, page - 2);
+
+  const to =
+  Math.min(totalPages, page + 2);
+
+  for (let current = from; current <= to; current += 1)
+  {
+    buttons.push(
+      `
+        <button
+          class="btn small ${current === page ? "" : "outline"}"
+          type="button"
+          data-action="admin-product-page"
+          data-page="${current}">
+          ${current}
+        </button>
+      `
+    );
+  }
+
+  return `
+    <div style="display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:14px">
+      <button
+        class="btn outline small"
+        type="button"
+        data-action="admin-product-page"
+        data-page="${Math.max(1, page - 1)}"
+        ${page <= 1 ? "disabled" : ""}>
+        ‹
+      </button>
+
+      ${buttons.join("")}
+
+      <button
+        class="btn outline small"
+        type="button"
+        data-action="admin-product-page"
+        data-page="${Math.min(totalPages, page + 1)}"
+        ${page >= totalPages ? "disabled" : ""}>
+        ›
+      </button>
+
+      <span style="font-size:11px;color:var(--muted);margin-left:6px">
+        ${page} / ${totalPages}
+      </span>
+    </div>
+  `;
+}
+
 function renderAdminProducts()
 {
+  const page =
+  getAdminProductPageData();
+
   return `
+    <div class="settings-card" style="margin-bottom:12px;padding:12px">
+      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+        <input
+          id="adminProductSearch"
+          class="text-input"
+          type="search"
+          autocomplete="off"
+          placeholder="${state.language === "en" ? "Search product, brand, category or ID..." : "Buscar perfume, marca, categoría o ID..."}"
+          value="${escapeAttribute(state.admin.productSearch)}"
+          style="flex:1;min-width:220px">
+
+        <select
+          id="adminProductPageSize"
+          class="select-input"
+          style="width:auto;min-width:95px">
+          ${[20, 40, 80].map(size => `
+            <option value="${size}" ${size === Number(state.admin.productPageSize) ? "selected" : ""}>
+              ${size} / pág.
+            </option>
+          `).join("")}
+        </select>
+
+        <span style="font-size:11px;color:var(--muted)">
+          ${formatInteger(page.list.length)} ${state.language === "en" ? "results" : "resultados"}
+        </span>
+      </div>
+    </div>
+
     <div class="admin-table-wrap">
       <table class="admin-table">
         <thead>
@@ -19021,18 +19051,15 @@ function renderAdminProducts()
         </thead>
 
         <tbody>
-          ${state.products
-            .map(
-              product =>
-              renderAdminProductRow(
-                product
-              )
-            )
+          ${page.items
+            .map(product => renderAdminProductRow(product))
             .join("")
           }
         </tbody>
       </table>
     </div>
+
+    ${renderAdminProductPagination(page.totalPages)}
   `;
 }
 
@@ -19042,14 +19069,8 @@ function renderAdminProductRow(
 {
   return `
     <tr data-product-row="${product.id}">
-      <td>
-        ${renderAdminPhotos(product)}
-
-        <input
-          type="file"
-          accept="image/*"
-          multiple
-          data-admin-upload="${product.id}">
+      <td data-admin-photo-cell="${product.id}">
+        ${renderAdminPhotoCell(product)}
       </td>
 
       <td>
@@ -19210,93 +19231,133 @@ function renderAdminProductRow(
   `;
 }
 
+function renderAdminPhotoCell(product)
+{
+  return `
+    ${renderAdminPhotos(product)}
+
+    <input
+      type="file"
+      accept="image/*"
+      multiple
+      data-admin-upload="${product.id}">
+  `;
+}
+
+function updateAdminPhotoCell(productId)
+{
+  const id =
+  Number(productId);
+
+  const product =
+  getProductById(id);
+
+  const cell =
+  document.querySelector(
+    `[data-admin-photo-cell="${id}"]`
+  );
+
+  if (product && cell)
+  {
+    cell.innerHTML =
+    renderAdminPhotoCell(product);
+  }
+}
+
 function renderAdminPhotos(
   product
 )
 {
+  const id =
+  Number(product.id);
+
   const meta =
-  state.productImageMeta[
-    product.id
-  ]
+  state.productImageMeta[id]
   ||
   [];
 
-  if (
-    meta.length === 0
-  )
-  {
-    return `
-      <div class="admin-photo-list">
-        <span style="font-size:9px;color:var(--muted)">
-          ${state.language === "en" ? "No photos" : "Sin fotos"}
-        </span>
-      </div>
-    `;
-  }
+  const galleryLoaded =
+  state.productGalleryLoaded.has(id);
+
+  const loading =
+  state.productGalleryLoading.has(id);
+
+  const visibleMeta =
+  galleryLoaded
+  ? meta
+  : meta.slice(0, 1);
 
   return `
     <div class="admin-photo-list">
-      ${meta
-        .map(
-          (
-            image,
-            index
-          ) =>
-          `
-            <div class="admin-photo">
-              ${image.url
-                ?
-                `
-                  <img
-                    src="${escapeAttribute(image.url)}"
-                    alt="">
-                `
-                :
-                ""
-              }
+      ${visibleMeta.length
+        ? visibleMeta.map(
+            (image, index) =>
+            `
+              <div class="admin-photo">
+                ${image.url
+                  ? `
+                    <img
+                      src="${escapeAttribute(image.url)}"
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                      fetchpriority="low">
+                  `
+                  : ""
+                }
 
-              ${image.id
-                ?
-                `
-                  <button
-                    type="button"
-                    title="${escapeAttribute(t("admin.delete"))}"
-                    data-action="admin-delete-photo"
-                    data-image-id="${image.id}"
-                    data-product-id="${product.id}"
-                    data-storage-path="${escapeAttribute(image.path || "")}">
-                    ×
-                  </button>
-                `
-                :
-                ""
-              }
+                ${image.id && galleryLoaded
+                  ? `
+                    <button
+                      type="button"
+                      title="${escapeAttribute(t("admin.delete"))}"
+                      data-action="admin-delete-photo"
+                      data-image-id="${image.id}"
+                      data-product-id="${product.id}"
+                      data-storage-path="${escapeAttribute(image.path || "")}">
+                      ×
+                    </button>
+                  `
+                  : ""
+                }
 
-              ${index === 0
-                ?
-                `
-                  <span
-                    style="
-                      position:absolute;
-                      left:2px;
-                      bottom:2px;
-                      background:var(--dark);
-                      color:#fff;
-                      font-size:7px;
-                      padding:2px 4px;
-                    ">
-                    MAIN
-                  </span>
-                `
-                :
-                ""
-              }
-            </div>
-          `
-        )
-        .join("")
+                ${index === 0
+                  ? `
+                    <span
+                      style="position:absolute;left:2px;bottom:2px;background:var(--dark);color:#fff;font-size:7px;padding:2px 4px">
+                      MAIN
+                    </span>
+                  `
+                  : ""
+                }
+              </div>
+            `
+          ).join("")
+        : `
+          <span style="font-size:9px;color:var(--muted)">
+            ${state.language === "en" ? "No photos" : "Sin fotos"}
+          </span>
+        `
       }
     </div>
+
+    ${!galleryLoaded
+      ? `
+        <button
+          class="btn outline small"
+          style="margin-top:5px;width:100%"
+          type="button"
+          data-action="admin-load-gallery"
+          data-product-id="${product.id}"
+          ${loading ? "disabled" : ""}>
+          ${loading
+            ? (state.language === "en" ? "Loading..." : "Cargando...")
+            : (state.language === "en" ? "Manage photos" : "Gestionar fotos")
+          }
+        </button>
+      `
+      : ""
+    }
   `;
 }
 
@@ -19775,6 +19836,25 @@ function filterProductPayload(
       "corazon",
       "fondo",
       "familia",
+      "marca",
+      "duracion",
+      "proyeccion",
+      "recomendacion_uso",
+      "estaciones",
+      "ocasiones",
+      "tipo_producto",
+      "tipo_producto_slug",
+      "subcategoria",
+      "destacado",
+      "nuevo",
+      "vendido",
+      "created_by_ai",
+      "descripcion_en",
+      "salida_en",
+      "corazon_en",
+      "fondo_en",
+      "familia_en",
+      "new_until",
     ]
   );
 
@@ -20065,7 +20145,7 @@ async function createProductFromAdmin()
       payload
     )
     .select(
-      "*"
+      "id,nombre,marca,precio,ml,stock,categoria,genero,descripcion,salida,corazon,fondo,familia,duracion,proyeccion,recomendacion_uso,estaciones,ocasiones,destacado,nuevo,vendido,tipo_producto,tipo_producto_slug,subcategoria,imagen_url,created_at,new_until"
     )
     .single();
 
@@ -20094,6 +20174,14 @@ async function createProductFromAdmin()
     result.data
   );
 
+  // Lo ponemos en memoria antes de subir fotos para que la primera imagen
+  // pueda fijarse como imagen_url principal sin recargar todo el catálogo.
+  if (!state.products.some(item => Number(item.id) === Number(product.id)))
+  {
+    state.products.push(product);
+    state.products.sort((a, b) => Number(a.id) - Number(b.id));
+  }
+
   const files =
   Array.from(
     document.getElementById(
@@ -20114,6 +20202,9 @@ async function createProductFromAdmin()
         files,
         {
           quiet:
+          true,
+
+          deferReload:
           true,
         }
       );
@@ -20137,14 +20228,27 @@ async function createProductFromAdmin()
     }
   }
 
-  await loadProducts();
-
-  await loadProductImages();
+  // Ya tenemos la fila creada: la agregamos localmente y evitamos volver a
+  // descargar todo products + product_images.
+  if (!state.products.some(item => Number(item.id) === Number(product.id)))
+  {
+    state.products.push(product);
+    state.products.sort((a, b) => Number(a.id) - Number(b.id));
+  }
 
   state.admin.tab =
   "products";
 
-  renderCurrentRoute();
+  state.admin.productPage =
+  Math.max(
+    1,
+    Math.ceil(
+      getAdminFilteredProducts().length /
+      Math.max(10, Number(state.admin.productPageSize) || 20)
+    )
+  );
+
+  refreshAdminTab();
 
   adminMessage(
     t(
@@ -20308,7 +20412,7 @@ async function saveAdminProduct(
       )
     )
     .select(
-      "*"
+      "id,nombre,marca,precio,ml,stock,categoria,genero,descripcion,salida,corazon,fondo,familia,duracion,proyeccion,recomendacion_uso,estaciones,ocasiones,destacado,nuevo,vendido,tipo_producto,tipo_producto_slug,subcategoria,imagen_url,created_at,new_until"
     )
     .single();
 
@@ -20345,8 +20449,8 @@ async function saveAdminProduct(
     );
   }
 
-  refreshAdminTab();
-
+  // Los inputs ya contienen los datos guardados; no recreamos toda la tabla.
+  // Así tampoco se pierden cambios todavía no guardados en otras filas.
   adminMessage(
     t(
       "admin.updated"
@@ -20480,9 +20584,15 @@ async function deleteAdminProduct(
 
   saveLocalState();
 
-  await loadProducts();
+  state.products =
+  state.products.filter(
+    item => Number(item.id) !== Number(product.id)
+  );
 
-  await loadProductImages();
+  delete state.productImages[product.id];
+  delete state.productImageMeta[product.id];
+  state.productGalleryLoaded.delete(product.id);
+  state.productGalleryLoading.delete(product.id);
 
   refreshAdminTab();
 
@@ -20531,6 +20641,191 @@ function sanitizeFileExtension(
   "jpg";
 }
 
+async function optimizeImageForUpload(
+  file,
+  options = {}
+)
+{
+  if (
+    !file ||
+    !String(file.type || "").startsWith("image/")
+  )
+  {
+    return file;
+  }
+
+  // No convertimos SVG ni GIF para no romper vectores o animaciones.
+  if (
+    file.type === "image/svg+xml" ||
+    file.type === "image/gif"
+  )
+  {
+    return file;
+  }
+
+  const maxWidth =
+  Math.max(320, Number(options.maxWidth) || 1200);
+
+  const maxHeight =
+  Math.max(320, Number(options.maxHeight) || 1400);
+
+  const quality =
+  Math.min(0.92, Math.max(0.60, Number(options.quality) || 0.82));
+
+  let source = null;
+  let width = 0;
+  let height = 0;
+  let cleanup = () => {};
+
+  try
+  {
+    if ("createImageBitmap" in window)
+    {
+      try
+      {
+        const bitmap =
+        await createImageBitmap(file);
+
+        source = bitmap;
+        width = bitmap.width;
+        height = bitmap.height;
+        cleanup = () => bitmap.close?.();
+      }
+      catch (error)
+      {
+        // Safari / formatos especiales: usamos Image como fallback.
+      }
+    }
+
+    if (!source)
+    {
+      const objectUrl =
+      URL.createObjectURL(file);
+
+      const image =
+      await new Promise(
+        (resolve, reject) =>
+        {
+          const element =
+          new Image();
+
+          element.onload =
+          () => resolve(element);
+
+          element.onerror =
+          () => reject(new Error("No se pudo procesar la imagen."));
+
+          element.src =
+          objectUrl;
+        }
+      );
+
+      source = image;
+      width = image.naturalWidth || image.width;
+      height = image.naturalHeight || image.height;
+      cleanup = () => URL.revokeObjectURL(objectUrl);
+    }
+
+    if (!width || !height)
+    {
+      cleanup();
+      return file;
+    }
+
+    const scale =
+    Math.min(
+      1,
+      maxWidth / width,
+      maxHeight / height
+    );
+
+    const targetWidth =
+    Math.max(1, Math.round(width * scale));
+
+    const targetHeight =
+    Math.max(1, Math.round(height * scale));
+
+    const canvas =
+    document.createElement("canvas");
+
+    canvas.width =
+    targetWidth;
+
+    canvas.height =
+    targetHeight;
+
+    const context =
+    canvas.getContext("2d", { alpha: true });
+
+    if (!context)
+    {
+      cleanup();
+      return file;
+    }
+
+    context.drawImage(
+      source,
+      0,
+      0,
+      targetWidth,
+      targetHeight
+    );
+
+    const blob =
+    await new Promise(
+      resolve =>
+      canvas.toBlob(
+        resolve,
+        "image/webp",
+        quality
+      )
+    );
+
+    cleanup();
+
+    // Si el navegador no pudo generar WebP o queda más pesado, conservamos original.
+    if (
+      !blob ||
+      blob.size >= file.size
+    )
+    {
+      return file;
+    }
+
+    const baseName =
+    String(file.name || "imagen")
+      .replace(/\.[^.]+$/, "")
+      .replace(/[^a-zA-Z0-9_-]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+    ||
+    "imagen";
+
+    return new File(
+      [blob],
+      `${baseName}.webp`,
+      {
+        type: "image/webp",
+        lastModified: Date.now(),
+      }
+    );
+  }
+  catch (error)
+  {
+    try
+    {
+      cleanup();
+    }
+    catch (_) {}
+
+    console.warn(
+      "No se pudo optimizar la imagen; se sube el original:",
+      error
+    );
+
+    return file;
+  }
+}
+
 async function uploadSingleProductImage(
   productId,
   file,
@@ -20572,9 +20867,19 @@ async function uploadSingleProductImage(
     );
   }
 
+  const uploadFile =
+  await optimizeImageForUpload(
+    file,
+    {
+      maxWidth: 1000,
+      maxHeight: 1200,
+      quality: 0.82,
+    }
+  );
+
   const extension =
   sanitizeFileExtension(
-    file
+    uploadFile
   );
 
   const path =
@@ -20599,13 +20904,16 @@ async function uploadSingleProductImage(
     )
     .upload(
       path,
-      file,
+      uploadFile,
       {
         upsert:
         false,
 
         contentType:
-        file.type,
+        uploadFile.type,
+
+        cacheControl:
+        "31536000",
       }
     );
 
@@ -20638,7 +20946,7 @@ async function uploadSingleProductImage(
       }
     )
     .select(
-      "*"
+      "id,product_id,image_url,orden"
     )
     .single();
 
@@ -20669,6 +20977,9 @@ async function uploadProductImages(
   options = {}
 )
 {
+  const id =
+  Number(productId);
+
   const list =
   Array.from(
     files
@@ -20676,54 +20987,128 @@ async function uploadProductImages(
     []
   );
 
-  if (
-    list.length === 0
-  )
+  if (list.length === 0)
   {
     return;
   }
 
-  const current =
-  state.productImageMeta[
-    Number(
-      productId
-    )
-  ]
-  ||
-  [];
+  // Consultamos la galería únicamente de ESTE producto para mantener el orden.
+  await ensureProductGallery(id);
 
-  let order =
+  const current =
+  (state.productImageMeta[id] || [])
+  .filter(Boolean);
+
+  const baseOrder =
   current.length;
 
-  for (
-    const file of
-    list
-  )
+  const created =
+  new Array(list.length);
+
+  // Tres subidas simultáneas: suficientemente rápido sin saturar navegador/Storage.
+  await mapWithConcurrency(
+    list,
+    3,
+    async (file, index) =>
+    {
+      created[index] =
+      await uploadSingleProductImage(
+        id,
+        file,
+        baseOrder + index
+      );
+    }
+  );
+
+  const addedMeta =
+  [];
+
+  for (const relation of created.filter(Boolean))
   {
-    await uploadSingleProductImage(
-      productId,
-      file,
-      order
+    const resolved =
+    await resolveImageValue(
+      relation.image_url
     );
 
-    order +=
-    1;
+    addedMeta.push(
+      {
+        id: relation.id,
+        product_id: id,
+        path: resolved.path || relation.image_url,
+        raw: relation.image_url,
+        url: resolved.url,
+        orden: asNumber(relation.orden, 0),
+      }
+    );
   }
 
-  await loadProductImages();
+  const combined =
+  [
+    ...current,
+    ...addedMeta,
+  ]
+  .filter((item, index, array) =>
+    array.findIndex(other =>
+      (item.id && other.id === item.id) ||
+      (!item.id && !other.id && other.path === item.path)
+    ) === index
+  )
+  .sort((a, b) =>
+    asNumber(a.orden, 0) - asNumber(b.orden, 0)
+  );
+
+  state.productImageMeta[id] =
+  combined;
+
+  state.productImages[id] =
+  combined
+  .map(item => item.url)
+  .filter(Boolean);
+
+  state.productGalleryLoaded.add(id);
+
+  // Un producto nuevo necesita una imagen principal persistente para que el
+  // catálogo público pueda cargarla sin consultar product_images completo.
+  const product =
+  getProductById(id);
 
   if (
-    !options.quiet
+    product &&
+    !product.imagen_url &&
+    addedMeta[0]?.path
   )
   {
-    refreshAdminTab();
+    const mainPath =
+    addedMeta[0].path;
 
+    const mainUpdate =
+    await supabaseClient
+      .from("products")
+      .update({ imagen_url: mainPath })
+      .eq("id", id);
+
+    if (mainUpdate.error)
+    {
+      console.warn(
+        "No se pudo fijar imagen principal:",
+        mainUpdate.error.message
+      );
+    }
+    else
+    {
+      product.imagen_url = mainPath;
+      product.img = addedMeta[0].url || product.img;
+    }
+  }
+
+  updateAdminPhotoCell(id);
+
+  if (!options.quiet)
+  {
     adminMessage(
       state.language === "en"
-      ?
-      "Photos uploaded successfully."
-      :
-      "Fotos subidas correctamente.",
+      ? "Photos uploaded successfully."
+      : "Fotos subidas correctamente.",
       "ok"
     );
   }
@@ -20735,87 +21120,84 @@ async function deleteAdminPhoto(
   storagePath
 )
 {
+  const id =
+  Number(productId);
+
   const confirmed =
   window.confirm(
     state.language === "en"
-    ?
-    "Delete this photo?"
-    :
-    "¿Eliminar esta foto?"
+    ? "Delete this photo?"
+    : "¿Eliminar esta foto?"
   );
 
-  if (
-    !confirmed
-  )
+  if (!confirmed)
   {
     return;
   }
 
   const relation =
   await supabaseClient
-    .from(
-      CONFIG.productImagesTable
-    )
+    .from(CONFIG.productImagesTable)
     .delete()
-    .eq(
-      "id",
-      Number(
-        imageId
-      )
-    );
+    .eq("id", Number(imageId));
 
-  if (
-    relation.error
-  )
+  if (relation.error)
   {
-    adminMessage(
-      relation.error.message,
-      "error"
-    );
-
+    adminMessage(relation.error.message, "error");
     return;
   }
 
-  if (
-    storagePath &&
-    !/^https?:\/\//i.test(
-      storagePath
-    )
-  )
+  if (storagePath && !/^https?:\/\//i.test(storagePath))
   {
     const storage =
     await supabaseClient
       .storage
-      .from(
-        CONFIG.storageBucket
-      )
-      .remove(
-        [
-          storagePath,
-        ]
-      );
+      .from(CONFIG.storageBucket)
+      .remove([storagePath]);
 
-    if (
-      storage.error
-    )
+    if (storage.error)
     {
-      console.warn(
-        "Storage remove:",
-        storage.error.message
-      );
+      console.warn("Storage remove:", storage.error.message);
     }
   }
 
-  await loadProductImages();
+  const meta =
+  (state.productImageMeta[id] || [])
+  .filter(item => Number(item.id) !== Number(imageId));
 
-  refreshAdminTab();
+  state.productImageMeta[id] = meta;
+  state.productImages[id] = meta.map(item => item.url).filter(Boolean);
+  state.productGalleryLoaded.add(id);
+
+  const product =
+  getProductById(id);
+
+  if (product && storagePath && product.imagen_url === storagePath)
+  {
+    const nextPath =
+    meta.find(item => item.path)?.path
+    ||
+    null;
+
+    const mainUpdate =
+    await supabaseClient
+      .from("products")
+      .update({ imagen_url: nextPath })
+      .eq("id", id);
+
+    if (!mainUpdate.error)
+    {
+      product.imagen_url = nextPath || "";
+      product.img = meta.find(item => item.url)?.url || "";
+    }
+  }
+
+  updateAdminPhotoCell(id);
 
   adminMessage(
     state.language === "en"
-    ?
-    "Photo deleted."
-    :
-    "Foto eliminada.",
+    ? "Photo deleted."
+    : "Foto eliminada.",
     "ok"
   );
 }
@@ -21404,7 +21786,7 @@ async function upsertSiteSetting(
       }
     )
     .select(
-      "*"
+      "key,value"
     )
     .single();
 
@@ -21762,7 +22144,7 @@ async function uploadSeasonalVideoFile(
         "video/mp4",
 
         cacheControl:
-        "3600",
+        "31536000",
       }
     );
 
@@ -22244,9 +22626,19 @@ async function uploadSiteCoverFile(
     slot
   );
 
+  const uploadFile =
+  await optimizeImageForUpload(
+    file,
+    {
+      maxWidth: 1600,
+      maxHeight: 1200,
+      quality: 0.82,
+    }
+  );
+
   const extension =
   sanitizeFileExtension(
-    file
+    uploadFile
   );
 
   const path =
@@ -22265,10 +22657,11 @@ async function uploadSiteCoverFile(
     )
     .upload(
       path,
-      file,
+      uploadFile,
       {
         upsert: false,
-        contentType: file.type,
+        contentType: uploadFile.type,
+        cacheControl: "31536000",
       }
     );
 
@@ -22690,7 +23083,7 @@ async function saveAdminCollection(
       )
     )
     .select(
-      "*"
+      "id,slug,nombre_es,nombre_en,descripcion_es,descripcion_en,tipo,estacion,ocasion,emoji,orden,activo"
     )
     .single();
 
@@ -24372,13 +24765,33 @@ function openImageSearch(
 
         case "admin-reload":
         {
-          await loadAllData();
+          await reloadAdminData();
+          break;
+        }
 
-          state.route =
-          "admin";
+        case "admin-product-page":
+        {
+          state.admin.productPage =
+          Math.max(
+            1,
+            Number(element.dataset.page) || 1
+          );
 
-          renderCurrentRoute();
+          refreshAdminTab();
+          break;
+        }
 
+        case "admin-load-gallery":
+        {
+          const productId =
+          Number(element.dataset.productId);
+
+          element.disabled = true;
+          element.textContent =
+          state.language === "en" ? "Loading..." : "Cargando...";
+
+          await ensureProductGallery(productId);
+          updateAdminPhotoCell(productId);
           break;
         }
 
@@ -24698,6 +25111,21 @@ function openImageSearch(
         }
 
         if (
+          target.id === "adminProductPageSize"
+        )
+        {
+          state.admin.productPageSize =
+          Math.max(
+            10,
+            Number(target.value) || 20
+          );
+
+          state.admin.productPage = 1;
+          refreshAdminTab();
+          return;
+        }
+
+        if (
           target.id === "giftOption"
         )
         {
@@ -24922,6 +25350,36 @@ function openImageSearch(
       {
         const target =
         event.target;
+
+        if (
+          target.id === "adminProductSearch"
+        )
+        {
+          state.admin.productSearch =
+          target.value;
+
+          state.admin.productPage = 1;
+
+          const selectionStart = target.selectionStart;
+          const selectionEnd = target.selectionEnd;
+
+          refreshAdminTab();
+
+          const fresh =
+          document.getElementById("adminProductSearch");
+
+          if (fresh)
+          {
+            fresh.focus();
+            try
+            {
+              fresh.setSelectionRange(selectionStart, selectionEnd);
+            }
+            catch (_) {}
+          }
+
+          return;
+        }
 
         if (
           target.id === "catalogSearch"
