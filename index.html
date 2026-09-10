@@ -5643,10 +5643,10 @@ const CONFIG =
   storageBucket:
   "perfumes",
 
-  // Las imágenes del sitio son públicas. Esto evita URLs firmadas distintas
-  // en cada visita y mejora muchísimo el cache del CDN/navegador.
+  // Modo automático: si el bucket es público usa URLs públicas estables.
+  // Si sigue privado, cae automáticamente a URLs firmadas en lote.
   storagePublic:
-  true,
+  "auto",
 
   productImagesTable:
   "product_images",
@@ -7488,96 +7488,261 @@ function normalizeStoragePath(
   }
 }
 
-async function resolveImageValue(
-  raw
-)
+const STORAGE_MODE_CACHE_KEY = "alp_storage_mode_v2";
+const SIGNED_IMAGE_CACHE_KEY = "alp_signed_images_v2";
+let runtimeStorageMode = null;
+
+function publicStorageUrl(path)
 {
-  const normalized =
-  normalizeStoragePath(
-    raw
-  );
+  const result =
+  supabaseClient
+    .storage
+    .from(CONFIG.storageBucket)
+    .getPublicUrl(path);
+
+  return result.data?.publicUrl || "";
+}
+
+function readStorageModeCache()
+{
+  try
+  {
+    const parsed = JSON.parse(
+      localStorage.getItem(STORAGE_MODE_CACHE_KEY) || "null"
+    );
+
+    if (
+      parsed &&
+      (parsed.mode === "public" || parsed.mode === "private") &&
+      Number(parsed.expiresAt || 0) > Date.now()
+    )
+    {
+      return parsed.mode;
+    }
+  }
+  catch (_) {}
+
+  return null;
+}
+
+function writeStorageModeCache(mode)
+{
+  try
+  {
+    localStorage.setItem(
+      STORAGE_MODE_CACHE_KEY,
+      JSON.stringify({
+        mode,
+        expiresAt: Date.now() + 6 * 60 * 60 * 1000,
+      })
+    );
+  }
+  catch (_) {}
+}
+
+function readSignedImageCache()
+{
+  try
+  {
+    const parsed = JSON.parse(
+      localStorage.getItem(SIGNED_IMAGE_CACHE_KEY) || "{}"
+    );
+
+    return parsed && typeof parsed === "object" ? parsed : {};
+  }
+  catch (_)
+  {
+    return {};
+  }
+}
+
+function getCachedSignedUrl(path)
+{
+  const cache = readSignedImageCache();
+  const item = cache[path];
 
   if (
-    normalized.kind ===
-    "empty"
+    item &&
+    item.url &&
+    Number(item.expiresAt || 0) > Date.now() + 5 * 60 * 1000
   )
   {
-    return {
-      path: "",
-      url: "",
-    };
+    return item.url;
   }
 
-  if (
-    normalized.kind ===
-    "external"
-  )
+  if (item)
   {
-    return {
-      path: "",
-      url: normalized.value,
-    };
+    delete cache[path];
+    try
+    {
+      localStorage.setItem(SIGNED_IMAGE_CACHE_KEY, JSON.stringify(cache));
+    }
+    catch (_) {}
   }
 
-  // Para archivos públicos NO hacemos una petición a Supabase para firmar la URL.
-  // getPublicUrl solamente construye una URL estable, ideal para CDN y browser cache.
-  if (
-    CONFIG.storagePublic === true
-  )
+  return "";
+}
+
+function cacheSignedUrl(path, url)
+{
+  if (!path || !url)
   {
-    const publicResult =
-    supabaseClient
-      .storage
-      .from(
-        CONFIG.storageBucket
-      )
-      .getPublicUrl(
-        normalized.value
-      );
-
-    return {
-      path: normalized.value,
-      url:
-      publicResult.data?.publicUrl
-      ||
-      "",
-    };
+    return;
   }
 
-  // Fallback por si alguna vez volvés a usar un bucket privado.
+  const cache = readSignedImageCache();
+
+  cache[path] = {
+    url,
+    expiresAt:
+      Date.now() +
+      Math.max(60, Number(CONFIG.signedUrlSeconds || 604800) - 600) * 1000,
+  };
+
+  // Evita que localStorage crezca indefinidamente.
+  const entries = Object.entries(cache);
+
+  if (entries.length > 1000)
+  {
+    entries
+      .sort((a, b) => Number(b[1]?.expiresAt || 0) - Number(a[1]?.expiresAt || 0))
+      .slice(1000)
+      .forEach(([key]) => delete cache[key]);
+  }
+
+  try
+  {
+    localStorage.setItem(SIGNED_IMAGE_CACHE_KEY, JSON.stringify(cache));
+  }
+  catch (_) {}
+}
+
+async function detectStorageMode(samplePath)
+{
+  if (runtimeStorageMode)
+  {
+    return runtimeStorageMode;
+  }
+
+  if (CONFIG.storagePublic === true)
+  {
+    runtimeStorageMode = "public";
+    return runtimeStorageMode;
+  }
+
+  if (CONFIG.storagePublic === false)
+  {
+    runtimeStorageMode = "private";
+    return runtimeStorageMode;
+  }
+
+  const cached = readStorageModeCache();
+
+  if (cached)
+  {
+    runtimeStorageMode = cached;
+    return runtimeStorageMode;
+  }
+
+  if (!samplePath)
+  {
+    runtimeStorageMode = "private";
+    return runtimeStorageMode;
+  }
+
+  const url = publicStorageUrl(samplePath);
+
+  try
+  {
+    // Solo una comprobación pequeña por algunas horas; no descarga la imagen completa.
+    const response = await fetch(url, {
+      method: "HEAD",
+      cache: "no-store",
+    });
+
+    runtimeStorageMode = response.ok ? "public" : "private";
+  }
+  catch (_)
+  {
+    runtimeStorageMode = "private";
+  }
+
+  writeStorageModeCache(runtimeStorageMode);
+  return runtimeStorageMode;
+}
+
+async function createCachedSignedUrl(path)
+{
+  const cached = getCachedSignedUrl(path);
+
+  if (cached)
+  {
+    return cached;
+  }
+
   const result =
   await supabaseClient
     .storage
-    .from(
-      CONFIG.storageBucket
-    )
-    .createSignedUrl(
-      normalized.value,
-      CONFIG.signedUrlSeconds
-    );
+    .from(CONFIG.storageBucket)
+    .createSignedUrl(path, CONFIG.signedUrlSeconds);
 
-  if (
-    result.error
-  )
+  if (result.error)
   {
     console.warn(
-      "No se pudo resolver imagen:",
-      normalized.value,
+      "No se pudo firmar imagen:",
+      path,
       result.error.message
     );
 
+    return "";
+  }
+
+  const url = result.data?.signedUrl || "";
+
+  if (url)
+  {
+    cacheSignedUrl(path, url);
+  }
+
+  return url;
+}
+
+async function resolveImageValue(raw)
+{
+  const normalized = normalizeStoragePath(raw);
+
+  if (normalized.kind === "empty")
+  {
+    return { path: "", url: "" };
+  }
+
+  if (normalized.kind === "external")
+  {
+    return { path: "", url: normalized.value };
+  }
+
+  const path = normalized.value;
+  const cachedSigned = getCachedSignedUrl(path);
+
+  // Si ya tuvimos que firmar esta imagen, reutilizamos esa URL directamente.
+  if (cachedSigned)
+  {
+    return { path, url: cachedSigned };
+  }
+
+  const mode = await detectStorageMode(path);
+
+  if (mode === "public")
+  {
     return {
-      path: normalized.value,
-      url: "",
+      path,
+      url: publicStorageUrl(path),
     };
   }
 
   return {
-    path: normalized.value,
-    url:
-    result.data?.signedUrl
-    ||
-    "",
+    path,
+    url: await createCachedSignedUrl(path),
   };
 }
 
@@ -8003,55 +8168,168 @@ async function loadMainProductImages()
   state.productGalleryLoaded = new Set();
   state.productGalleryLoading = new Map();
 
-  // Solo resolvemos la imagen principal guardada en products.imagen_url.
-  // Con bucket público esto NO hace requests para firmar URLs.
-  for (
-    const product of
-    state.products
-  )
+  const storageItems = [];
+
+  for (const product of state.products)
   {
-    if (
-      !product.imagen_url
-    )
+    if (!product.imagen_url)
     {
       continue;
     }
 
-    const resolved =
-    await resolveImageValue(
-      product.imagen_url
-    );
+    const normalized = normalizeStoragePath(product.imagen_url);
+    const id = Number(product.id);
 
-    if (
-      !resolved.url
-    )
+    if (normalized.kind === "external")
     {
-      continue;
-    }
-
-    const id =
-    Number(
-      product.id
-    );
-
-    state.productImages[id] =
-    [
-      resolved.url,
-    ];
-
-    state.productImageMeta[id] =
-    [
-      {
+      state.productImages[id] = [normalized.value];
+      state.productImageMeta[id] = [{
         id: null,
         product_id: id,
-        path: resolved.path,
+        path: "",
         raw: product.imagen_url,
-        url: resolved.url,
+        url: normalized.value,
         orden: 0,
         legacy: true,
         mainOnly: true,
-      },
-    ];
+      }];
+      continue;
+    }
+
+    if (normalized.kind !== "storage" || !normalized.value)
+    {
+      continue;
+    }
+
+    const cached = getCachedSignedUrl(normalized.value);
+
+    if (cached)
+    {
+      state.productImages[id] = [cached];
+      state.productImageMeta[id] = [{
+        id: null,
+        product_id: id,
+        path: normalized.value,
+        raw: product.imagen_url,
+        url: cached,
+        orden: 0,
+        legacy: true,
+        mainOnly: true,
+      }];
+      continue;
+    }
+
+    storageItems.push({
+      id,
+      path: normalized.value,
+      raw: product.imagen_url,
+    });
+  }
+
+  if (!storageItems.length)
+  {
+    return;
+  }
+
+  const mode = await detectStorageMode(storageItems[0].path);
+
+  if (mode === "public")
+  {
+    for (const item of storageItems)
+    {
+      const url = publicStorageUrl(item.path);
+
+      if (!url)
+      {
+        continue;
+      }
+
+      state.productImages[item.id] = [url];
+      state.productImageMeta[item.id] = [{
+        id: null,
+        product_id: item.id,
+        path: item.path,
+        raw: item.raw,
+        url,
+        orden: 0,
+        legacy: true,
+        mainOnly: true,
+      }];
+    }
+
+    return;
+  }
+
+  // Bucket privado: firmamos en LOTES, no una petición por cada producto.
+  const chunkSize = 100;
+
+  for (let start = 0; start < storageItems.length; start += chunkSize)
+  {
+    const chunk = storageItems.slice(start, start + chunkSize);
+    const paths = chunk.map(item => item.path);
+
+    const batch =
+    await supabaseClient
+      .storage
+      .from(CONFIG.storageBucket)
+      .createSignedUrls(paths, CONFIG.signedUrlSeconds);
+
+    if (batch.error)
+    {
+      console.warn("Firma múltiple de imágenes:", batch.error.message);
+
+      // Fallback controlado solo para este lote.
+      await mapWithConcurrency(chunk, 6, async item =>
+      {
+        const url = await createCachedSignedUrl(item.path);
+
+        if (!url)
+        {
+          return;
+        }
+
+        state.productImages[item.id] = [url];
+        state.productImageMeta[item.id] = [{
+          id: null,
+          product_id: item.id,
+          path: item.path,
+          raw: item.raw,
+          url,
+          orden: 0,
+          legacy: true,
+          mainOnly: true,
+        }];
+      });
+
+      continue;
+    }
+
+    const rows = batch.data || [];
+
+    rows.forEach((signed, index) =>
+    {
+      const item = chunk[index];
+      const url = signed?.signedUrl || signed?.url || "";
+
+      if (!item || !url)
+      {
+        return;
+      }
+
+      cacheSignedUrl(item.path, url);
+
+      state.productImages[item.id] = [url];
+      state.productImageMeta[item.id] = [{
+        id: null,
+        product_id: item.id,
+        path: item.path,
+        raw: item.raw,
+        url,
+        orden: 0,
+        legacy: true,
+        mainOnly: true,
+      }];
+    });
   }
 }
 
@@ -25780,6 +26058,48 @@ function openImageSearch(
       window.uploadProductImages =
       uploadProductImages;
     }
+
+    // Última defensa: si una URL pública falla porque el bucket sigue privado,
+    // se firma únicamente ESA imagen visible y se reemplaza sin romper la tarjeta.
+    document.addEventListener(
+      "error",
+      async event =>
+      {
+        const image = event.target;
+
+        if (
+          !(image instanceof HTMLImageElement) ||
+          image.dataset.alpStorageRetry === "1"
+        )
+        {
+          return;
+        }
+
+        const normalized = normalizeStoragePath(
+          image.currentSrc || image.src || ""
+        );
+
+        if (
+          normalized.kind !== "storage" ||
+          !normalized.value
+        )
+        {
+          return;
+        }
+
+        image.dataset.alpStorageRetry = "1";
+
+        const signed = await createCachedSignedUrl(normalized.value);
+
+        if (signed)
+        {
+          runtimeStorageMode = "private";
+          writeStorageModeCache("private");
+          image.src = signed;
+        }
+      },
+      true
+    );
 
     async function initialize()
     {
