@@ -7581,54 +7581,175 @@ async function resolveImageValue(
   };
 }
 
-async function loadProducts()
+const PRODUCT_COLUMNS_CACHE_KEY = "alp_product_columns_v4";
+
+const PRODUCT_COLUMNS_PREFERRED = [
+  "id",
+  "nombre",
+  "marca",
+  "precio",
+  "ml",
+  "stock",
+  "categoria",
+  "genero",
+  "descripcion",
+  "salida",
+  "corazon",
+  "fondo",
+  "familia",
+  "duracion",
+  "proyeccion",
+  "recomendacion_uso",
+  "estaciones",
+  "ocasiones",
+  "destacado",
+  "nuevo",
+  "vendido",
+  "tipo_producto",
+  "tipo_producto_slug",
+  "subcategoria",
+  "imagen_url",
+  "created_by_ai",
+  "descripcion_en",
+  "salida_en",
+  "corazon_en",
+  "fondo_en",
+  "familia_en",
+  "created_at",
+  "new_until",
+];
+
+const PRODUCT_COLUMNS_CORE = new Set([
+  "nombre",
+  "precio",
+  "ml",
+  "categoria",
+  "genero",
+  "stock",
+  "imagen_url",
+  "descripcion",
+  "salida",
+  "corazon",
+  "fondo",
+  "familia",
+]);
+
+function getCachedProductColumns()
 {
-  const result =
-  await supabaseClient
-    .from(
-      "products"
-    )
-    .select(
-      "id,nombre,marca,precio,ml,stock,categoria,genero,descripcion,salida,corazon,fondo,familia,duracion,proyeccion,recomendacion_uso,estaciones,ocasiones,destacado,nuevo,vendido,tipo_producto,tipo_producto_slug,subcategoria,imagen_url,created_at,new_until"
-    )
-    .order(
-      "id",
-      {
-        ascending:
-        true,
-      }
+  try
+  {
+    const parsed = JSON.parse(
+      localStorage.getItem(PRODUCT_COLUMNS_CACHE_KEY) || "null"
     );
 
-  if (
-    result.error
-  )
+    if (
+      Array.isArray(parsed) &&
+      parsed.includes("id") &&
+      parsed.includes("nombre") &&
+      parsed.includes("precio")
+    )
+    {
+      return parsed.filter(Boolean);
+    }
+  }
+  catch (error)
   {
-    throw result.error;
+    console.warn("No se pudo leer la caché de columnas:", error);
   }
 
-  const rows =
-  result.data
-  ||
-  [];
+  return null;
+}
 
-  state.productColumns =
-  new Set(
-    rows.length
-    ?
-    Object.keys(
-      rows[0]
-    )
-    :
-    []
-  );
+function cacheProductColumns(columns)
+{
+  try
+  {
+    if (Array.isArray(columns) && columns.length)
+    {
+      localStorage.setItem(
+        PRODUCT_COLUMNS_CACHE_KEY,
+        JSON.stringify(columns)
+      );
+    }
+  }
+  catch (error)
+  {
+    console.warn("No se pudo guardar la caché de columnas:", error);
+  }
+}
 
-  state.products =
-  rows.map(
-    row =>
-    normalizeProduct(
-      row
-    )
-  );
+function getProductSelectColumns()
+{
+  const current = Array.from(state.productColumns || []);
+
+  if (current.length)
+  {
+    return current.join(",");
+  }
+
+  const cached = getCachedProductColumns();
+
+  return (cached || PRODUCT_COLUMNS_PREFERRED).join(",");
+}
+
+async function loadProducts()
+{
+  let columns =
+    getCachedProductColumns() ||
+    PRODUCT_COLUMNS_PREFERRED.slice();
+
+  let result =
+    await supabaseClient
+      .from("products")
+      .select(columns.join(","))
+      .order("id", { ascending: true });
+
+  // Si el esquema real no coincide con la lista optimizada, hacemos UNA
+  // detección automática con select('*'), guardamos las columnas reales y
+  // desde la siguiente carga volvemos a una selección explícita.
+  if (result.error)
+  {
+    console.warn(
+      "La lista optimizada de columnas no coincide con products. Detectando esquema real una vez:",
+      result.error.message
+    );
+
+    const fallback =
+      await supabaseClient
+        .from("products")
+        .select("*")
+        .order("id", { ascending: true });
+
+    if (fallback.error)
+    {
+      throw fallback.error;
+    }
+
+    result = fallback;
+
+    const firstRow = (fallback.data || [])[0];
+
+    if (firstRow)
+    {
+      columns = Object.keys(firstRow);
+      cacheProductColumns(columns);
+    }
+  }
+
+  const rows = result.data || [];
+
+  if (rows.length)
+  {
+    const realColumns = Object.keys(rows[0]);
+    state.productColumns = new Set(realColumns);
+    cacheProductColumns(realColumns);
+  }
+  else
+  {
+    state.productColumns = new Set(columns);
+  }
+
+  state.products = rows.map(row => normalizeProduct(row));
 }
 
 function normalizeProduct(
@@ -19873,13 +19994,9 @@ function filterProductPayload(
   )
   {
     if (
-      state.productColumns.has(
-        key
-      )
-      ||
-      alwaysSafe.has(
-        key
-      )
+      state.productColumns.size
+      ? state.productColumns.has(key)
+      : PRODUCT_COLUMNS_CORE.has(key)
     )
     {
       clean[
@@ -20145,7 +20262,7 @@ async function createProductFromAdmin()
       payload
     )
     .select(
-      "id,nombre,marca,precio,ml,stock,categoria,genero,descripcion,salida,corazon,fondo,familia,duracion,proyeccion,recomendacion_uso,estaciones,ocasiones,destacado,nuevo,vendido,tipo_producto,tipo_producto_slug,subcategoria,imagen_url,created_at,new_until"
+      getProductSelectColumns()
     )
     .single();
 
@@ -20412,7 +20529,7 @@ async function saveAdminProduct(
       )
     )
     .select(
-      "id,nombre,marca,precio,ml,stock,categoria,genero,descripcion,salida,corazon,fondo,familia,duracion,proyeccion,recomendacion_uso,estaciones,ocasiones,destacado,nuevo,vendido,tipo_producto,tipo_producto_slug,subcategoria,imagen_url,created_at,new_until"
+      getProductSelectColumns()
     )
     .single();
 
