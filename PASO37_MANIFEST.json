@@ -1,0 +1,29 @@
+{
+  "step": 37,
+  "base": "Paso 36 validado por el usuario",
+  "purpose": "Separar el monolito JavaScript por responsabilidad sin cambiar la lógica funcional.",
+  "active_js_modules_in_order": [
+    "config.js",
+    "core.js",
+    "products.js",
+    "supabase-data.js",
+    "store.js",
+    "cart.js",
+    "builders.js",
+    "games.js",
+    "advisor.js",
+    "admin.js",
+    "events.js"
+  ],
+  "legacy_bundle_loaded": false,
+  "rollback_files": [
+    "backup/index_original.html",
+    "backup/app_paso36.js"
+  ],
+  "notes": [
+    "La tienda y /admin/ conservan data-entry store/admin.",
+    "Los módulos siguen siendo scripts clásicos ordenados para preservar compatibilidad durante la migración.",
+    "app.js queda como marcador legacy y ya no es referenciado por los HTML.",
+    "Paso posterior: reducir qué módulos carga /admin/ y eliminar lógica legacy de juegos/descuentos."
+  ]
+}
