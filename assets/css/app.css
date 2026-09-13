@@ -4537,3 +4537,405 @@
     min-height:210px;
   }
 }
+
+/* =========================================================
+   HOME V2 — PASO 38
+   Merchandising dinámico desde Supabase
+========================================================= */
+
+.merch-hero {
+  position:relative;
+  min-height:560px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  background:
+    radial-gradient(circle at 78% 25%, rgba(255,255,255,.10), transparent 30%),
+    linear-gradient(135deg, #17120e 0%, #2a2019 48%, #8d6b42 100%);
+  color:#fff;
+}
+
+.merch-hero-media,
+.merch-hero-media picture,
+.merch-hero-media img {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+.merch-hero-media img {
+  object-fit:cover;
+  object-position:center;
+}
+
+.merch-hero-shade {
+  position:absolute;
+  inset:0;
+  background:linear-gradient(90deg, rgba(13,10,8,.86) 0%, rgba(13,10,8,.62) 46%, rgba(13,10,8,.12) 100%);
+}
+
+.merch-hero-inner {
+  position:relative;
+  z-index:2;
+  width:100%;
+}
+
+.merch-hero-copy {
+  max-width:680px;
+  padding:88px 0;
+}
+
+.merch-hero-copy .eyebrow {
+  color:rgba(255,255,255,.78);
+}
+
+.merch-hero-copy h1 {
+  margin:8px 0 18px;
+  max-width:760px;
+  font-size:clamp(42px,6vw,82px);
+  line-height:.98;
+  letter-spacing:-.045em;
+}
+
+.merch-hero-copy > p:not(.eyebrow) {
+  max-width:610px;
+  margin:0 0 26px;
+  color:rgba(255,255,255,.82);
+  font-size:16px;
+  line-height:1.7;
+}
+
+.merch-hero-actions {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.merch-hero .btn.secondary {
+  border-color:rgba(255,255,255,.45);
+  color:#fff;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(12px);
+}
+
+.weekly-fragrance-card {
+  display:grid;
+  grid-template-columns:minmax(300px,42%) minmax(0,1fr);
+  min-height:500px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:var(--card);
+}
+
+.weekly-fragrance-media {
+  min-height:500px;
+  display:grid;
+  place-items:center;
+  padding:42px;
+  background:linear-gradient(145deg, #f4f0e9, #e7ded1);
+}
+
+.weekly-fragrance-media img {
+  display:block;
+  width:100%;
+  height:100%;
+  max-height:410px;
+  object-fit:contain;
+}
+
+.weekly-fragrance-fallback {
+  text-align:center;
+  font-size:18px;
+  font-weight:700;
+}
+
+.weekly-fragrance-copy {
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding:clamp(28px,5vw,70px);
+}
+
+.weekly-fragrance-copy h2 {
+  margin:6px 0 6px;
+  font-size:clamp(34px,4.4vw,60px);
+  line-height:1.02;
+  letter-spacing:-.035em;
+}
+
+.weekly-fragrance-brand {
+  margin:0 0 22px;
+  color:var(--muted);
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+}
+
+.weekly-fragrance-subtitle {
+  margin:0 0 10px;
+  font-size:18px;
+  font-weight:650;
+}
+
+.weekly-fragrance-description {
+  margin:0;
+  max-width:650px;
+  color:var(--muted);
+  line-height:1.75;
+}
+
+.weekly-fragrance-meta {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:22px 0 30px;
+}
+
+.weekly-fragrance-meta span {
+  padding:7px 10px;
+  border:1px solid var(--line);
+  background:var(--bg-soft);
+  font-size:11px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+}
+
+.weekly-fragrance-bottom {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.weekly-fragrance-bottom strong {
+  font-size:26px;
+  letter-spacing:-.02em;
+}
+
+.home-campaign-section {
+  padding-top:18px;
+}
+
+.campaign-editorial {
+  display:grid;
+  grid-template-columns:minmax(0,1fr);
+  border:1px solid var(--line);
+  background:var(--card);
+  overflow:hidden;
+}
+
+.campaign-editorial.has-media {
+  grid-template-columns:minmax(300px,46%) minmax(0,1fr);
+}
+
+.campaign-editorial-media {
+  min-height:360px;
+  background:#eee9e2;
+}
+
+.campaign-editorial-media picture,
+.campaign-editorial-media img {
+  display:block;
+  width:100%;
+  height:100%;
+}
+
+.campaign-editorial-media img {
+  object-fit:cover;
+}
+
+.campaign-editorial-copy {
+  padding:clamp(28px,5vw,62px);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:flex-start;
+}
+
+.campaign-editorial-copy h2 {
+  margin:5px 0 14px;
+  max-width:700px;
+  font-size:clamp(30px,4vw,52px);
+  line-height:1.03;
+  letter-spacing:-.035em;
+}
+
+.campaign-editorial-copy > p:not(.eyebrow) {
+  margin:0 0 12px;
+  max-width:650px;
+  color:var(--muted);
+  line-height:1.7;
+}
+
+.campaign-editorial-subtitle {
+  color:var(--ink) !important;
+  font-size:16px;
+  font-weight:700;
+}
+
+.campaign-badge {
+  display:inline-flex;
+  margin:8px 0 20px;
+  padding:7px 10px;
+  border:1px solid var(--line);
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.11em;
+}
+
+.campaign-editorial-actions {
+  margin-top:8px;
+}
+
+.home-campaign-products {
+  margin-top:18px;
+}
+
+.home-secondary-banner-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:14px;
+}
+
+.home-secondary-banner {
+  position:relative;
+  min-height:300px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:linear-gradient(145deg, #ece5db, #d8c6af);
+}
+
+.home-secondary-banner-media,
+.home-secondary-banner-media picture,
+.home-secondary-banner-media img {
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+}
+
+.home-secondary-banner-media img {
+  object-fit:cover;
+}
+
+.home-secondary-banner-shade {
+  position:absolute;
+  inset:0;
+  background:linear-gradient(0deg, rgba(13,10,8,.75), rgba(13,10,8,.08) 72%);
+}
+
+.home-secondary-banner:not(.has-media) .home-secondary-banner-shade {
+  background:linear-gradient(0deg, rgba(13,10,8,.12), rgba(13,10,8,0));
+}
+
+.home-secondary-banner-copy {
+  position:absolute;
+  z-index:2;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:24px;
+  color:#fff;
+}
+
+.home-secondary-banner:not(.has-media) .home-secondary-banner-copy {
+  color:var(--ink);
+}
+
+.home-secondary-banner-copy .eyebrow {
+  color:inherit;
+  opacity:.76;
+}
+
+.home-secondary-banner-copy h3 {
+  margin:5px 0 8px;
+  font-size:25px;
+  line-height:1.08;
+}
+
+.home-secondary-banner-copy p {
+  margin:0 0 15px;
+  opacity:.86;
+  line-height:1.55;
+}
+
+.merch-banner-link {
+  color:inherit;
+}
+
+@media (max-width:980px) {
+  .weekly-fragrance-card,
+  .campaign-editorial.has-media {
+    grid-template-columns:1fr 1fr;
+  }
+
+  .home-secondary-banner-grid {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+}
+
+@media (max-width:760px) {
+  .merch-hero {
+    min-height:610px;
+    align-items:flex-end;
+  }
+
+  .merch-hero-shade {
+    background:linear-gradient(0deg, rgba(13,10,8,.90) 0%, rgba(13,10,8,.48) 54%, rgba(13,10,8,.10) 100%);
+  }
+
+  .merch-hero-copy {
+    padding:220px 0 44px;
+  }
+
+  .merch-hero-copy h1 {
+    font-size:clamp(42px,13vw,62px);
+  }
+
+  .merch-hero-actions {
+    display:grid;
+    grid-template-columns:1fr;
+  }
+
+  .merch-hero-actions .btn {
+    width:100%;
+  }
+
+  .weekly-fragrance-card,
+  .campaign-editorial.has-media {
+    grid-template-columns:1fr;
+  }
+
+  .weekly-fragrance-media,
+  .campaign-editorial-media {
+    min-height:330px;
+  }
+
+  .weekly-fragrance-media {
+    padding:26px;
+  }
+
+  .weekly-fragrance-copy,
+  .campaign-editorial-copy {
+    padding:28px 22px;
+  }
+
+  .weekly-fragrance-bottom {
+    align-items:stretch;
+    flex-direction:column;
+  }
+
+  .weekly-fragrance-bottom .btn {
+    width:100%;
+  }
+
+  .home-secondary-banner-grid {
+    grid-template-columns:1fr;
+  }
+
+  .home-secondary-banner {
+    min-height:270px;
+  }
+}

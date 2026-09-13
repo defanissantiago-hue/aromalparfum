@@ -1344,21 +1344,6 @@ const state =
   collectionCoverMeta:
   {},
 
-  homeMerchandising:
-  {
-    weekly_fragrance:
-    null,
-
-    campaigns:
-    [],
-
-    banners:
-    [],
-  },
-
-  homeMerchandisingLoaded:
-  false,
-
   collections:
   [],
 

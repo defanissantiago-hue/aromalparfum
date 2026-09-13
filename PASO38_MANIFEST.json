@@ -1,0 +1,30 @@
+{
+  "step": 38,
+  "name": "Home V2 + merchandising dinámico",
+  "based_on": "AromaLParfum_FRONTEND_V2_PASO37",
+  "new_files": [
+    "assets/js/home.js",
+    "README_PASO38.txt",
+    "PASO38_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/css/app.css",
+    "assets/js/config.js",
+    "assets/js/supabase-data.js"
+  ],
+  "supabase_rpc": [
+    "get_home_merchandising"
+  ],
+  "features": [
+    "home hero administrable",
+    "fragancia de la semana",
+    "campañas dinámicas",
+    "banners secundarios",
+    "fallback seguro al home anterior",
+    "resolución de imágenes públicas o firmadas",
+    "sin consulta de merchandising al entrar al admin"
+  ],
+  "cache_version": 38
+}

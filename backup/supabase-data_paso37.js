@@ -723,9 +723,6 @@ async function loadAllData()
         loadComboProducts(),
         loadDecantSizes(),
         loadGiftOptions(),
-        document.body?.dataset.entry === "admin"
-          ? Promise.resolve()
-          : loadHomeMerchandising(),
       ]
     );
 
