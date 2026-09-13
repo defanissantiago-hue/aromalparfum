@@ -1,0 +1,18 @@
+{
+  "step": 36,
+  "source": "Pegado text(6).txt",
+  "source_bytes": 493161,
+  "files": [
+    "index.html",
+    "admin/index.html",
+    "assets/css/app.css",
+    "assets/js/app.js",
+    "backup/index_original.html",
+    "README_PASO36.txt"
+  ],
+  "notes": [
+    "structural split only",
+    "adsense loader removed",
+    "supabase config preserved"
+  ]
+}
