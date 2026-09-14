@@ -1,0 +1,58 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 58,
+  "name": "Reseñas Verificadas V2",
+  "base": "AromaLParfum_FRONTEND_V2_PASO57",
+  "sql_required_once": "SETUP_PASO58_RESENAS_VERIFICADAS.sql",
+  "new_files": [
+    "assets/js/reviews-v2.js",
+    "SETUP_PASO58_RESENAS_VERIFICADAS.sql",
+    "README_PASO58.txt",
+    "PASO58_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/css/app.css",
+    "assets/js/store.js",
+    "assets/js/order-tracking-v2.js",
+    "assets/js/admin.js"
+  ],
+  "backend": [
+    "product_reviews",
+    "get_product_reviews_v2",
+    "submit_verified_product_review_v2",
+    "admin_get_product_reviews_v2",
+    "admin_update_product_review_v2",
+    "get_public_order_status"
+  ],
+  "public_features": [
+    "lazy-loaded product review summary",
+    "verified-purchase reviews",
+    "rating distribution",
+    "featured reviews",
+    "review submission from product detail",
+    "review submission from delivered order tracking"
+  ],
+  "admin_features": [
+    "review moderation queue",
+    "approve/reject/pending workflow",
+    "featured review toggle",
+    "review search and pagination"
+  ],
+  "security": {
+    "direct_public_table_access": false,
+    "verified_order_required": true,
+    "delivered_order_required": true,
+    "product_must_exist_in_order": true,
+    "public_pii_exposure": false,
+    "automatic_publication": false
+  },
+  "performance": [
+    "no Home review query",
+    "no catalog review query",
+    "one product-review RPC only when product detail opens",
+    "admin reviews lazy-loaded only when Reviews tab opens"
+  ],
+  "preserve_images_directory": true
+}
