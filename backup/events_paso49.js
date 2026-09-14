@@ -739,69 +739,6 @@
           break;
         }
 
-        case "admin-inventory-refresh":
-        {
-          if (typeof alp50LoadInventory === "function")
-          {
-            await alp50LoadInventory({ force: true });
-          }
-          break;
-        }
-
-        case "admin-inventory-apply-filters":
-        {
-          if (typeof alp50ApplyFilters === "function")
-          {
-            await alp50ApplyFilters();
-          }
-          break;
-        }
-
-        case "admin-inventory-reset-filters":
-        {
-          if (typeof alp50ResetFilters === "function")
-          {
-            await alp50ResetFilters();
-          }
-          break;
-        }
-
-        case "admin-inventory-page":
-        {
-          if (typeof alp50SetPage === "function")
-          {
-            await alp50SetPage(element.dataset.page);
-          }
-          break;
-        }
-
-        case "admin-inventory-open":
-        {
-          if (typeof alp50OpenStrategy === "function")
-          {
-            alp50OpenStrategy(element.dataset.productId);
-          }
-          break;
-        }
-
-        case "admin-inventory-close":
-        {
-          if (typeof alp50CloseStrategy === "function")
-          {
-            alp50CloseStrategy();
-          }
-          break;
-        }
-
-        case "admin-inventory-save-strategy":
-        {
-          if (typeof alp50SaveStrategy === "function")
-          {
-            await alp50SaveStrategy(element.dataset.productId);
-          }
-          break;
-        }
-
         case "admin-orders-refresh":
         {
           if (typeof alp49LoadOrders === "function")
@@ -1589,21 +1526,6 @@
           event.preventDefault();
 
           submitGlobalSearch();
-
-          return;
-        }
-
-        if (
-          event.key === "Enter" &&
-          event.target?.id === "alp50InventorySearch"
-        )
-        {
-          event.preventDefault();
-
-          if (typeof alp50ApplyFilters === "function")
-          {
-            await alp50ApplyFilters();
-          }
 
           return;
         }
