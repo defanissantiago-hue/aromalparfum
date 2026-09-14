@@ -1,0 +1,35 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 53,
+  "name": "Gift Sets + Discovery Boxes V2",
+  "new_files": [
+    "assets/js/gift-packs-v2.js",
+    "README_PASO53.txt",
+    "PASO53_MANIFEST.json"
+  ],
+  "modified_files": [
+    "assets/js/admin.js",
+    "assets/js/events.js",
+    "assets/css/app.css",
+    "admin/index.html",
+    "index.html"
+  ],
+  "features": [
+    "Gift Set editor with products, quantities and ordering",
+    "Discovery Box editor with perfume, decant ml, quantities and ordering",
+    "financial safety dashboard for packs",
+    "visible customer savings and promotional discount",
+    "safe publish/pause via admin_set_entity_visibility",
+    "publish blocked when financial validation fails",
+    "automatic pause attempt when an active pack becomes financially unsafe",
+    "no destructive pack deletion"
+  ],
+  "validation": [
+    "JS_SYNTAX_OK",
+    "STATIC_REFERENCES_OK",
+    "HTTP_ROOT_200",
+    "HTTP_ADMIN_200",
+    "HTTP_CSS_200",
+    "HTTP_GIFT_PACKS_JS_200"
+  ]
+}
