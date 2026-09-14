@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 40
+// AromaLParfum Frontend V2 — Paso 62
 // Ficha de producto V2 + similares + vistos recientemente + comparador
 
 const PRODUCT_V2_COMPARE_KEY = "alp_compare_v1";
@@ -788,6 +788,14 @@ function renderProductDetailPageV2(id)
                 data-action="product-v2-compare-toggle"
                 data-product-id="${product.id}">
                 ⇄ <span data-compare-label>${comparing ? (state.language === "en" ? "Comparing" : "Comparando") : (state.language === "en" ? "Compare" : "Comparar")}</span>
+              </button>
+
+              <button
+                class="btn outline"
+                type="button"
+                data-seo62-action="share-current"
+                aria-label="${state.language === "en" ? "Share fragrance" : "Compartir perfume"}">
+                ↗ ${state.language === "en" ? "Share" : "Compartir"}
               </button>
             </div>
 

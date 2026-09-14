@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 46
+// AromaLParfum Frontend V2 — Paso 62
 // Módulo: eventos globales, compatibilidad e inicialización
 
     function openSearchModal()
@@ -2298,8 +2298,27 @@
 
         if (appliedCampaign)
         {
+          initialSpecialRouteApplied = true;
           renderCurrentRoute();
         }
+      }
+
+      if (
+        !initialSpecialRouteApplied &&
+        typeof seoV2ApplyInitialRoute === "function"
+      )
+      {
+        const appliedSeoRoute = seoV2ApplyInitialRoute();
+        if (appliedSeoRoute)
+        {
+          initialSpecialRouteApplied = true;
+          renderCurrentRoute();
+        }
+      }
+
+      if (!initialSpecialRouteApplied && typeof seoV2AfterRouteRender === "function")
+      {
+        seoV2AfterRouteRender();
       }
 
       if (typeof analyticsV2Init === "function")
