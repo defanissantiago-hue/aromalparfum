@@ -79,6 +79,7 @@ async function reloadAdminData()
         await Promise.all([
           loadGameConfigs(),
           loadDailyLeaderboard(),
+          loadGameRewardsAdmin(),
         ]);
         break;
 
@@ -4911,8 +4912,59 @@ async function saveAdminCollection(
 
 async function loadGameRewardsAdmin()
 {
-  // Paso 43: el sistema de premios/descuentos de juegos fue retirado.
-  state.gameRewards = [];
+  if (
+    !state.admin.currentUser
+  )
+  {
+    state.gameRewards =
+    [];
+
+    return;
+  }
+
+  try
+  {
+    const result =
+    await supabaseClient.rpc(
+      "get_game_rewards_admin"
+    );
+
+    if (
+      result.error
+    )
+    {
+      console.warn(
+        "get_game_rewards_admin:",
+        result.error.message
+      );
+
+      state.gameRewards =
+      [];
+
+      return;
+    }
+
+    state.gameRewards =
+    Array.isArray(
+      result.data
+    )
+    ?
+    result.data
+    :
+    [];
+  }
+  catch (
+    error
+  )
+  {
+    console.warn(
+      "get_game_rewards_admin:",
+      error
+    );
+
+    state.gameRewards =
+    [];
+  }
 }
 
 async function awardYesterdayGameWinner()
@@ -5089,15 +5141,125 @@ async function updateGameRewardStatus(
 
 function renderAdminGameRewards()
 {
+  const rewards =
+  state.gameRewards
+  ||
+  [];
+
   return `
     <div class="settings-card u-mb-16">
-      <h3>${state.language === "en" ? "Descubrí tu Aroma" : "Descubrí tu Aroma"}</h3>
+      <h3>
+        ${state.language === "en" ? "Daily 10% reward" : "Premio diario 10%"}
+      </h3>
+
       <p class="section-subtitle">
         ${state.language === "en"
-          ? "The old daily 10% reward and game advertising were removed. Games now work only as a discovery and loyalty experience."
-          : "El viejo premio diario del 10% y la publicidad de los juegos fueron eliminados. Los juegos quedan como experiencia de descubrimiento y fidelización."
+          ? "Generate the winner after the day closes. The code stays valid until it is used."
+          : "Generá el ganador cuando el día ya terminó. El código queda válido hasta que se use."
         }
       </p>
+
+      <div class="u-mt-14">
+        <button
+          class="btn"
+          type="button"
+          data-action="admin-award-yesterday">
+          🏆 ${state.language === "en" ? "Reward yesterday's winner" : "Premiar ganador de ayer"}
+        </button>
+      </div>
+
+      <div class="game-admin-rewards">
+        ${rewards.length
+          ?
+          rewards
+          .slice(
+            0,
+            14
+          )
+          .map(
+            reward =>
+            `
+              <div class="game-admin-reward">
+                <div>
+                  <strong>
+                    ${escapeHtml(reward.player_name || "Jugador")}
+                  </strong>
+
+                  <div class="muted u-mt-6">
+                    ${escapeHtml(String(reward.reward_date || ""))}
+                    · ${formatInteger(reward.solved || 0)} resueltos
+                    · ${formatInteger(reward.points || 0)} puntos
+                  </div>
+
+                  <div class="u-mt-6">
+                    WhatsApp:
+                    <strong>${escapeHtml(reward.player_phone || "")}</strong>
+                  </div>
+
+                  <div class="u-mt-6">
+                    Código:
+                    <strong>${escapeHtml(reward.discount_code || "")}</strong>
+                    ·
+                    ${reward.used
+                      ? "✅ Usado"
+                      : reward.sent
+                      ? "📩 Enviado"
+                      : "⏳ Pendiente"
+                    }
+                  </div>
+                </div>
+
+                <div class="game-admin-reward-actions">
+                  <button
+                    class="btn small secondary"
+                    type="button"
+                    data-action="admin-send-game-reward"
+                    data-reward-id="${reward.id}">
+                    WhatsApp
+                  </button>
+
+                  ${!reward.sent
+                    ?
+                    `
+                      <button
+                        class="btn small secondary"
+                        type="button"
+                        data-action="admin-mark-game-reward-sent"
+                        data-reward-id="${reward.id}">
+                        Marcar enviado
+                      </button>
+                    `
+                    :
+                    ""
+                  }
+
+                  ${!reward.used
+                    ?
+                    `
+                      <button
+                        class="btn small"
+                        type="button"
+                        data-action="admin-mark-game-reward-used"
+                        data-reward-id="${reward.id}">
+                        Marcar usado
+                      </button>
+                    `
+                    :
+                    ""
+                  }
+                </div>
+              </div>
+            `
+          )
+          .join("")
+          :
+          `
+            <p class="muted u-mt-14">
+              Todavía no hay premios generados.
+            </p>
+          `
+        }
+      </div>
     </div>
   `;
 }

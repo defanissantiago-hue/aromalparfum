@@ -1,0 +1,27 @@
+{
+  "step": 43,
+  "name": "Checkout Seguro V2",
+  "base": "Paso 42",
+  "changes": [
+    "Checkout real mediante create_store_order_v2",
+    "Métodos de pago y seña/pago completo desde Supabase",
+    "Probalo Antes aplicado del lado servidor",
+    "WhatsApp pasa a confirmación/asesoría posterior",
+    "Eliminado el descuento del 10% del flujo activo de Aroma Games",
+    "Publicidad de juegos desactivada definitivamente en frontend",
+    "Atribución UTM/campaña/session incluida en pedidos",
+    "Idempotencia con checkout_token y limpieza del carrito tras pedido confirmado"
+  ],
+  "new_files": [
+    "assets/js/checkout-v2.js"
+  ],
+  "backups": [
+    "backup/cart_paso42.js",
+    "backup/games_paso42.js",
+    "backup/admin_paso42.js",
+    "backup/events_paso42.js",
+    "backup/app_paso42.css",
+    "backup/index_paso42.html",
+    "backup/admin_index_paso42.html"
+  ]
+}

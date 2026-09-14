@@ -66,8 +66,36 @@ function getGameConfig(
 
 function getGameAdsSettings()
 {
-  // Paso 43: Descubrí tu Aroma queda libre de publicidad.
-  return { enabled:false, client:"", slotTop:"", slotBottom:"" };
+  const ads =
+  getSiteSettingObject(
+    "game_ads"
+  );
+
+  return {
+    enabled:
+    ads.enabled === true,
+
+    client:
+    String(
+      ads.client
+      ||
+      ""
+    ).trim(),
+
+    slotTop:
+    String(
+      ads.slot_top
+      ||
+      ""
+    ).trim(),
+
+    slotBottom:
+    String(
+      ads.slot_bottom
+      ||
+      ""
+    ).trim(),
+  };
 }
 
 function normalizeAdSenseClient(
@@ -114,13 +142,69 @@ function normalizeAdSenseSlot(
 
 function gameAdsReady()
 {
-  return false;
+  const ads =
+  getGameAdsSettings();
+
+  return Boolean(
+    ads.enabled &&
+    normalizeAdSenseClient(
+      ads.client
+    ) &&
+    normalizeAdSenseSlot(
+      ads.slotTop
+    ) &&
+    normalizeAdSenseSlot(
+      ads.slotBottom
+    )
+  );
 }
 
-function renderGameAdSlot(position)
+function renderGameAdSlot(
+  position
+)
 {
-  void position;
-  return "";
+  if (
+    !gameAdsReady()
+  )
+  {
+    return "";
+  }
+
+  const ads =
+  getGameAdsSettings();
+
+  const client =
+  normalizeAdSenseClient(
+    ads.client
+  );
+
+  const slot =
+  position === "bottom"
+  ?
+  normalizeAdSenseSlot(
+    ads.slotBottom
+  )
+  :
+  normalizeAdSenseSlot(
+    ads.slotTop
+  );
+
+  return `
+    <aside
+      class="game-ad-zone ${position === "bottom" ? "is-bottom" : ""}"
+      aria-label="${state.language === "en" ? "Advertisement" : "Publicidad"}">
+      <span class="game-ad-label">
+        ${state.language === "en" ? "Advertisement" : "Publicidad"}
+      </span>
+
+      <ins
+        class="adsbygoogle game-ad-unit"
+        data-ad-client="${escapeAttribute(client)}"
+        data-ad-slot="${escapeAttribute(slot)}"
+        data-ad-format="horizontal"
+        data-full-width-responsive="true"></ins>
+    </aside>
+  `;
 }
 
 function ensureGameAdsScript(
@@ -261,8 +345,53 @@ function ensureGameAdsScript(
 
 async function activateGameAds()
 {
-  // Sin anuncios desde el Paso 43.
-  return;
+  if (
+    state.route !== "games" ||
+    !gameAdsReady()
+  )
+  {
+    return;
+  }
+
+  const ads =
+  getGameAdsSettings();
+
+  await ensureGameAdsScript(
+    ads.client
+  );
+
+  document
+  .querySelectorAll(
+    ".game-ad-unit:not([data-alp-ad-loaded])"
+  )
+  .forEach(
+    unit =>
+    {
+      unit.dataset.alpAdLoaded =
+      "true";
+
+      try
+      {
+        (
+          window.adsbygoogle =
+          window.adsbygoogle
+          ||
+          []
+        ).push(
+          {}
+        );
+      }
+      catch (
+        error
+      )
+      {
+        console.warn(
+          "AdSense:",
+          error
+        );
+      }
+    }
+  );
 }
 
 function renderGamesHubPage()
@@ -715,13 +844,13 @@ function renderDailyLeaderboard()
 
       <p>
         ${state.language === "en"
-          ? "A daily ranking to discover fragrances while you play. Points break ties."
-          : "Un ranking diario para descubrir fragancias mientras jugás. Los puntos sirven para desempatar."
+          ? "The player who solves the most games today wins 10% off. Points break ties."
+          : "Quien resuelva más juegos hoy gana 10% OFF. Los puntos sirven para desempatar."
         }
       </p>
 
       <span class="game-ranking-prize">
-        ✦ Ranking diario · sin descuentos automáticos
+        🏆 #1 del día = 10% OFF
       </span>
 
       ${rows.length
@@ -791,8 +920,8 @@ function renderGamePlayerCard()
 
       <p>
         ${state.language === "en"
-          ? "Your WhatsApp is used only to identify your player in the ranking."
-          : "Tu WhatsApp se usa solamente para identificar tu jugador en el ranking."
+          ? "We use your WhatsApp only to send the private 10% prize if you win the day."
+          : "Usamos tu WhatsApp solamente para enviarte por privado el premio del 10% si ganás el día."
         }
       </p>
 

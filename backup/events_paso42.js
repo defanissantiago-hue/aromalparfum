@@ -716,6 +716,13 @@
           ||
           "products";
 
+          if (
+            state.admin.tab === "games"
+          )
+          {
+            await loadGameRewardsAdmin();
+          }
+
           refreshAdminTab();
 
           break;
