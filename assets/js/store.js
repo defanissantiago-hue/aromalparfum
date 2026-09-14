@@ -73,7 +73,9 @@ function renderCurrentRoute()
     case "best":
     {
       app.innerHTML =
-      renderBestSellersPage();
+      typeof renderBestSellersPageV2 === "function"
+      ? renderBestSellersPageV2()
+      : renderBestSellersPage();
 
       break;
     }
@@ -81,7 +83,9 @@ function renderCurrentRoute()
     case "collections":
     {
       app.innerHTML =
-      renderCollectionsPage();
+      typeof renderCollectionsPageV2 === "function"
+      ? renderCollectionsPageV2()
+      : renderCollectionsPage();
 
       break;
     }
@@ -89,9 +93,11 @@ function renderCurrentRoute()
     case "collection":
     {
       app.innerHTML =
-      renderCollectionDetailPage(
-        state.routePayload.slug
-      );
+      typeof renderCollectionDetailPageV2 === "function"
+      ? renderCollectionDetailPageV2(state.routePayload.slug)
+      : renderCollectionDetailPage(
+          state.routePayload.slug
+        );
 
       break;
     }

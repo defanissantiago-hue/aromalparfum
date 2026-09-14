@@ -627,7 +627,9 @@ function renderAdminTabContent()
 
     case "collections":
     {
-      return renderAdminCollections();
+      return typeof renderAdminCollectionsV2 === "function"
+        ? renderAdminCollectionsV2()
+        : renderAdminCollections();
     }
 
     case "games":
