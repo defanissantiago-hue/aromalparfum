@@ -1,0 +1,65 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 59,
+  "name": "Club AromaLParfum V2 — Puntos + Niveles + Beneficio 20% Historia",
+  "base": "AromaLParfum_FRONTEND_V2_PASO58",
+  "sql_required_once": "SETUP_PASO59_CLUB_AROMALPARFUM.sql",
+  "new_files": [
+    "assets/js/loyalty-v2.js",
+    "SETUP_PASO59_CLUB_AROMALPARFUM.sql",
+    "README_PASO59.txt",
+    "PASO59_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/css/app.css",
+    "assets/js/store.js",
+    "assets/js/events.js",
+    "assets/js/admin.js",
+    "assets/js/order-tracking-v2.js"
+  ],
+  "backend": [
+    "loyalty_settings",
+    "loyalty_adjustments",
+    "loyalty_benefits",
+    "get_loyalty_profile_v2",
+    "request_story_benefit_v2",
+    "admin_get_loyalty_dashboard_v2",
+    "admin_get_loyalty_benefits_v2",
+    "admin_adjust_loyalty_points_v2",
+    "admin_update_loyalty_benefit_v2",
+    "admin_update_loyalty_settings_v2"
+  ],
+  "public_features": [
+    "Club route without customer account",
+    "Aroma Points from paid + delivered orders",
+    "Esencia/Signature/Privé tiers",
+    "private verification by order code + contact",
+    "Instagram story 20% benefit request",
+    "approved benefit code via WhatsApp",
+    "recent eligible purchase activity"
+  ],
+  "admin_features": [
+    "Club dashboard",
+    "loyalty settings",
+    "customer points overview",
+    "manual point adjustments",
+    "Instagram story moderation",
+    "approve/reject/redeem benefits"
+  ],
+  "security": {
+    "direct_public_table_access": false,
+    "checkout_price_trust": false,
+    "points_require_paid_and_delivered_orders": true,
+    "story_discount_manual_verification": true,
+    "public_customer_pii_list": false
+  },
+  "performance": [
+    "no Home Club query",
+    "no catalog Club query",
+    "public RPC only when Club is opened",
+    "Admin Club lazy-loaded only on tab"
+  ],
+  "preserve_images_directory": true
+}
