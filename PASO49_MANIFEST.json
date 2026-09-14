@@ -1,0 +1,28 @@
+{
+  "step": 49,
+  "name": "Pedidos V2",
+  "new_files": [
+    "assets/js/orders-v2.js",
+    "README_PASO49.txt",
+    "PASO49_MANIFEST.json"
+  ],
+  "modified_files": [
+    "assets/js/admin.js",
+    "assets/js/events.js",
+    "assets/css/app.css",
+    "index.html",
+    "admin/index.html"
+  ],
+  "backend_dependencies": [
+    "orders",
+    "order_items",
+    "order_payments",
+    "order_audit_log",
+    "payment_methods",
+    "admin_confirm_order",
+    "admin_update_order_status",
+    "admin_record_order_payment",
+    "admin_cancel_order"
+  ],
+  "cache_version": 49
+}
