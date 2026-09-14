@@ -89,13 +89,6 @@ async function reloadAdminData()
         ]);
         break;
 
-      case "customers":
-        if (typeof alp47LoadCustomers === "function")
-        {
-          await alp47LoadCustomers({ force: true });
-        }
-        break;
-
       case "new":
       case "products":
       default:
@@ -502,7 +495,6 @@ function renderAdminDashboard()
         ${renderAdminTabButton("collections", t("admin.collections"))}
         ${renderAdminTabButton("games", t("admin.games"))}
         ${renderAdminTabButton("stats", t("admin.stats"))}
-        ${renderAdminTabButton("customers", state.language === "en" ? "Customers" : "Clientes")}
       </div>
 
       <div id="adminMessage"></div>
@@ -579,13 +571,6 @@ function renderAdminTabContent()
       return renderAdminStats();
     }
 
-    case "customers":
-    {
-      return typeof renderAdminCustomersV2 === "function"
-        ? renderAdminCustomersV2()
-        : `<div class="admin-message error">Módulo Clientes V2 no disponible.</div>`;
-    }
-
     case "products":
     default:
     {
@@ -607,11 +592,6 @@ function refreshAdminTab()
   {
     host.innerHTML =
     renderAdminTabContent();
-  }
-
-  if (state.admin.tab === "customers" && typeof alp47EnsureCustomersLoaded === "function")
-  {
-    queueMicrotask(() => alp47EnsureCustomersLoaded());
   }
 
   document.querySelectorAll(

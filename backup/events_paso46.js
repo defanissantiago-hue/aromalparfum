@@ -721,63 +721,6 @@
           break;
         }
 
-        case "admin-customers-refresh":
-        {
-          if (typeof alp47LoadCustomers === "function")
-          {
-            await alp47LoadCustomers({ force: true });
-          }
-          break;
-        }
-
-        case "admin-customers-search":
-        {
-          if (typeof alp47ApplyCustomerSearchFromInput === "function")
-          {
-            alp47ApplyCustomerSearchFromInput();
-          }
-          break;
-        }
-
-        case "admin-customer-page":
-        {
-          if (typeof alp47SetCustomerPage === "function")
-          {
-            alp47SetCustomerPage(element.dataset.page);
-          }
-          break;
-        }
-
-        case "admin-customer-open":
-        {
-          if (typeof alp47OpenCustomer === "function")
-          {
-            await alp47OpenCustomer(element.dataset.customerId);
-          }
-          break;
-        }
-
-        case "admin-customer-close":
-        {
-          if (typeof alp47CloseCustomer === "function")
-          {
-            alp47CloseCustomer();
-          }
-          break;
-        }
-
-        case "admin-customer-reminder":
-        {
-          if (typeof alp47OpenReminderWhatsApp === "function")
-          {
-            alp47OpenReminderWhatsApp(
-              element.dataset.customerId,
-              element.dataset.productId || null
-            );
-          }
-          break;
-        }
-
         case "admin-award-yesterday":
         {
           await awardYesterdayGameWinner();

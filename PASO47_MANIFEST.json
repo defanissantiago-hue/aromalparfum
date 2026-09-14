@@ -1,0 +1,26 @@
+{
+  "step": 47,
+  "name": "Clientes V2 + postventa",
+  "new_files": [
+    "assets/js/customers-v2.js",
+    "README_PASO47.txt",
+    "PASO47_MANIFEST.json"
+  ],
+  "modified_files": [
+    "assets/js/admin.js",
+    "assets/js/events.js",
+    "assets/css/app.css",
+    "index.html",
+    "admin/index.html"
+  ],
+  "features": [
+    "private admin customer CRM",
+    "customer KPIs",
+    "customer search",
+    "purchase history",
+    "product purchase history",
+    "repurchase suggestions",
+    "manual WhatsApp follow-up",
+    "lazy loading of customer PII"
+  ]
+}
