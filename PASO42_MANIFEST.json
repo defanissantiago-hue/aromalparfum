@@ -1,0 +1,25 @@
+{
+  "step": 42,
+  "name": "Gift Builder V2",
+  "date": "2026-09-14",
+  "new_files": [
+    "assets/js/gift-v2.js",
+    "README_PASO42.txt",
+    "PASO42_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/js/config.js",
+    "assets/js/supabase-data.js",
+    "assets/css/app.css"
+  ],
+  "backend_dependencies": [
+    "get_gift_builder_config",
+    "preview_gift_builder",
+    "create_store_order_v2",
+    "gift_options",
+    "gift_addons"
+  ],
+  "checkout_payload_function": "getCheckoutV2CartItems"
+}

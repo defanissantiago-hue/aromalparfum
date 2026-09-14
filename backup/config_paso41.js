@@ -1397,21 +1397,6 @@ const state =
   giftOptions:
   [],
 
-  giftAddons:
-  [],
-
-  giftBuilderSettings:
-  {},
-
-  selectedGiftAddons:
-  [],
-
-  giftCardMessage:
-  "",
-
-  giftBuilderAdding:
-  false,
-
   favorites:
   safeJsonParse(
     localStorage.getItem(

@@ -644,87 +644,53 @@ async function loadDecantSizes()
 
 async function loadGiftOptions()
 {
-  // Paso 42: una sola llamada trae presentación, extras y settings.
-  // Si el RPC falla, mantenemos el fallback anterior.
-  try
-  {
-    const rpcResult = await supabaseClient.rpc(
-      "get_gift_builder_config"
+  const result =
+  await supabaseClient
+    .from(
+      "gift_options"
+    )
+    .select(
+      "slug,nombre_es,nombre_en,precio_adicional,max_productos,orden,activo"
+    )
+    .eq(
+      "activo",
+      true
+    )
+    .order(
+      "orden",
+      {
+        ascending:
+        true,
+      }
     );
 
-    if (!rpcResult.error && rpcResult.data)
-    {
-      const payload = rpcResult.data || {};
-
-      state.giftBuilderSettings =
-      (payload.settings && typeof payload.settings === "object")
-      ? payload.settings
-      : {};
-
-      state.giftOptions = Array.isArray(payload.presentations)
-      ? payload.presentations.map(item => ({
-          slug: item.slug,
-          nombre_es: item.name_es || item.nombre_es || item.slug,
-          nombre_en: item.name_en || item.nombre_en || item.name_es || item.slug,
-          precio_adicional: asNumber(item.price ?? item.precio_adicional, 0),
-          max_productos: Math.max(1, asNumber(item.max_products ?? item.max_productos, 4)),
-          orden: asNumber(item.order ?? item.orden, 0),
-          activo: true,
-        }))
-      : [];
-
-      state.giftAddons = Array.isArray(payload.addons)
-      ? payload.addons.map(item => ({
-          slug: item.slug,
-          addon_type: item.type || item.addon_type || "other",
-          nombre_es: item.name_es || item.nombre_es || item.slug,
-          nombre_en: item.name_en || item.nombre_en || item.name_es || item.slug,
-          descripcion_es: item.description_es || item.descripcion_es || "",
-          precio_adicional: asNumber(item.price ?? item.precio_adicional, 0),
-          destacado: Boolean(item.featured ?? item.destacado),
-          orden: asNumber(item.order ?? item.orden, 0),
-          activo: true,
-        }))
-      : [];
-
-      if (!state.selectedGiftOption && state.giftOptions.length)
-      {
-        state.selectedGiftOption = state.giftOptions[0].slug;
-      }
-
-      return;
-    }
-
-    if (rpcResult.error)
-    {
-      console.warn("get_gift_builder_config:", rpcResult.error.message);
-    }
-  }
-  catch (error)
+  if (
+    result.error
+  )
   {
-    console.warn("gift builder config:", error);
-  }
+    console.warn(
+      "gift_options:",
+      result.error.message
+    );
 
-  const result = await supabaseClient
-    .from("gift_options")
-    .select("slug,nombre_es,nombre_en,precio_adicional,max_productos,orden,activo")
-    .eq("activo", true)
-    .order("orden", { ascending: true });
+    state.giftOptions =
+    [];
 
-  if (result.error)
-  {
-    console.warn("gift_options:", result.error.message);
-    state.giftOptions = [];
-    state.giftAddons = [];
     return;
   }
 
-  state.giftOptions = result.data || [];
-  state.giftAddons = [];
+  state.giftOptions =
+  result.data
+  ||
+  [];
 
-  if (!state.selectedGiftOption && state.giftOptions.length)
+  if (
+    !state.selectedGiftOption &&
+    state.giftOptions.length
+  )
   {
-    state.selectedGiftOption = state.giftOptions[0].slug;
+    state.selectedGiftOption =
+    state.giftOptions[0].slug;
   }
 }
 
