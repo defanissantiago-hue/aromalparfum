@@ -1,0 +1,34 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 52,
+  "name": "Campañas y Merchandising V2",
+  "new_files": [
+    "assets/js/merchandising-v2.js",
+    "README_PASO52.txt",
+    "PASO52_MANIFEST.json"
+  ],
+  "modified_files": [
+    "assets/js/admin.js",
+    "assets/js/events.js",
+    "assets/css/app.css",
+    "admin/index.html",
+    "index.html"
+  ],
+  "features": [
+    "campaign CRUD without destructive deletion",
+    "campaign product assignment and ordering",
+    "banner management and scheduling",
+    "weekly fragrance scheduling",
+    "Supabase Storage merchandising image uploads",
+    "campaign marketing cost for ROAS",
+    "publish/pause through admin_set_entity_visibility"
+  ],
+  "validation": [
+    "JS_SYNTAX_OK",
+    "STATIC_REFERENCES_OK",
+    "HTTP_ROOT_200",
+    "HTTP_ADMIN_200",
+    "HTTP_CSS_200",
+    "HTTP_MERCHANDISING_JS_200"
+  ]
+}
