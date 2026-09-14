@@ -1,0 +1,23 @@
+{
+  "step": 50,
+  "name": "Inventario V2",
+  "base": "PASO49",
+  "new_files": [
+    "assets/js/inventory-v2.js",
+    "README_PASO50.txt",
+    "PASO50_MANIFEST.json"
+  ],
+  "modified_files": [
+    "assets/js/admin.js",
+    "assets/js/events.js",
+    "assets/css/app.css",
+    "admin/index.html"
+  ],
+  "backend": [
+    "admin_get_inventory_dashboard",
+    "admin_inventory_intelligence",
+    "admin_update_inventory_strategy"
+  ],
+  "page_size": 20,
+  "automatic_purchase": false
+}
