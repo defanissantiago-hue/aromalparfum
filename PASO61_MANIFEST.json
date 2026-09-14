@@ -1,0 +1,92 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 61,
+  "name": "Analytics First-Party V2 — Embudo Real + Atribución Anónima + Retención",
+  "base": "AromaLParfum_FRONTEND_V2_PASO60",
+  "sql_required_once": "SETUP_PASO61_ANALYTICS_FIRST_PARTY.sql",
+  "new_files": [
+    "assets/js/analytics-v2.js",
+    "assets/js/analytics-admin-v2.js",
+    "SETUP_PASO61_ANALYTICS_FIRST_PARTY.sql",
+    "README_PASO61.txt",
+    "PASO61_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/css/app.css",
+    "assets/js/store.js",
+    "assets/js/cart.js",
+    "assets/js/decants-v2.js",
+    "assets/js/gift-v2.js",
+    "assets/js/packs-v2.js",
+    "assets/js/checkout-v2.js",
+    "assets/js/dashboard-v2.js",
+    "assets/js/admin.js",
+    "assets/js/events.js"
+  ],
+  "backend": [
+    "store_analytics_events",
+    "track_store_events_v2",
+    "admin_get_conversion_analytics_v2",
+    "admin_purge_analytics_v2"
+  ],
+  "events": [
+    "session_start",
+    "page_view",
+    "product_view",
+    "add_to_cart",
+    "checkout_start",
+    "checkout_submit",
+    "order_created"
+  ],
+  "features": [
+    "real first-party conversion funnel",
+    "anonymous acquisition attribution",
+    "UTM and campaign analytics",
+    "device-class analytics",
+    "product view-to-cart analytics",
+    "daily session trend",
+    "Dashboard V2 funnel integration",
+    "manual analytics retention cleanup"
+  ],
+  "privacy": {
+    "third_party_tracker": false,
+    "raw_session_id_persisted": false,
+    "ip_stored": false,
+    "name_stored": false,
+    "email_stored": false,
+    "phone_stored": false,
+    "address_stored": false,
+    "free_text_stored": false
+  },
+  "security": {
+    "direct_public_table_access": false,
+    "public_ingestion_rpc_only": true,
+    "event_whitelist": true,
+    "batch_limit": 20,
+    "per_session_rate_limit_10m": 250,
+    "admin_aggregate_rpc_only": true
+  },
+  "performance": [
+    "batched analytics writes",
+    "no polling",
+    "no realtime",
+    "no analytics read on public routes",
+    "lazy Admin analytics read",
+    "manual 180-day cleanup for free-tier control"
+  ],
+  "preserve_images_directory": true,
+  "validation": [
+    "JS_SYNTAX_OK_37",
+    "STATIC_REFERENCES_OK",
+    "SQL_SECURITY_STATIC_OK",
+    "BACKUP_ROLLBACK_OK",
+    "IMAGENES_NOT_PACKAGED_OK",
+    "HTTP_ROOT_200",
+    "HTTP_ADMIN_200",
+    "HTTP_CSS_200",
+    "HTTP_ANALYTICS_JS_200",
+    "HTTP_ANALYTICS_ADMIN_JS_200"
+  ]
+}
