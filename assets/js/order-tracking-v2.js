@@ -1,7 +1,7 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — PASO 57
-// Seguimiento de Pedido V2: consulta segura por código + contacto, sin login.
+// AromaLParfum Frontend V2 — PASO 58
+// Seguimiento de Pedido V2 + acceso a reseñas verificadas en pedidos entregados.
 
 const ORDER57_STORAGE_KEY = "alp_recent_orders_v2";
 
@@ -149,15 +149,28 @@ function orderTrackingV2RenderTimeline(order)
   }).join("")}</div>`;
 }
 
-function orderTrackingV2RenderItems(items)
+function orderTrackingV2RenderItems(items, order = {})
 {
   const rows = Array.isArray(items) ? items : [];
   if (!rows.length) return "";
+  const delivered = String(order.status || "").toLowerCase() === "entregado";
+
   return `<div class="order57-card"><div class="order57-card-head"><h3>${orderTrackingV2Text("Productos", "Items")}</h3><span>${rows.length}</span></div><div class="order57-items">${rows.map(item => {
     const qty = Math.max(1, Number(item.quantity || 1));
     const ml = Number(item.ml || 0);
-    return `<div class="order57-item"><div><strong>${escapeHtml(item.display_name || orderTrackingV2Text("Producto", "Product"))}</strong><span>${qty > 1 ? `×${qty}` : ""}${ml > 0 ? `${qty > 1 ? " · " : ""}${ml} ml` : ""}</span></div><strong>${orderTrackingV2Money(item.total_price)}</strong></div>`;
-  }).join("")}</div></div>`;
+    const productId = Number(item.product_id || 0);
+    const reviewStatus = String(item.review_status || "").toLowerCase();
+    const canReview = delivered && productId > 0 && !reviewStatus;
+    const reviewLabel = reviewStatus === "approved"
+      ? orderTrackingV2Text("Reseña publicada", "Review published")
+      : reviewStatus === "pending"
+      ? orderTrackingV2Text("Reseña en moderación", "Review pending moderation")
+      : reviewStatus === "rejected"
+      ? orderTrackingV2Text("Reseña revisada", "Review reviewed")
+      : "";
+
+    return `<div class="order57-item order58-reviewable"><div><strong>${escapeHtml(item.display_name || orderTrackingV2Text("Producto", "Product"))}</strong><span>${qty > 1 ? `×${qty}` : ""}${ml > 0 ? `${qty > 1 ? " · " : ""}${ml} ml` : ""}</span>${reviewLabel ? `<small class="order58-review-status">✓ ${escapeHtml(reviewLabel)}</small>` : ""}</div><div class="order58-item-side"><strong>${orderTrackingV2Money(item.total_price)}</strong>${canReview ? `<button class="btn secondary small" type="button" data-review58-action="from-order" data-product-id="${escapeAttribute(productId)}" data-order-code="${escapeAttribute(order.order_code || "")}">${orderTrackingV2Text("Dejar reseña", "Write review")}</button>` : ""}</div></div>`;
+  }).join("")}</div>${delivered ? `<p class="order58-delivered-note">${orderTrackingV2Text("Tu pedido fue entregado. Las reseñas se verifican contra esta compra antes de pasar a moderación.", "Your order was delivered. Reviews are verified against this purchase before moderation.")}</p>` : ""}</div>`;
 }
 
 function orderTrackingV2RenderResult(order)
@@ -197,7 +210,7 @@ function orderTrackingV2RenderResult(order)
         </div>
       </div>
 
-      ${orderTrackingV2RenderItems(order.items)}
+      ${orderTrackingV2RenderItems(order.items, order)}
 
       <div class="order57-actions">
         <button class="btn secondary" type="button" data-order57-action="copy-order">${orderTrackingV2Text("Copiar código del pedido", "Copy order code")}</button>

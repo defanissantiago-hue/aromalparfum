@@ -138,6 +138,14 @@ async function reloadAdminData()
         }
         break;
 
+      case "reviews":
+        if (typeof alp58LoadReviews === "function")
+        {
+          alp58ReviewsState.loaded = false;
+          await alp58LoadReviews({ force: true });
+        }
+        break;
+
       case "new":
       case "products":
       default:
@@ -554,6 +562,7 @@ function renderAdminDashboard()
         ${renderAdminTabButton("games", t("admin.games"))}
         ${renderAdminTabButton("stats", t("admin.stats"))}
         ${renderAdminTabButton("orders", state.language === "en" ? "Orders" : "Pedidos")}
+        ${renderAdminTabButton("reviews", state.language === "en" ? "Reviews" : "Reseñas")}
         ${renderAdminTabButton("inventory", state.language === "en" ? "Inventory" : "Inventario")}
         ${renderAdminTabButton("finance", state.language === "en" ? "Finance" : "Finanzas")}
         ${renderAdminTabButton("customers", state.language === "en" ? "Customers" : "Clientes")}
@@ -684,6 +693,13 @@ function renderAdminTabContent()
         : `<div class="admin-message error">Módulo Pedidos V2 no disponible.</div>`;
     }
 
+    case "reviews":
+    {
+      return typeof renderAdminReviewsV2 === "function"
+        ? renderAdminReviewsV2()
+        : `<div class="admin-message error">Módulo Reseñas V2 no disponible.</div>`;
+    }
+
     case "products":
     default:
     {
@@ -740,6 +756,11 @@ function refreshAdminTab()
   if (state.admin.tab === "orders" && typeof alp49EnsureOrdersLoaded === "function")
   {
     queueMicrotask(() => alp49EnsureOrdersLoaded());
+  }
+
+  if (state.admin.tab === "reviews" && typeof alp58EnsureReviewsLoaded === "function")
+  {
+    queueMicrotask(() => alp58EnsureReviewsLoaded());
   }
 
   document.querySelectorAll(
