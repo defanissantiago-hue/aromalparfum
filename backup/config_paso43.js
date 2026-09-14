@@ -22,7 +22,7 @@ const I18N =
         "nav.gifts":
         "Ideas para regalar",
         "nav.games":
-        "Descubrí tu Aroma",
+        "Aroma Games",
         "nav.about":
         "Acerca de",
         "nav.contact":
@@ -276,11 +276,11 @@ const I18N =
         "gifts.limit":
         "Llegaste al máximo de productos permitido para este regalo.",
         "games.eyebrow":
-        "Experiencias interactivas",
+        "Aroma Games",
         "games.title":
-        "Descubrí jugando",
+        "Jugá con tus fragancias favoritas",
         "games.description":
-        "Seguí explorando el universo de las fragancias con desafíos visuales y ranking diario.",
+        "Elegí entre rompecabezas, cinco diferencias y encontrá el perfume.",
         "games.puzzle":
         "Rompecabezas",
         "games.puzzle.desc":
@@ -298,7 +298,7 @@ const I18N =
         "games.restart":
         "Reiniciar",
         "games.back":
-        "Volver a Descubrí tu Aroma",
+        "Volver a juegos",
         "games.time":
         "Tiempo",
         "games.moves":
@@ -382,7 +382,7 @@ const I18N =
         "admin.collections":
         "Colecciones",
         "admin.games":
-        "Descubrí tu Aroma",
+        "Juegos",
         "admin.stats":
         "Estadísticas",
         "admin.save":
@@ -491,7 +491,7 @@ const I18N =
         "nav.gifts":
         "Gift ideas",
         "nav.games":
-        "Discover your scent",
+        "Aroma Games",
         "nav.about":
         "About",
         "nav.contact":
@@ -745,11 +745,11 @@ const I18N =
         "gifts.limit":
         "You reached the product limit for this gift.",
         "games.eyebrow":
-        "Interactive experiences",
+        "Aroma Games",
         "games.title":
-        "Discover through play",
+        "Play with your favorite fragrances",
         "games.description":
-        "Keep exploring fragrances through visual challenges and a daily ranking.",
+        "Choose between puzzle, five differences and find the perfume.",
         "games.puzzle":
         "Perfume puzzle",
         "games.puzzle.desc":
@@ -767,7 +767,7 @@ const I18N =
         "games.restart":
         "Restart",
         "games.back":
-        "Back to Discover your scent",
+        "Back to games",
         "games.time":
         "Time",
         "games.moves":
@@ -851,7 +851,7 @@ const I18N =
         "admin.collections":
         "Collections",
         "admin.games":
-        "Discover your scent",
+        "Games",
         "admin.stats":
         "Statistics",
         "admin.save":

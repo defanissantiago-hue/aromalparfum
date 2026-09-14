@@ -3040,7 +3040,7 @@ function renderAdminSettings()
     { slot: "personal_care", label: "Portada · Cuidado personal" },
     { slot: "gift_sets", label: "Portada · Sets de regalo" },
     { slot: "discovery", label: "Portada · Discovery Sets" },
-    { slot: "games", label: "Portada · Descubrí tu Aroma" },
+    { slot: "games", label: "Portada · Aroma Games" },
   ];
 
   return `
@@ -3087,12 +3087,51 @@ function renderAdminSettings()
 
       <div class="settings-card">
         <h3>
-          Descubrí tu Aroma
+          Publicidad · Aroma Games
         </h3>
 
         <p class="section-subtitle">
-          El quiz y las experiencias funcionan sin publicidad y sin descuentos automáticos. La portada se puede administrar desde el bloque de imágenes de esta sección.
+          Solo se muestran dos bloques manuales dentro de la pantalla principal de Juegos. Durante una partida no aparece publicidad.
         </p>
+
+        <div class="admin-form u-mt-14">
+          <label class="admin-check">
+            <input
+              id="setting-game-ads-enabled"
+              type="checkbox"
+              ${gameAds.enabled === true ? "checked" : ""}>
+            Activar publicidad
+          </label>
+
+          ${renderSettingInput(
+            "setting-game-ads-client",
+            "ID de editor AdSense (ca-pub-...)",
+            gameAds.client || ""
+          )}
+
+          ${renderSettingInput(
+            "setting-game-ads-slot-top",
+            "ID bloque superior",
+            gameAds.slot_top || ""
+          )}
+
+          ${renderSettingInput(
+            "setting-game-ads-slot-bottom",
+            "ID bloque inferior",
+            gameAds.slot_bottom || ""
+          )}
+
+          <small class="muted">
+            Usá bloques de anuncios manuales. Si querés que la publicidad exista únicamente en Juegos, desactivá Auto ads para este sitio desde AdSense.
+          </small>
+
+          <button
+            class="btn"
+            type="button"
+            data-action="admin-save-game-ads-settings">
+            ${escapeHtml(t("admin.save"))}
+          </button>
+        </div>
       </div>
 
       <div class="settings-card">

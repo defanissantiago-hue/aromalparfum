@@ -774,7 +774,7 @@ async function alp43CopyOrderCode()
   }
 }
 
-// El descuento de Aroma Games queda fuera del flujo de compra.
+// Los descuentos automáticos quedan fuera de Descubrí tu Aroma y del flujo de compra.
 validateGameDiscount = async function()
 {
   state.checkoutDiscount = null;

@@ -356,9 +356,9 @@ function renderGamesHubPage()
               ${escapeHtml(t("games.eyebrow"))}
             </p>
 
-            <h2 class="section-title">
+            <h1 class="section-title">
               ${escapeHtml(t("games.title"))}
-            </h2>
+            </h1>
 
             <p class="section-subtitle">
               ${escapeHtml(t("games.description"))}
@@ -384,7 +384,7 @@ function renderGamesHubPage()
                   </span>
 
                   <span class="game-card-kicker">
-                    ${state.language === "en" ? "Scent experience" : "Experiencia Aroma"} · ${escapeHtml(game.number)}
+                    Aroma Games · ${escapeHtml(game.number)}
                   </span>
 
                   <h3>

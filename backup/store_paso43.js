@@ -115,9 +115,7 @@ function renderCurrentRoute()
     case "games":
     {
       app.innerHTML =
-      renderDiscoverPage();
-
-      afterRenderDiscoverPage();
+      renderGamesHubPage();
 
       break;
     }

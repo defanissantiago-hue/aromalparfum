@@ -1,0 +1,30 @@
+{
+  "step": 44,
+  "name": "Descubrí tu Aroma — Quiz V2",
+  "base": "AromaLParfum Frontend V2 Paso 43",
+  "changes": [
+    "Nuevo módulo discover-v2.js",
+    "Aroma Games renombrado visualmente a Descubrí tu Aroma",
+    "Quiz dinámico desde aroma_quiz_questions y aroma_quiz_options",
+    "Recomendaciones por RPC get_aroma_quiz_recommendations",
+    "Fallback local de recomendaciones",
+    "Experiencias visuales conservadas sin anuncios ni descuentos",
+    "Controles de publicidad de juegos retirados del Admin"
+  ],
+  "new_files": [
+    "assets/js/discover-v2.js",
+    "README_PASO44.txt",
+    "PASO44_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/js/config.js",
+    "assets/js/store.js",
+    "assets/js/games.js",
+    "assets/js/admin.js",
+    "assets/js/checkout-v2.js",
+    "assets/css/app.css"
+  ],
+  "backup_source_step": 43
+}
