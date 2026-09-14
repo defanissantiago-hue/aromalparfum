@@ -1,0 +1,58 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 60,
+  "name": "Reactivación CRM V2 — Consentimientos + Cola Manual + Trazabilidad",
+  "base": "AromaLParfum_FRONTEND_V2_PASO59",
+  "sql_required_once": "SETUP_PASO60_REACTIVACION_CRM.sql",
+  "new_files": [
+    "assets/js/reactivation-v2.js",
+    "SETUP_PASO60_REACTIVACION_CRM.sql",
+    "README_PASO60.txt",
+    "PASO60_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/css/app.css",
+    "assets/js/admin.js",
+    "assets/js/customers-v2.js",
+    "assets/js/events.js"
+  ],
+  "backend": [
+    "crm_settings",
+    "crm_contact_preferences",
+    "crm_consent_log",
+    "crm_followups",
+    "admin_get_crm_reactivation_v2",
+    "admin_update_crm_consent_v2",
+    "admin_create_crm_followup_v2",
+    "admin_update_crm_followup_v2",
+    "admin_sync_crm_reactivation_v2",
+    "admin_update_crm_settings_v2"
+  ],
+  "features": [
+    "explicit WhatsApp consent states",
+    "consent audit log",
+    "safe reactivation segments",
+    "manual follow-up queue",
+    "VIP dormant and first-repurchase suggestions",
+    "snooze/contacted/done states",
+    "consent-aware WhatsApp templates",
+    "legacy Customers follow-up routed through consent gate"
+  ],
+  "security": {
+    "public_crm_access": false,
+    "unknown_is_consent": false,
+    "automatic_messaging": false,
+    "opt_out_cancels_open_whatsapp_followups": true,
+    "admin_rpc_only": true
+  },
+  "performance": [
+    "no public storefront query",
+    "no Home query",
+    "no catalog query",
+    "single lazy Admin RPC per CRM refresh",
+    "queue generated only on explicit admin action"
+  ],
+  "preserve_images_directory": true
+}
