@@ -1,0 +1,51 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 56,
+  "name": "Landings de Campaña V2 + Deep Links + Atribución persistente",
+  "new_files": [
+    "assets/js/campaigns-v2.js",
+    "README_PASO56.txt",
+    "PASO56_MANIFEST.json"
+  ],
+  "modified_files": [
+    "assets/js/store.js",
+    "assets/js/events.js",
+    "assets/js/home.js",
+    "assets/js/checkout-v2.js",
+    "assets/js/merchandising-v2.js",
+    "assets/css/app.css",
+    "index.html",
+    "admin/index.html"
+  ],
+  "backend_reused": [
+    "campaigns",
+    "campaign_products",
+    "get_home_merchandising",
+    "create_store_order_v2"
+  ],
+  "features": [
+    "public campaign landing",
+    "campaign deep links",
+    "campaign product ordering",
+    "share landing",
+    "home CTA to campaign",
+    "admin landing preview",
+    "persistent campaign attribution",
+    "campaign availability guard"
+  ],
+  "sql_required": false,
+  "performance": [
+    "no new Home startup query",
+    "reuse home merchandising cache first",
+    "fallback campaign query only on landing demand"
+  ],
+  "validation": [
+    "JS_SYNTAX_OK",
+    "STATIC_REFERENCES_OK",
+    "ZIP_OK",
+    "HTTP_ROOT_200",
+    "HTTP_ADMIN_200",
+    "HTTP_CSS_200",
+    "HTTP_CAMPAIGNS_JS_200"
+  ]
+}
