@@ -1,0 +1,26 @@
+{
+  "step": 54,
+  "title": "Gift Sets + Discovery Boxes V2 — tienda pública",
+  "added": [
+    "assets/js/packs-v2.js",
+    "README_PASO54.txt",
+    "PASO54_MANIFEST.json"
+  ],
+  "modified": [
+    "index.html",
+    "admin/index.html",
+    "assets/css/app.css"
+  ],
+  "backups": [
+    "backup/index_paso53.html",
+    "backup/app_paso53.css"
+  ],
+  "backend": [
+    "gift_sets",
+    "gift_set_products",
+    "discovery_boxes",
+    "discovery_box_products",
+    "create_store_order_v2"
+  ],
+  "notes": "Public pack data is lazy-loaded per route. Checkout never trusts client-side pack prices."
+}
