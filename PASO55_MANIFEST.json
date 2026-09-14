@@ -1,0 +1,15 @@
+{
+  "paso": 55,
+  "titulo": "Colecciones V2 + Rankings + Orden Inteligente",
+  "nuevo_modulo": "assets/js/collections-v2.js",
+  "backend_reutilizado": [
+    "thematic_collections",
+    "collection_products",
+    "smart_collection_rules",
+    "product_rankings_cache",
+    "admin_refresh_merchandising",
+    "admin_set_entity_visibility"
+  ],
+  "publico": ["colecciones editoriales", "rankings", "mas vendidos", "orden explicito"],
+  "admin": ["productos por coleccion", "orden manual", "destacados", "reglas inteligentes", "refresh merchandising"]
+}
