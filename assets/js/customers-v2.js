@@ -555,7 +555,7 @@ function alp47RenderReminderPanel()
                 data-action="admin-customer-reminder"
                 data-customer-id="${reminder.customerId}"
                 data-product-id="${reminder.productId || ""}">
-                WhatsApp
+                ${en ? "Manage contact" : "Gestionar contacto"}
               </button>
             </div>
           `;
@@ -629,7 +629,7 @@ function alp47RenderCustomerDetail()
             type="button"
             data-action="admin-customer-reminder"
             data-customer-id="${customer.id}">
-            ${en ? "Open WhatsApp" : "Abrir WhatsApp"}
+            ${en ? "Manage contact" : "Gestionar contacto"}
           </button>
         </div>
 
@@ -858,8 +858,14 @@ function alp47NormalizeArgentinaWhatsApp(phone)
   return digits;
 }
 
-function alp47OpenReminderWhatsApp(customerId, productId = null)
+async function alp47OpenReminderWhatsApp(customerId, productId = null)
 {
+  if (typeof alp60OpenCustomerFollowup === "function")
+  {
+    await alp60OpenCustomerFollowup(customerId, productId);
+    return;
+  }
+
   const customer = alp47CustomersState.customers.find(item => item.id === Number(customerId));
   if (!customer)
   {

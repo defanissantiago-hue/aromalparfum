@@ -1307,7 +1307,7 @@
         {
           if (typeof alp47OpenReminderWhatsApp === "function")
           {
-            alp47OpenReminderWhatsApp(
+            await alp47OpenReminderWhatsApp(
               element.dataset.customerId,
               element.dataset.productId || null
             );

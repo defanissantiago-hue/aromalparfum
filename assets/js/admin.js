@@ -154,6 +154,14 @@ async function reloadAdminData()
         }
         break;
 
+      case "reactivation":
+        if (typeof alp60LoadReactivation === "function")
+        {
+          crm60State.loaded = false;
+          await alp60LoadReactivation({ force: true });
+        }
+        break;
+
       case "new":
       case "products":
       default:
@@ -575,6 +583,7 @@ function renderAdminDashboard()
         ${renderAdminTabButton("inventory", state.language === "en" ? "Inventory" : "Inventario")}
         ${renderAdminTabButton("finance", state.language === "en" ? "Finance" : "Finanzas")}
         ${renderAdminTabButton("customers", state.language === "en" ? "Customers" : "Clientes")}
+        ${renderAdminTabButton("reactivation", state.language === "en" ? "Reactivation" : "Reactivación")}
       </div>
 
       <div id="adminMessage"></div>
@@ -716,6 +725,13 @@ function renderAdminTabContent()
         : `<div class="admin-message error">Módulo Club AromaLParfum no disponible.</div>`;
     }
 
+    case "reactivation":
+    {
+      return typeof renderAdminReactivationV2 === "function"
+        ? renderAdminReactivationV2()
+        : `<div class="admin-message error">Módulo Reactivación CRM V2 no disponible.</div>`;
+    }
+
     case "products":
     default:
     {
@@ -782,6 +798,11 @@ function refreshAdminTab()
   if (state.admin.tab === "club" && typeof alp59EnsureClubLoaded === "function")
   {
     queueMicrotask(() => alp59EnsureClubLoaded());
+  }
+
+  if (state.admin.tab === "reactivation" && typeof alp60EnsureLoaded === "function")
+  {
+    queueMicrotask(() => alp60EnsureLoaded());
   }
 
   document.querySelectorAll(
