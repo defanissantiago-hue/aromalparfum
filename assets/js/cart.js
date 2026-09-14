@@ -155,6 +155,11 @@
 
       saveLocalState();
 
+      if (typeof analyticsV2TrackCartAdd === "function")
+      {
+        analyticsV2TrackCartAdd({ productId: product.id, kind: "product" });
+      }
+
       incrementPopularity(
         product.id
       );

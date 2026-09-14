@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 59
+// AromaLParfum Frontend V2 — Paso 61
 // Módulo: rutas y render de tienda/catálogo/productos
 
 function setRoute(
@@ -336,6 +336,11 @@ function renderCurrentRoute()
   applyLanguageToChrome();
 
   updateHeaderCounts();
+
+  if (typeof analyticsV2TrackRoute === "function")
+  {
+    analyticsV2TrackRoute(state.route, state.routePayload || {});
+  }
 
   if (
     typeof productV2AfterRouteRender === "function"

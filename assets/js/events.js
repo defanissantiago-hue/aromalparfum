@@ -759,6 +759,33 @@
           break;
         }
 
+        case "admin-analytics-range":
+        {
+          if (typeof alp61SetAdminAnalyticsRange === "function")
+          {
+            alp61SetAdminAnalyticsRange(element.dataset.days);
+          }
+          break;
+        }
+
+        case "admin-analytics-refresh":
+        {
+          if (typeof alp61LoadAdminAnalytics === "function")
+          {
+            await alp61LoadAdminAnalytics({ force: true });
+          }
+          break;
+        }
+
+        case "admin-analytics-purge":
+        {
+          if (typeof alp61PurgeAnalytics === "function")
+          {
+            await alp61PurgeAnalytics();
+          }
+          break;
+        }
+
         case "admin-inventory-refresh":
         {
           if (typeof alp50LoadInventory === "function")
@@ -2273,6 +2300,11 @@
         {
           renderCurrentRoute();
         }
+      }
+
+      if (typeof analyticsV2Init === "function")
+      {
+        analyticsV2Init();
       }
 
       validateCartAgainstStock();

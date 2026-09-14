@@ -14,6 +14,8 @@ const alp48DashboardState = {
   commercial: null,
   inventory: null,
   overview: null,
+  analytics: null,
+  analyticsError: "",
   lastLoadedAt: null,
 };
 
@@ -93,13 +95,17 @@ async function alp48LoadDashboard({ force = false, days = null } = {})
     const to = new Date();
     const from = new Date(to.getTime() - (alp48DashboardState.days * 86400000));
 
-    const [commercialResult, inventoryResult, overviewResult] = await Promise.all([
+    const [commercialResult, inventoryResult, overviewResult, analyticsResult] = await Promise.all([
       supabaseClient.rpc("admin_get_commercial_dashboard", {
         p_from: from.toISOString(),
         p_to: to.toISOString(),
       }),
       supabaseClient.rpc("admin_get_inventory_dashboard"),
       supabaseClient.rpc("admin_get_v2_overview"),
+      supabaseClient.rpc("admin_get_conversion_analytics_v2", {
+        p_from: from.toISOString(),
+        p_to: to.toISOString(),
+      }),
     ]);
 
     if (commercialResult.error) throw commercialResult.error;
@@ -109,6 +115,8 @@ async function alp48LoadDashboard({ force = false, days = null } = {})
     alp48DashboardState.commercial = commercialResult.data || {};
     alp48DashboardState.inventory = inventoryResult.data || {};
     alp48DashboardState.overview = overviewResult.data || {};
+    alp48DashboardState.analytics = analyticsResult.error ? null : (analyticsResult.data || {});
+    alp48DashboardState.analyticsError = analyticsResult.error?.message || "";
     alp48DashboardState.loaded = true;
     alp48DashboardState.lastLoadedAt = new Date().toISOString();
   }
@@ -417,7 +425,7 @@ function renderAdminDashboardV2()
   const inventory = alp48DashboardState.inventory || {};
   const overview = alp48DashboardState.overview || {};
   const summary = commercial.summary || {};
-  const funnel = commercial.funnel || {};
+  const funnel = alp48DashboardState.analytics?.funnel || commercial.funnel || {};
   const stock = inventory.summary || {};
 
   if (alp48DashboardState.loading && !alp48DashboardState.loaded)
@@ -533,6 +541,7 @@ function renderAdminDashboardV2()
           ? "Financial metrics come only from verified paid orders. Browser analytics events never count as revenue. Profit remains 'known' when some orders are missing cost data."
           : "Los números financieros salen únicamente de pedidos pagados verificados. Los eventos del navegador nunca cuentan como facturación. La ganancia se muestra como 'conocida' cuando todavía faltan costos en algunos pedidos."
         }
+        ${alp48DashboardState.analyticsError ? ` · ${en ? "Analytics not available until PASO 61 SQL is installed." : "Analytics no estará disponible hasta ejecutar el SQL del PASO 61."}` : ""}
         ${alp48DashboardState.lastLoadedAt ? ` · ${en ? "Updated" : "Actualizado"}: ${escapeHtml(alp48Date(alp48DashboardState.lastLoadedAt, true))}` : ""}
       </p>
     </section>

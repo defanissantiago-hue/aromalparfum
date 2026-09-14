@@ -392,6 +392,12 @@ function alp54AddOrIncrement(line)
     state.cart.push(line);
   }
   saveLocalState();
+
+  if (typeof analyticsV2TrackCartAdd === "function")
+  {
+    analyticsV2TrackCartAdd({ productId: null, kind: line?.bundleType || line?.kind || "bundle" });
+  }
+
   renderCart();
   openCart();
 }

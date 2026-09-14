@@ -459,6 +459,11 @@ function addDecantBundleToCart()
   alp41PersistBuilderDrafts();
   saveLocalState();
 
+  if (typeof analyticsV2TrackCartAdd === "function")
+  {
+    analyticsV2TrackCartAdd({ productId: null, kind: "decant_bundle" });
+  }
+
   toast(
     state.language === "en"
       ? "Decant pack added to cart."

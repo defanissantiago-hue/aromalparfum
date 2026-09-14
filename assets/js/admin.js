@@ -66,6 +66,13 @@ async function reloadAdminData()
         }
         break;
 
+      case "analytics":
+        if (typeof alp61LoadAdminAnalytics === "function")
+        {
+          await alp61LoadAdminAnalytics({ force: true });
+        }
+        break;
+
       case "settings":
         await loadSiteSettings();
         await Promise.all([
@@ -569,6 +576,7 @@ function renderAdminDashboard()
 
       <div class="admin-tabs">
         ${renderAdminTabButton("dashboard", state.language === "en" ? "Dashboard" : "Dashboard")}
+        ${renderAdminTabButton("analytics", state.language === "en" ? "Analytics" : "Analytics")}
         ${renderAdminTabButton("products", t("admin.products"))}
         ${renderAdminTabButton("new", t("admin.new"))}
         ${renderAdminTabButton("settings", t("admin.settings"))}
@@ -640,6 +648,13 @@ function renderAdminTabContent()
       return typeof renderAdminDashboardV2 === "function"
         ? renderAdminDashboardV2()
         : `<div class="admin-message error">Dashboard V2 no disponible.</div>`;
+    }
+
+    case "analytics":
+    {
+      return typeof renderAdminAnalyticsV2 === "function"
+        ? renderAdminAnalyticsV2()
+        : `<div class="admin-message error">Módulo Analytics V2 no disponible.</div>`;
     }
 
     case "new":
@@ -758,6 +773,11 @@ function refreshAdminTab()
   if (state.admin.tab === "dashboard" && typeof alp48EnsureDashboardLoaded === "function")
   {
     queueMicrotask(() => alp48EnsureDashboardLoaded());
+  }
+
+  if (state.admin.tab === "analytics" && typeof alp61EnsureAdminAnalyticsLoaded === "function")
+  {
+    queueMicrotask(() => alp61EnsureAdminAnalyticsLoaded());
   }
 
   if (state.admin.tab === "inventory" && typeof alp50EnsureInventoryLoaded === "function")

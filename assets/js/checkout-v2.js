@@ -96,7 +96,9 @@ function alp43GetAttribution()
   ).trim();
 
   return {
-    session_id: alp43GetSessionId(),
+    session_id: typeof analyticsV2GetSessionId === "function"
+      ? analyticsV2GetSessionId()
+      : alp43GetSessionId(),
     utm_source: String(params.get("utm_source") || "").slice(0, 150),
     utm_medium: String(params.get("utm_medium") || "").slice(0, 150),
     utm_campaign: utmCampaign.slice(0, 150),
@@ -508,6 +510,11 @@ openCheckout = async function()
     checkout.submitting = false;
     checkout.token = checkout.token || alp43GenerateCheckoutToken();
 
+    if (typeof analyticsV2TrackCheckoutStart === "function")
+    {
+      analyticsV2TrackCheckoutStart();
+    }
+
     openModal(t("checkout.title"), alp43RenderCheckout());
     alp43UpdateCheckoutPaymentUI();
   }
@@ -628,6 +635,11 @@ async function alp43SubmitCheckout()
           method: "pickup",
         };
 
+    if (typeof analyticsV2TrackCheckoutSubmit === "function")
+    {
+      analyticsV2TrackCheckoutSubmit();
+    }
+
     const result = await supabaseClient.rpc("create_store_order_v2", {
       p_checkout_token: checkout.token,
       p_customer_name: form.name,
@@ -665,6 +677,11 @@ async function alp43SubmitCheckout()
     if (typeof orderTrackingV2RememberOrder === "function")
     {
       orderTrackingV2RememberOrder(checkout.order);
+    }
+
+    if (typeof analyticsV2TrackOrderCreated === "function")
+    {
+      analyticsV2TrackOrderCreated();
     }
 
     // El pedido ya existe en Supabase. Vaciar el carrito evita duplicarlo.

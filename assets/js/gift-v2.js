@@ -441,6 +441,11 @@ async function addGiftBundleToCart()
     alp42PersistGiftState();
     saveLocalState();
 
+    if (typeof analyticsV2TrackCartAdd === "function")
+    {
+      analyticsV2TrackCartAdd({ productId: null, kind: "gift_builder" });
+    }
+
     toast(state.language === "en" ? "Personalized gift added to cart." : "Regalo personalizado agregado al carrito.");
     renderCurrentRoute();
     openCart();
