@@ -146,6 +146,14 @@ async function reloadAdminData()
         }
         break;
 
+      case "club":
+        if (typeof alp59LoadClub === "function")
+        {
+          alp59ClubState.loaded = false;
+          await alp59LoadClub({ force: true });
+        }
+        break;
+
       case "new":
       case "products":
       default:
@@ -563,6 +571,7 @@ function renderAdminDashboard()
         ${renderAdminTabButton("stats", t("admin.stats"))}
         ${renderAdminTabButton("orders", state.language === "en" ? "Orders" : "Pedidos")}
         ${renderAdminTabButton("reviews", state.language === "en" ? "Reviews" : "Reseñas")}
+        ${renderAdminTabButton("club", state.language === "en" ? "Club" : "Club")}
         ${renderAdminTabButton("inventory", state.language === "en" ? "Inventory" : "Inventario")}
         ${renderAdminTabButton("finance", state.language === "en" ? "Finance" : "Finanzas")}
         ${renderAdminTabButton("customers", state.language === "en" ? "Customers" : "Clientes")}
@@ -700,6 +709,13 @@ function renderAdminTabContent()
         : `<div class="admin-message error">Módulo Reseñas V2 no disponible.</div>`;
     }
 
+    case "club":
+    {
+      return typeof renderAdminClubV2 === "function"
+        ? renderAdminClubV2()
+        : `<div class="admin-message error">Módulo Club AromaLParfum no disponible.</div>`;
+    }
+
     case "products":
     default:
     {
@@ -761,6 +777,11 @@ function refreshAdminTab()
   if (state.admin.tab === "reviews" && typeof alp58EnsureReviewsLoaded === "function")
   {
     queueMicrotask(() => alp58EnsureReviewsLoaded());
+  }
+
+  if (state.admin.tab === "club" && typeof alp59EnsureClubLoaded === "function")
+  {
+    queueMicrotask(() => alp59EnsureClubLoaded());
   }
 
   document.querySelectorAll(

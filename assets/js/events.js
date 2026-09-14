@@ -2248,6 +2248,21 @@
 
       if (
         !initialSpecialRouteApplied &&
+        typeof loyaltyV2ApplyInitialRoute === "function"
+      )
+      {
+        const appliedClub =
+        loyaltyV2ApplyInitialRoute();
+
+        if (appliedClub)
+        {
+          initialSpecialRouteApplied = true;
+          renderCurrentRoute();
+        }
+      }
+
+      if (
+        !initialSpecialRouteApplied &&
         typeof campaignsV2ApplyInitialRoute === "function"
       )
       {

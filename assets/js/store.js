@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 58
+// AromaLParfum Frontend V2 — Paso 59
 // Módulo: rutas y render de tienda/catálogo/productos
 
 function setRoute(
@@ -203,6 +203,16 @@ function renderCurrentRoute()
       typeof orderTrackingV2RenderPage === "function"
       ? orderTrackingV2RenderPage()
       : `<section class="section"><div class="container"><div class="empty-state"><h3>Seguimiento no disponible.</h3></div></div></section>`;
+
+      break;
+    }
+
+    case "club":
+    {
+      app.innerHTML =
+      typeof loyaltyV2RenderPage === "function"
+      ? loyaltyV2RenderPage()
+      : `<section class="section"><div class="container"><div class="empty-state"><h3>Club no disponible.</h3></div></div></section>`;
 
       break;
     }
@@ -470,6 +480,18 @@ function renderMobileMenu()
 
     {
       route:
+      "club",
+
+      label:
+      state.language === "en"
+      ?
+      "AromaLParfum Club"
+      :
+      "Club AromaLParfum",
+    },
+
+    {
+      route:
       "contact",
 
       label:
@@ -628,6 +650,10 @@ function renderFooter()
 
           <button class="footer-link" type="button" data-route="order-tracking">
             ${state.language === "en" ? "Track order" : "Seguimiento de pedido"}
+          </button>
+
+          <button class="footer-link" type="button" data-route="club">
+            ${state.language === "en" ? "AromaLParfum Club" : "Club AromaLParfum"}
           </button>
 
           <button class="footer-link" type="button" data-action="open-cart">

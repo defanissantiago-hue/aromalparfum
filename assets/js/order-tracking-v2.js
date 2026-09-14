@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — PASO 58
+// AromaLParfum Frontend V2 — PASO 59
 // Seguimiento de Pedido V2 + acceso a reseñas verificadas en pedidos entregados.
 
 const ORDER57_STORAGE_KEY = "alp_recent_orders_v2";
@@ -212,6 +212,8 @@ function orderTrackingV2RenderResult(order)
 
       ${orderTrackingV2RenderItems(order.items, order)}
 
+      ${String(order.status || "").toLowerCase() === "entregado" && String(order.payment_status || "").toLowerCase() === "pagado" ? `<div class="order59-club-note"><p><strong>Club AromaLParfum</strong><br>${orderTrackingV2Text("Este pedido ya puede sumar Puntos Aroma y habilitar beneficios de fidelización.", "This order can now earn Aroma Points and loyalty benefits.")}</p><button class="btn secondary" type="button" data-order57-action="club">${orderTrackingV2Text("Ver mis Puntos Aroma", "View my Aroma Points")}</button></div>` : ""}
+
       <div class="order57-actions">
         <button class="btn secondary" type="button" data-order57-action="copy-order">${orderTrackingV2Text("Copiar código del pedido", "Copy order code")}</button>
         <button class="btn" type="button" data-order57-action="whatsapp">${orderTrackingV2Text("Consultar por WhatsApp", "Ask on WhatsApp")}</button>
@@ -382,6 +384,7 @@ if (!window.__alp57OrderTrackingListeners)
     if (action === "copy-order") await orderTrackingV2Copy(order.order_code, orderTrackingV2Text("Código del pedido copiado.", "Order code copied."));
     if (action === "copy-tracking") await orderTrackingV2Copy(order.tracking_code, orderTrackingV2Text("Código de seguimiento copiado.", "Tracking code copied."));
     if (action === "whatsapp") orderTrackingV2WhatsApp();
+    if (action === "club" && typeof loyaltyV2Open === "function") loyaltyV2Open(order.order_code, order57State.contact);
     if (action === "share")
     {
       const url = new URL(location.href);
