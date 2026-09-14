@@ -1,0 +1,34 @@
+{
+  "step": 48,
+  "name": "Dashboard Admin V2",
+  "new_files": [
+    "assets/js/dashboard-v2.js",
+    "README_PASO48.txt",
+    "PASO48_MANIFEST.json"
+  ],
+  "modified_files": [
+    "assets/js/config.js",
+    "assets/js/admin.js",
+    "assets/js/events.js",
+    "assets/css/app.css",
+    "admin/index.html"
+  ],
+  "backend_rpc": [
+    "admin_get_commercial_dashboard",
+    "admin_get_inventory_dashboard",
+    "admin_get_v2_overview"
+  ],
+  "features": [
+    "verified commercial KPIs",
+    "funnel",
+    "daily sales",
+    "top products",
+    "inventory/restock",
+    "campaign ROAS",
+    "alerts",
+    "drafts",
+    "change history",
+    "date ranges"
+  ],
+  "public_store_queries": false
+}

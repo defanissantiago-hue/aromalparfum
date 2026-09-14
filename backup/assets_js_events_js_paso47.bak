@@ -683,24 +683,6 @@
           break;
         }
 
-        case "admin-dashboard-refresh":
-        {
-          if (typeof alp48RefreshDashboard === "function")
-          {
-            await alp48RefreshDashboard();
-          }
-          break;
-        }
-
-        case "admin-dashboard-range":
-        {
-          if (typeof alp48SetDashboardRange === "function")
-          {
-            alp48SetDashboardRange(element.dataset.days);
-          }
-          break;
-        }
-
         case "admin-product-page":
         {
           state.admin.productPage =

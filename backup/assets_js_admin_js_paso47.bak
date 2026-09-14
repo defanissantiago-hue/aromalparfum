@@ -59,13 +59,6 @@ async function reloadAdminData()
   {
     switch (state.admin.tab)
     {
-      case "dashboard":
-        if (typeof alp48LoadDashboard === "function")
-        {
-          await alp48LoadDashboard({ force: true });
-        }
-        break;
-
       case "settings":
         await loadSiteSettings();
         await Promise.all([
@@ -195,13 +188,7 @@ async function renderAdminRoute()
   // las fotos secundarias de todo el catálogo. El admin usa la foto principal
   // ya cargada y consulta la galería de un producto solo cuando se solicita.
   app.innerHTML = renderAdminDashboard();
-
-  if (state.admin.tab === "dashboard" && typeof alp48EnsureDashboardLoaded === "function")
-  {
-    queueMicrotask(() => alp48EnsureDashboardLoaded());
-  }
 }
-
 
 function renderAdminLogin()
 {
@@ -509,7 +496,6 @@ function renderAdminDashboard()
       </div>
 
       <div class="admin-tabs">
-        ${renderAdminTabButton("dashboard", state.language === "en" ? "Dashboard" : "Dashboard")}
         ${renderAdminTabButton("products", t("admin.products"))}
         ${renderAdminTabButton("new", t("admin.new"))}
         ${renderAdminTabButton("settings", t("admin.settings"))}
@@ -568,13 +554,6 @@ function renderAdminTabContent()
     state.admin.tab
   )
   {
-    case "dashboard":
-    {
-      return typeof renderAdminDashboardV2 === "function"
-        ? renderAdminDashboardV2()
-        : `<div class="admin-message error">Dashboard V2 no disponible.</div>`;
-    }
-
     case "new":
     {
       return renderAdminNewProduct();
@@ -628,11 +607,6 @@ function refreshAdminTab()
   {
     host.innerHTML =
     renderAdminTabContent();
-  }
-
-  if (state.admin.tab === "dashboard" && typeof alp48EnsureDashboardLoaded === "function")
-  {
-    queueMicrotask(() => alp48EnsureDashboardLoaded());
   }
 
   if (state.admin.tab === "customers" && typeof alp47EnsureCustomersLoaded === "function")

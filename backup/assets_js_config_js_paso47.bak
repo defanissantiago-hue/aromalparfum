@@ -1544,7 +1544,7 @@ const state =
   admin:
   {
     tab:
-    "dashboard",
+    "products",
 
     currentUser:
     null,
