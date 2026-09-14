@@ -110,6 +110,13 @@ async function reloadAdminData()
         }
         break;
 
+      case "merchandising":
+        if (typeof alp52LoadMerchandising === "function")
+        {
+          await alp52LoadMerchandising({ force: true });
+        }
+        break;
+
       case "customers":
         if (typeof alp47LoadCustomers === "function")
         {
@@ -535,6 +542,7 @@ function renderAdminDashboard()
         ${renderAdminTabButton("new", t("admin.new"))}
         ${renderAdminTabButton("settings", t("admin.settings"))}
         ${renderAdminTabButton("collections", t("admin.collections"))}
+        ${renderAdminTabButton("merchandising", state.language === "en" ? "Merchandising" : "Merchandising")}
         ${renderAdminTabButton("games", t("admin.games"))}
         ${renderAdminTabButton("stats", t("admin.stats"))}
         ${renderAdminTabButton("orders", state.language === "en" ? "Orders" : "Pedidos")}
@@ -638,6 +646,13 @@ function renderAdminTabContent()
         : `<div class="admin-message error">Módulo Finanzas V2 no disponible.</div>`;
     }
 
+    case "merchandising":
+    {
+      return typeof renderAdminMerchandisingV2 === "function"
+        ? renderAdminMerchandisingV2()
+        : `<div class="admin-message error">Módulo Merchandising V2 no disponible.</div>`;
+    }
+
     case "customers":
     {
       return typeof renderAdminCustomersV2 === "function"
@@ -688,6 +703,11 @@ function refreshAdminTab()
   if (state.admin.tab === "finance" && typeof alp51EnsureFinanceLoaded === "function")
   {
     queueMicrotask(() => alp51EnsureFinanceLoaded());
+  }
+
+  if (state.admin.tab === "merchandising" && typeof alp52EnsureMerchandisingLoaded === "function")
+  {
+    queueMicrotask(() => alp52EnsureMerchandisingLoaded());
   }
 
   if (state.admin.tab === "customers" && typeof alp47EnsureCustomersLoaded === "function")

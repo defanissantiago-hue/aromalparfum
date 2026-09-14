@@ -865,6 +865,160 @@
           break;
         }
 
+        case "admin-merch-refresh":
+        {
+          if (typeof alp52LoadMerchandising === "function")
+          {
+            await alp52LoadMerchandising({ force: true });
+          }
+          break;
+        }
+
+        case "admin-merch-section":
+        {
+          if (typeof alp52SetSection === "function")
+          {
+            alp52SetSection(element.dataset.section);
+          }
+          break;
+        }
+
+        case "admin-campaign-new":
+        {
+          if (typeof alp52NewCampaign === "function") alp52NewCampaign();
+          break;
+        }
+
+        case "admin-campaign-edit":
+        {
+          if (typeof alp52EditCampaign === "function") alp52EditCampaign(element.dataset.id);
+          break;
+        }
+
+        case "admin-campaign-cancel":
+        {
+          if (typeof alp52CancelCampaign === "function") alp52CancelCampaign();
+          break;
+        }
+
+        case "admin-campaign-save":
+        {
+          if (typeof alp52SaveCampaign === "function") await alp52SaveCampaign();
+          break;
+        }
+
+        case "admin-campaign-toggle":
+        {
+          if (typeof alp52ToggleEntity === "function")
+          {
+            await alp52ToggleEntity("campaign", element.dataset.id, element.dataset.active === "true");
+          }
+          break;
+        }
+
+        case "admin-campaign-product-add":
+        {
+          if (typeof alp52AddCampaignProduct === "function") await alp52AddCampaignProduct(element.dataset.campaignId);
+          break;
+        }
+
+        case "admin-campaign-product-remove":
+        {
+          if (typeof alp52RemoveCampaignProduct === "function") await alp52RemoveCampaignProduct(element.dataset.id);
+          break;
+        }
+
+        case "admin-campaign-product-move":
+        {
+          if (typeof alp52MoveCampaignProduct === "function") await alp52MoveCampaignProduct(element.dataset.id, element.dataset.direction);
+          break;
+        }
+
+        case "admin-campaign-product-featured":
+        {
+          if (typeof alp52SetCampaignProductFeatured === "function")
+          {
+            await alp52SetCampaignProductFeatured(element.dataset.id, element.dataset.active === "true");
+            if (typeof alp52LoadMerchandising === "function") await alp52LoadMerchandising({ force: true });
+          }
+          break;
+        }
+
+        case "admin-banner-new":
+        {
+          if (typeof alp52NewBanner === "function") alp52NewBanner();
+          break;
+        }
+
+        case "admin-banner-edit":
+        {
+          if (typeof alp52EditBanner === "function") alp52EditBanner(element.dataset.id);
+          break;
+        }
+
+        case "admin-banner-cancel":
+        {
+          if (typeof alp52CancelBanner === "function") alp52CancelBanner();
+          break;
+        }
+
+        case "admin-banner-save":
+        {
+          if (typeof alp52SaveBanner === "function") await alp52SaveBanner();
+          break;
+        }
+
+        case "admin-banner-toggle":
+        {
+          if (typeof alp52ToggleEntity === "function")
+          {
+            await alp52ToggleEntity("banner", element.dataset.id, element.dataset.active === "true");
+          }
+          break;
+        }
+
+        case "admin-weekly-new":
+        {
+          if (typeof alp52NewWeekly === "function") alp52NewWeekly();
+          break;
+        }
+
+        case "admin-weekly-edit":
+        {
+          if (typeof alp52EditWeekly === "function") alp52EditWeekly(element.dataset.id);
+          break;
+        }
+
+        case "admin-weekly-cancel":
+        {
+          if (typeof alp52CancelWeekly === "function") alp52CancelWeekly();
+          break;
+        }
+
+        case "admin-weekly-save":
+        {
+          if (typeof alp52SaveWeekly === "function") await alp52SaveWeekly();
+          break;
+        }
+
+        case "admin-weekly-toggle":
+        {
+          if (typeof alp52ToggleEntity === "function")
+          {
+            await alp52ToggleEntity("weekly_fragrance", element.dataset.id, element.dataset.active === "true");
+          }
+          break;
+        }
+
+        case "admin-merch-upload":
+        {
+          if (typeof alp52UploadMedia === "function")
+          {
+            await alp52UploadMedia(element.dataset.file, element.dataset.target, element.dataset.folder);
+          }
+          break;
+        }
+
         case "admin-orders-refresh":
         {
           if (typeof alp49LoadOrders === "function")
