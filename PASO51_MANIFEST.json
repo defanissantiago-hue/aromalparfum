@@ -1,0 +1,7 @@
+{
+  "step": 51,
+  "name": "Finanzas V2",
+  "new_files": ["assets/js/finance-v2.js", "README_PASO51.txt", "PASO51_MANIFEST.json"],
+  "modified_files": ["assets/js/admin.js", "assets/js/events.js", "assets/css/app.css", "admin/index.html", "index.html"],
+  "backend_sources": ["admin_product_financials", "admin_promotion_impact", "product_costs", "site_settings.finance"]
+}
