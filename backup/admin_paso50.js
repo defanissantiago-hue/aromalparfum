@@ -103,13 +103,6 @@ async function reloadAdminData()
         }
         break;
 
-      case "finance":
-        if (typeof alp51LoadFinance === "function")
-        {
-          await alp51LoadFinance({ force: true });
-        }
-        break;
-
       case "customers":
         if (typeof alp47LoadCustomers === "function")
         {
@@ -539,7 +532,6 @@ function renderAdminDashboard()
         ${renderAdminTabButton("stats", t("admin.stats"))}
         ${renderAdminTabButton("orders", state.language === "en" ? "Orders" : "Pedidos")}
         ${renderAdminTabButton("inventory", state.language === "en" ? "Inventory" : "Inventario")}
-        ${renderAdminTabButton("finance", state.language === "en" ? "Finance" : "Finanzas")}
         ${renderAdminTabButton("customers", state.language === "en" ? "Customers" : "Clientes")}
       </div>
 
@@ -631,13 +623,6 @@ function renderAdminTabContent()
         : `<div class="admin-message error">Módulo Inventario V2 no disponible.</div>`;
     }
 
-    case "finance":
-    {
-      return typeof renderAdminFinanceV2 === "function"
-        ? renderAdminFinanceV2()
-        : `<div class="admin-message error">Módulo Finanzas V2 no disponible.</div>`;
-    }
-
     case "customers":
     {
       return typeof renderAdminCustomersV2 === "function"
@@ -683,11 +668,6 @@ function refreshAdminTab()
   if (state.admin.tab === "inventory" && typeof alp50EnsureInventoryLoaded === "function")
   {
     queueMicrotask(() => alp50EnsureInventoryLoaded());
-  }
-
-  if (state.admin.tab === "finance" && typeof alp51EnsureFinanceLoaded === "function")
-  {
-    queueMicrotask(() => alp51EnsureFinanceLoaded());
   }
 
   if (state.admin.tab === "customers" && typeof alp47EnsureCustomersLoaded === "function")

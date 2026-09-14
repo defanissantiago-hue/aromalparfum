@@ -802,69 +802,6 @@
           break;
         }
 
-        case "admin-finance-refresh":
-        {
-          if (typeof alp51LoadFinance === "function")
-          {
-            await alp51LoadFinance({ force: true });
-          }
-          break;
-        }
-
-        case "admin-finance-apply-filters":
-        {
-          if (typeof alp51ApplyFilters === "function")
-          {
-            await alp51ApplyFilters();
-          }
-          break;
-        }
-
-        case "admin-finance-reset-filters":
-        {
-          if (typeof alp51ResetFilters === "function")
-          {
-            alp51ResetFilters();
-          }
-          break;
-        }
-
-        case "admin-finance-page":
-        {
-          if (typeof alp51SetPage === "function")
-          {
-            alp51SetPage(element.dataset.page);
-          }
-          break;
-        }
-
-        case "admin-finance-edit-cost":
-        {
-          if (typeof alp51OpenCostEditor === "function")
-          {
-            alp51OpenCostEditor(element.dataset.productId);
-          }
-          break;
-        }
-
-        case "admin-finance-close-cost":
-        {
-          if (typeof alp51CloseCostEditor === "function")
-          {
-            alp51CloseCostEditor();
-          }
-          break;
-        }
-
-        case "admin-finance-save-cost":
-        {
-          if (typeof alp51SaveCost === "function")
-          {
-            await alp51SaveCost(element.dataset.productId);
-          }
-          break;
-        }
-
         case "admin-orders-refresh":
         {
           if (typeof alp49LoadOrders === "function")
