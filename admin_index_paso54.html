@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Administración de AromaLParfum.">
+  <meta name="theme-color" content="#15120f">
+  <title>AromaLParfum | Administración</title>
+  <meta name="application-name" content="AromaLParfum">
+  <meta name="color-scheme" content="light">
+
+    <link rel="stylesheet" href="../assets/css/app.css?v=54">
+</head>
+<body data-entry="admin">
+  <div class="topbar">
+    <span id="topbarPrimary">ENVÍO SEGURO Y CONFIABLE</span>
+    <span class="topbar-separator">|</span>
+    <span class="topbar-secondary" id="topbarSecondary">ATENCIÓN PERSONALIZADA</span>
+  </div>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <button
+        class="icon-btn mobile-menu-btn"
+        type="button"
+        aria-label="Abrir menú"
+        data-action="open-menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+      </button>
+
+      <div class="brand" data-action="home">
+        AROMA
+        <small>LPARFUM</small>
+      </div>
+
+      <nav class="desktop-nav" aria-label="Navegación principal">
+        <button type="button" data-route="catalog" data-filter="Todos">Perfumes</button>
+        <button type="button" data-route="best">Más vendidos</button>
+        <button type="button" data-route="collections">Colecciones</button>
+        <button type="button" data-route="decants">Decants</button>
+        <button type="button" data-route="gifts">Regalos</button>
+        <button type="button" data-route="games">Descubrí tu Aroma</button>
+        <button type="button" data-route="about">Acerca de</button>
+      </nav>
+
+      <div class="header-actions">
+        <button
+          class="icon-btn search-trigger"
+          type="button"
+          aria-label="Buscar"
+          data-action="open-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="11" cy="11" r="6.5"></circle>
+            <path d="m16 16 4 4"></path>
+          </svg>
+        </button>
+
+        <button
+          class="icon-btn"
+          type="button"
+          aria-label="Favoritos"
+          data-route="favorites">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"></path>
+          </svg>
+          <span class="count" id="favCount">0</span>
+        </button>
+
+        <button
+          class="icon-btn"
+          type="button"
+          aria-label="Carrito"
+          data-action="open-cart">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6 7h13l-1.5 9h-10z"></path>
+            <path d="M6 7 5 3H2"></path>
+            <circle cx="9" cy="20" r="1"></circle>
+            <circle cx="17" cy="20" r="1"></circle>
+          </svg>
+          <span class="count" id="cartCount">0</span>
+        </button>
+
+        <select
+          id="languageSelect"
+          class="lang-switch"
+          aria-label="Idioma">
+          <option value="es">ES</option>
+          <option value="en">EN</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main id="app" class="page-shell">
+    <div class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando AromaLParfum...</p>
+    </div>
+  </main>
+
+  <aside id="menuDrawer" class="drawer menu" aria-hidden="true">
+    <div class="drawer-shade" data-action="close-menu"></div>
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <h2 class="drawer-title">AromaLParfum</h2>
+        <button class="close-btn" type="button" data-action="close-menu" aria-label="Cerrar">×</button>
+      </div>
+      <div class="drawer-body">
+        <div class="menu-links" id="mobileMenuLinks"></div>
+      </div>
+    </div>
+  </aside>
+
+  <aside id="cartDrawer" class="drawer cart" aria-hidden="true">
+    <div class="drawer-shade" data-action="close-cart"></div>
+    <div class="drawer-panel">
+      <div class="drawer-head">
+        <h2 class="drawer-title" data-i18n="cart.title">Tu carrito</h2>
+        <button class="close-btn" type="button" data-action="close-cart" aria-label="Cerrar">×</button>
+      </div>
+      <div class="drawer-body">
+        <div id="cartItems"></div>
+        <div id="cartSummary"></div>
+      </div>
+    </div>
+  </aside>
+
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-shade" data-action="close-modal"></div>
+    <div class="modal-panel">
+      <div class="modal-head">
+        <h2 class="modal-title" id="modalTitle">AromaLParfum</h2>
+        <button class="close-btn" type="button" data-action="close-modal" aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <footer class="footer" id="siteFooter"></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="../assets/js/config.js?v=54"></script>
+  <script src="../assets/js/core.js?v=54"></script>
+  <script src="../assets/js/products.js?v=54"></script>
+  <script src="../assets/js/supabase-data.js?v=54"></script>
+  <script src="../assets/js/store.js?v=54"></script>
+  <script src="../assets/js/product-v2.js?v=54"></script>
+  <script src="../assets/js/catalog-v2.js?v=54"></script>
+  <script src="../assets/js/home.js?v=54"></script>
+  <script src="../assets/js/cart.js?v=54"></script>
+  <script src="../assets/js/wishlist-v2.js?v=54"></script>
+  <script src="../assets/js/builders.js?v=54"></script>
+  <script src="../assets/js/decants-v2.js?v=54"></script>
+  <script src="../assets/js/gift-v2.js?v=54"></script>
+  <script src="../assets/js/checkout-v2.js?v=54"></script>
+  <script src="../assets/js/games.js?v=54"></script>
+  <script src="../assets/js/discover-v2.js?v=54"></script>
+  <script src="../assets/js/advisor.js?v=54"></script>
+  <script src="../assets/js/dashboard-v2.js?v=54"></script>
+  <script src="../assets/js/orders-v2.js?v=54"></script>
+  <script src="../assets/js/inventory-v2.js?v=54"></script>
+  <script src="../assets/js/finance-v2.js?v=54"></script>
+  <script src="../assets/js/merchandising-v2.js?v=54"></script>
+  <script src="../assets/js/gift-packs-v2.js?v=54"></script>
+  <script src="../assets/js/customers-v2.js?v=54"></script>
+  <script src="../assets/js/admin.js?v=54"></script>
+  <script src="../assets/js/events.js?v=54"></script>
+</body>
+</html>
