@@ -1,0 +1,27 @@
+{
+  "step": 57,
+  "title": "Seguimiento de Pedido V2",
+  "base": "AromaLParfum_FRONTEND_V2_PASO56",
+  "sql_required_once": "SETUP_PASO57_SEGUIMIENTO_PEDIDOS.sql",
+  "new_files": [
+    "assets/js/order-tracking-v2.js",
+    "SETUP_PASO57_SEGUIMIENTO_PEDIDOS.sql",
+    "README_PASO57.txt",
+    "PASO57_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/css/app.css",
+    "assets/js/store.js",
+    "assets/js/events.js",
+    "assets/js/checkout-v2.js"
+  ],
+  "security": {
+    "public_direct_orders_select": false,
+    "requires_order_code_and_contact": true,
+    "exposes_address_or_contact": false
+  },
+  "deep_link": "?pedido=ORDER_CODE",
+  "preserve_images_directory": true
+}
