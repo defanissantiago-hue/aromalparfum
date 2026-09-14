@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 46
+// AromaLParfum Frontend V2 — Paso 37
 // Módulo: carrito, checkout legado y favoritos
 
     function productCartKey(
@@ -1541,12 +1541,11 @@ Subtotal original: ${money(getCartSubtotal())}`;
         productId
       );
 
-      const wasFavorite =
-      state.favorites.includes(
-        id
-      );
-
-      if (wasFavorite)
+      if (
+        state.favorites.includes(
+          id
+        )
+      )
       {
         state.favorites =
         state.favorites.filter(
@@ -1562,19 +1561,6 @@ Subtotal original: ${money(getCartSubtotal())}`;
       }
 
       saveLocalState();
-
-      if (typeof wishlistV2SyncFavoriteProduct === "function")
-      {
-        Promise.resolve(
-          wishlistV2SyncFavoriteProduct(
-            id,
-            !wasFavorite
-          )
-        )
-        .catch(error =>
-          console.debug("Wishlist favorite sync error", error)
-        );
-      }
 
       renderCurrentRoute();
     }

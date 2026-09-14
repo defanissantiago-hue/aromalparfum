@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 46
+// AromaLParfum Frontend V2 — Paso 37
 // Módulo: rutas y render de tienda/catálogo/productos
 
 function setRoute(
@@ -143,26 +143,7 @@ function renderCurrentRoute()
     case "favorites":
     {
       app.innerHTML =
-      typeof wishlistV2RenderFavoritesPage === "function"
-      ? wishlistV2RenderFavoritesPage()
-      : renderFavoritesPage();
-
-      break;
-    }
-
-    case "shared-wishlist":
-    {
-      app.innerHTML =
-      typeof wishlistV2RenderSharedWishlistPage === "function"
-      ? wishlistV2RenderSharedWishlistPage()
-      : renderFavoritesPage();
-
-      if (typeof wishlistV2HydrateSharedWishlist === "function")
-      {
-        Promise.resolve(wishlistV2HydrateSharedWishlist()).catch(error =>
-          console.debug("Wishlist shared hydration error", error)
-        );
-      }
+      renderFavoritesPage();
 
       break;
     }

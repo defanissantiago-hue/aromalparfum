@@ -1,0 +1,26 @@
+{
+  "step": 46,
+  "name": "Favoritos V2 + wishlist compartible",
+  "date": "2026-09-14",
+  "new_files": [
+    "assets/js/wishlist-v2.js",
+    "README_PASO46.txt",
+    "PASO46_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/js/store.js",
+    "assets/js/cart.js",
+    "assets/js/events.js",
+    "assets/css/app.css"
+  ],
+  "backend_dependencies": [
+    "create_wishlist",
+    "wishlist_add_product",
+    "wishlist_remove_product",
+    "get_shared_wishlist",
+    "disable_wishlist"
+  ],
+  "shared_url_format": "?wishlist=<share_token>"
+}

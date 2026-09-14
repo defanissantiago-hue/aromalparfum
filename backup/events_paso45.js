@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 46
+// AromaLParfum Frontend V2 — Paso 40
 // Módulo: eventos globales, compatibilidad e inicialización
 
     function openSearchModal()
@@ -1607,17 +1607,6 @@
       exposeCompatibilityApi();
 
       await loadAllData();
-
-      if (typeof wishlistV2ApplyInitialSharedRoute === "function")
-      {
-        const appliedSharedWishlist =
-        wishlistV2ApplyInitialSharedRoute();
-
-        if (appliedSharedWishlist)
-        {
-          renderCurrentRoute();
-        }
-      }
 
       validateCartAgainstStock();
 
