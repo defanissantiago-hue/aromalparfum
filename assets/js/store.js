@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 46
+// AromaLParfum Frontend V2 — Paso 57
 // Módulo: rutas y render de tienda/catálogo/productos
 
 function setRoute(
@@ -193,6 +193,16 @@ function renderCurrentRoute()
           console.debug("Wishlist shared hydration error", error)
         );
       }
+
+      break;
+    }
+
+    case "order-tracking":
+    {
+      app.innerHTML =
+      typeof orderTrackingV2RenderPage === "function"
+      ? orderTrackingV2RenderPage()
+      : `<section class="section"><div class="container"><div class="empty-state"><h3>Seguimiento no disponible.</h3></div></div></section>`;
 
       break;
     }
@@ -430,6 +440,18 @@ function renderMobileMenu()
 
     {
       route:
+      "order-tracking",
+
+      label:
+      state.language === "en"
+      ?
+      "Track order"
+      :
+      "Seguir pedido",
+    },
+
+    {
+      route:
       "contact",
 
       label:
@@ -584,6 +606,10 @@ function renderFooter()
 
           <button class="footer-link" type="button" data-route="favorites">
             ${escapeHtml(t("nav.favorites"))}
+          </button>
+
+          <button class="footer-link" type="button" data-route="order-tracking">
+            ${state.language === "en" ? "Track order" : "Seguimiento de pedido"}
           </button>
 
           <button class="footer-link" type="button" data-action="open-cart">

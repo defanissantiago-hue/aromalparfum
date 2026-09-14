@@ -2233,6 +2233,21 @@
 
       if (
         !initialSpecialRouteApplied &&
+        typeof orderTrackingV2ApplyInitialRoute === "function"
+      )
+      {
+        const appliedOrderTracking =
+        orderTrackingV2ApplyInitialRoute();
+
+        if (appliedOrderTracking)
+        {
+          initialSpecialRouteApplied = true;
+          renderCurrentRoute();
+        }
+      }
+
+      if (
+        !initialSpecialRouteApplied &&
         typeof campaignsV2ApplyInitialRoute === "function"
       )
       {

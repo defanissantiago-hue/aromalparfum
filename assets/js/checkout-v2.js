@@ -662,6 +662,11 @@ async function alp43SubmitCheckout()
       paymentPlan: checkout.paymentPlan,
     };
 
+    if (typeof orderTrackingV2RememberOrder === "function")
+    {
+      orderTrackingV2RememberOrder(checkout.order);
+    }
+
     // El pedido ya existe en Supabase. Vaciar el carrito evita duplicarlo.
     state.cart = [];
     saveLocalState();
@@ -734,6 +739,9 @@ function alp43RenderOrderSuccess(order)
         </button>
         <button class="btn secondary" type="button" data-checkout-v2-action="copy-code">
           ${state.language === "en" ? "Copy order code" : "Copiar código del pedido"}
+        </button>
+        <button class="btn secondary" type="button" data-checkout-v2-action="track">
+          ${state.language === "en" ? "Track my order" : "Ver seguimiento"}
         </button>
         <button class="btn secondary" type="button" data-checkout-v2-action="continue-shopping">
           ${state.language === "en" ? "Continue shopping" : "Seguir comprando"}
@@ -854,6 +862,18 @@ if (!window.__alp43CheckoutListenersInstalled)
     if (action === "copy-code")
     {
       await alp43CopyOrderCode();
+      return;
+    }
+
+    if (action === "track")
+    {
+      const order = alp43CheckoutState().order;
+      if (order && typeof orderTrackingV2Open === "function")
+      {
+        closeModal();
+        const contact = order.customer?.email || order.customer?.phone || "";
+        orderTrackingV2Open(order.order_code, contact);
+      }
       return;
     }
 
