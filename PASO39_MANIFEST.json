@@ -1,0 +1,28 @@
+{
+  "project": "AromaLParfum",
+  "step": 39,
+  "name": "Catalogo V2",
+  "based_on": "Paso 38",
+  "features": [
+    "smart search",
+    "autocomplete",
+    "gender filter",
+    "style filter",
+    "occasion filter",
+    "season filter",
+    "origin segment filter",
+    "olfactory family filter",
+    "price range filter",
+    "debounced Supabase RPC calls",
+    "local filtering to reduce Supabase usage",
+    "responsive catalog interface"
+  ],
+  "new_files": [
+    "assets/js/catalog-v2.js"
+  ],
+  "backups": [
+    "backup/config_paso38.js",
+    "backup/events_paso38.js",
+    "backup/store_paso38.js"
+  ]
+}

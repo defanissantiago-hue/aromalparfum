@@ -4939,3 +4939,286 @@
     min-height:270px;
   }
 }
+
+/* =========================================================
+   AromaLParfum Frontend V2 — Paso 39
+   Catálogo V2
+   ========================================================= */
+
+.catalog-v2-section {
+  position: relative;
+}
+
+.catalog-v2-status {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.catalog-search-status {
+  min-height: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-pill);
+  background: var(--paper);
+  color: var(--muted);
+  font-size: 9px;
+  letter-spacing: .45px;
+  text-transform: uppercase;
+}
+
+.catalog-search-status.loading {
+  color: var(--ink);
+}
+
+.catalog-search-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: catalogPulse 1s ease-in-out infinite;
+}
+
+@keyframes catalogPulse {
+  0%, 100% { opacity: .3; transform: scale(.8); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.catalog-smart-search-wrap {
+  position: relative;
+  z-index: 8;
+  margin-bottom: 14px;
+}
+
+.catalog-search-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.catalog-search-icon {
+  position: absolute;
+  left: 14px;
+  z-index: 2;
+  color: var(--muted);
+  pointer-events: none;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.catalog-smart-search.search-input {
+  min-height: 52px;
+  padding-left: 42px;
+  padding-right: 44px;
+  border-radius: 14px;
+  font-size: 13px;
+  background: rgba(255,255,255,.78);
+}
+
+.catalog-search-clear {
+  position: absolute;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--muted);
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.catalog-search-clear:hover {
+  background: rgba(0,0,0,.05);
+  color: var(--ink);
+}
+
+.catalog-smart-hint {
+  margin: 7px 4px 0;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.catalog-autocomplete {
+  position: absolute;
+  top: 58px;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper);
+  box-shadow: 0 18px 55px rgba(37, 28, 21, .14);
+}
+
+.catalog-autocomplete-item {
+  width: 100%;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 13px;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  font-size: 11px;
+}
+
+.catalog-autocomplete-item:last-child {
+  border-bottom: 0;
+}
+
+.catalog-autocomplete-item:hover,
+.catalog-autocomplete-item:focus-visible {
+  background: rgba(155,116,73,.08);
+  outline: none;
+}
+
+.catalog-filter-panel {
+  margin: 0 0 18px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgba(255,255,255,.52);
+}
+
+.catalog-filter-panel > summary {
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 14px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .7px;
+  text-transform: uppercase;
+}
+
+.catalog-filter-panel > summary::-webkit-details-marker {
+  display: none;
+}
+
+.catalog-filter-count {
+  min-width: 28px;
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  border-radius: var(--radius-pill);
+  background: var(--dark);
+  color: #fff;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.catalog-filter-panel[open] > summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.catalog-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  padding: 14px;
+}
+
+.catalog-filter-field {
+  min-width: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.catalog-filter-field > span {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .4px;
+  text-transform: uppercase;
+}
+
+.catalog-filter-field .select-input,
+.catalog-filter-field .number-input {
+  min-height: 40px;
+  font-size: 11px;
+}
+
+.catalog-filter-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 14px 14px;
+  color: var(--muted);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.catalog-toolbar-v2 {
+  grid-template-columns: minmax(0, 1fr) minmax(190px, 240px) auto;
+}
+
+.catalog-result-label {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.catalog-empty-v2 p {
+  max-width: 430px;
+  margin: 8px auto 18px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+@media (max-width: 980px) {
+  .catalog-filter-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .catalog-v2-status {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .catalog-smart-search.search-input {
+    min-height: 48px;
+    font-size: 12px;
+  }
+
+  .catalog-filter-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .catalog-filter-footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .catalog-toolbar-v2 {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-result-label {
+    min-height: auto;
+  }
+}

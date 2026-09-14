@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 39
+// AromaLParfum Frontend V2 — Paso 37
 // Módulo: configuración, traducciones, Supabase y estado global
 
 const I18N =
@@ -1429,36 +1429,6 @@ const state =
 
   catalogPageSize:
   24,
-
-  catalogAdvancedFilters:
-  {
-    gender: "",
-    style: "",
-    occasion: "",
-    season: "",
-    origin: "",
-    family: "",
-    priceMin: "",
-    priceMax: "",
-  },
-
-  catalogSmartIds:
-  null,
-
-  catalogSmartQuery:
-  "",
-
-  catalogSmartOrder:
-  [],
-
-  catalogSuggestions:
-  [],
-
-  catalogSuggestionsQuery:
-  "",
-
-  catalogSearchLoading:
-  false,
 
   allProductImagesLoaded:
   false,

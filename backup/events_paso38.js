@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 39
+// AromaLParfum Frontend V2 — Paso 37
 // Módulo: eventos globales, compatibilidad e inicialización
 
     function openSearchModal()
@@ -58,14 +58,6 @@
 
       state.catalogPage =
       1;
-
-      if (typeof catalogScheduleSmartSearch === "function")
-      {
-        catalogScheduleSmartSearch(
-          value,
-          0
-        );
-      }
 
       setRoute(
         "catalog"
@@ -380,55 +372,7 @@
           state.catalogPage =
           1;
 
-          if (typeof catalogClearAdvancedFilters === "function")
-          {
-            catalogClearAdvancedFilters();
-          }
-
-          if (typeof catalogResetSearchEnhancements === "function")
-          {
-            catalogResetSearchEnhancements();
-          }
-
           renderCurrentRoute();
-
-          break;
-        }
-
-        case "clear-advanced-catalog":
-        {
-          if (typeof catalogClearAdvancedFilters === "function")
-          {
-            catalogClearAdvancedFilters();
-          }
-
-          state.catalogPage = 1;
-          renderCurrentRoute();
-          break;
-        }
-
-        case "clear-catalog-search":
-        {
-          state.catalogSearch = "";
-          state.catalogPage = 1;
-
-          if (typeof catalogResetSearchEnhancements === "function")
-          {
-            catalogResetSearchEnhancements();
-          }
-
-          renderCurrentRoute();
-          break;
-        }
-
-        case "catalog-suggestion":
-        {
-          if (typeof catalogV2SelectSuggestion === "function")
-          {
-            catalogV2SelectSuggestion(
-              element.dataset.value || ""
-            );
-          }
 
           break;
         }
@@ -1001,21 +945,6 @@
         }
 
         if (
-          target.matches?.("[data-catalog-filter-key]")
-        )
-        {
-          if (typeof catalogV2SetFilter === "function")
-          {
-            catalogV2SetFilter(
-              target.dataset.catalogFilterKey,
-              target.value
-            );
-          }
-
-          return;
-        }
-
-        if (
           target.id === "adminProductPageSize"
         )
         {
@@ -1290,18 +1219,56 @@
           target.id === "catalogSearch"
         )
         {
-          if (typeof catalogV2OnSearchInput === "function")
-          {
-            catalogV2OnSearchInput(
-              target
-            );
+          state.catalogSearch =
+          target.value;
 
-            return;
+          state.catalogPage =
+          1;
+
+          const selectionStart =
+          target.selectionStart;
+
+          const selectionEnd =
+          target.selectionEnd;
+
+          const app =
+          document.getElementById(
+            "app"
+          );
+
+          if (
+            app
+          )
+          {
+            app.innerHTML =
+            renderCatalogPage();
           }
 
-          state.catalogSearch = target.value;
-          state.catalogPage = 1;
-          renderCurrentRoute();
+          const fresh =
+          document.getElementById(
+            "catalogSearch"
+          );
+
+          if (
+            fresh
+          )
+          {
+            fresh.focus();
+
+            try
+            {
+              fresh.setSelectionRange(
+                selectionStart,
+                selectionEnd
+              );
+            }
+            catch (
+              error
+            )
+            {
+              void error;
+            }
+          }
         }
       }
     );
@@ -1448,8 +1415,6 @@
         category
         ||
         "Todos";
-
-        state.catalogPage = 1;
 
         setRoute(
           "catalog"
