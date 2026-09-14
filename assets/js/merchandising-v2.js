@@ -279,6 +279,7 @@ function alp52RenderCampaignCard(row)
       </dl>
       <div class="alp52-actions">
         <button class="btn outline small" type="button" data-action="admin-campaign-edit" data-id="${alp52Attr(row.id)}">${en ? "Edit" : "Editar"}</button>
+        ${row.landing_enabled && row.slug ? `<a class="btn outline small" href="../?campaign=${encodeURIComponent(String(row.slug))}" target="_blank" rel="noopener noreferrer">${en ? "View landing" : "Ver landing"}</a>` : ""}
         <button class="btn ${row.activo ? "outline" : ""} small" type="button" data-action="admin-campaign-toggle" data-id="${alp52Attr(row.id)}" data-active="${row.activo ? "false" : "true"}">${row.activo ? (en ? "Pause" : "Pausar") : (en ? "Publish" : "Publicar")}</button>
       </div>
     </article>`;

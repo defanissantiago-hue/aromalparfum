@@ -198,6 +198,22 @@ function renderMerchandisingCta(target, label, className = "btn")
     `;
   }
 
+  if (/^campaign:/i.test(safeTarget))
+  {
+    const slug = safeTarget.slice("campaign:".length).trim();
+
+    return `
+      <button
+        class="${escapeAttribute(className)}"
+        type="button"
+        data-route="campaign"
+        data-campaign-slug="${escapeAttribute(slug)}">
+        ${escapeHtml(safeLabel)}
+        <span aria-hidden="true">→</span>
+      </button>
+    `;
+  }
+
   const allowedRoutes = new Set([
     "catalog",
     "best",
@@ -408,6 +424,12 @@ function renderCampaignEditorial(campaign)
   const desktop = campaign.resolved_image || "";
   const mobile = campaign.resolved_mobile_image || "";
   const hasMedia = Boolean(desktop || mobile);
+  const configuredTarget = String(campaign.cta_target || "").trim();
+  const campaignSlug = String(campaign.slug || "").trim();
+  const campaignLandingEnabled = campaign.landing_enabled !== false;
+  const effectiveTarget = campaignLandingEnabled && campaignSlug && (!configuredTarget || configuredTarget === "catalog")
+    ? `campaign:${campaignSlug}`
+    : configuredTarget;
 
   return `
     <article class="campaign-editorial ${hasMedia ? "has-media" : ""}">
@@ -449,7 +471,7 @@ function renderCampaignEditorial(campaign)
 
         <div class="campaign-editorial-actions">
           ${renderMerchandisingCta(
-            campaign.cta_target,
+            effectiveTarget,
             campaign.cta_label || "Descubrir colección"
           )}
         </div>

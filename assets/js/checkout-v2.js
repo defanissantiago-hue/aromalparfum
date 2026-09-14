@@ -76,10 +76,22 @@ function alp43GetAttribution()
   }
 
   const utmCampaign = String(params.get("utm_campaign") || "").trim();
+  let persistedCampaign = "";
+
+  try
+  {
+    persistedCampaign = sessionStorage.getItem("alp_campaign_slug_v2") || "";
+  }
+  catch (_error)
+  {
+    persistedCampaign = "";
+  }
+
   const routeCampaign = String(
     state.routePayload?.campaign_slug ||
     state.routePayload?.campaignSlug ||
-    state.routePayload?.slug ||
+    persistedCampaign ||
+    (state.route === "campaign" ? state.routePayload?.slug : "") ||
     ""
   ).trim();
 

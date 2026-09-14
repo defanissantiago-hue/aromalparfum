@@ -154,6 +154,26 @@
         return true;
       }
 
+      if (
+        route === "campaign"
+      )
+      {
+        const slug =
+        element.dataset.campaignSlug
+        ||
+        "";
+
+        setRoute(
+          "campaign",
+          {
+            slug,
+            campaign_slug: slug,
+          }
+        );
+
+        return true;
+      }
+
       setRoute(
         route
       );
@@ -2197,12 +2217,29 @@
 
       await loadAllData();
 
+      let initialSpecialRouteApplied = false;
+
       if (typeof wishlistV2ApplyInitialSharedRoute === "function")
       {
         const appliedSharedWishlist =
         wishlistV2ApplyInitialSharedRoute();
 
         if (appliedSharedWishlist)
+        {
+          initialSpecialRouteApplied = true;
+          renderCurrentRoute();
+        }
+      }
+
+      if (
+        !initialSpecialRouteApplied &&
+        typeof campaignsV2ApplyInitialRoute === "function"
+      )
+      {
+        const appliedCampaign =
+        campaignsV2ApplyInitialRoute();
+
+        if (appliedCampaign)
         {
           renderCurrentRoute();
         }

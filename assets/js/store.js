@@ -102,6 +102,30 @@ function renderCurrentRoute()
       break;
     }
 
+    case "campaign":
+    {
+      const campaignSlug =
+      state.routePayload.slug
+      ||
+      state.routePayload.campaign_slug
+      ||
+      "";
+
+      app.innerHTML =
+      typeof campaignsV2RenderPage === "function"
+      ? campaignsV2RenderPage(campaignSlug)
+      : `<section class="section"><div class="container"><div class="empty-state"><h3>Campaña no disponible.</h3><button class="btn" type="button" data-route="catalog">Ver catálogo</button></div></div></section>`;
+
+      if (typeof campaignsV2AfterRender === "function")
+      {
+        Promise.resolve(campaignsV2AfterRender(campaignSlug)).catch(error =>
+          console.debug("Campaign V2 after-render error", error)
+        );
+      }
+
+      break;
+    }
+
     case "decants":
     {
       app.innerHTML =
