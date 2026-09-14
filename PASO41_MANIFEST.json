@@ -1,0 +1,240 @@
+{
+  "step": 41,
+  "project": "AromaLParfum Frontend V2",
+  "created_at": "2026-09-14T13:13:30.126979+00:00",
+  "features": [
+    "decants_v2",
+    "decant_surcharge_ui",
+    "floating_decant_summary",
+    "try_before_info",
+    "gift_decant_bridge",
+    "builder_draft_persistence"
+  ],
+  "files": [
+    {
+      "path": "PASO36_MANIFEST.json",
+      "bytes": 353,
+      "sha256": "a357d4adb8464f58be725c512d53eb3c12e2f9d2ec5138d058b493aad98f0048"
+    },
+    {
+      "path": "PASO37_MANIFEST.json",
+      "bytes": 893,
+      "sha256": "14f87bb1a3235cee9a02807c68f969fd466e8e156fdcdfd08f11a36289e34265"
+    },
+    {
+      "path": "PASO38_MANIFEST.json",
+      "bytes": 728,
+      "sha256": "bf465301e9f16fbaa07a385aefcd882eefc7fc551d2e07bd2a0e60d31e7ca993"
+    },
+    {
+      "path": "PASO39_MANIFEST.json",
+      "bytes": 610,
+      "sha256": "32cd38a84b93588401d4af17d808175cb56c59810d53cf10eb4855f9f51d58f3"
+    },
+    {
+      "path": "PASO40_MANIFEST.json",
+      "bytes": 960,
+      "sha256": "a4012c3045237e47b7b64f5f1126005641589988495fd6ff153c42183d723d3b"
+    },
+    {
+      "path": "README_PASO36.txt",
+      "bytes": 1991,
+      "sha256": "0a4093e2d4d5271c5b35c07800fbbcc175b247ff9c701b88c010fb4198c1af2f"
+    },
+    {
+      "path": "README_PASO37.txt",
+      "bytes": 2179,
+      "sha256": "e8f191e7b9bff849ad9249b79ba3a09be3dc6da1a72fb95a778ec151356c7548"
+    },
+    {
+      "path": "README_PASO38.txt",
+      "bytes": 1692,
+      "sha256": "f976880609542e8e0a7402044a81a2e7314a40dd20d3c44821a54ebc5ba3bc44"
+    },
+    {
+      "path": "README_PASO39.txt",
+      "bytes": 1554,
+      "sha256": "d6ab009adf1e337308a9cfcce4150a9869e73c0b7780ade35666c2e7bf20b20b"
+    },
+    {
+      "path": "README_PASO40.txt",
+      "bytes": 2009,
+      "sha256": "8fb439a17cf4a21a1dce88b8f5b0e0301c25fdc400a22cc07836c83c0223471d"
+    },
+    {
+      "path": "README_PASO41.txt",
+      "bytes": 1460,
+      "sha256": "4a6d116e7fc0a1303f9ef74a713772559e5303fa804f6b258e25e6d560c8cbcb"
+    },
+    {
+      "path": "admin/index.html",
+      "bytes": 5908,
+      "sha256": "40008cc69270e5e5bb57cca1cf66696a2e7298a9d7f523c4ec957147b5bf0f23"
+    },
+    {
+      "path": "assets/css/app.css",
+      "bytes": 120651,
+      "sha256": "e3f25e6f85659a425a95a0fc0b214a52217c7ad680022ab64e31cb2f871fd15b"
+    },
+    {
+      "path": "assets/js/admin.js",
+      "bytes": 106065,
+      "sha256": "8802afe420a7c665e93178e093630d4cf6f32177f6e4d1f117e55b73054d0d81"
+    },
+    {
+      "path": "assets/js/advisor.js",
+      "bytes": 14676,
+      "sha256": "9c87d333c4618099508e6d09ca0692933c59020bf9155ce06ad651fd6fea09d5"
+    },
+    {
+      "path": "assets/js/app.js",
+      "bytes": 136,
+      "sha256": "f4b056b9c57359610adced35c02ddc85993b84b45613377c55534b4717919107"
+    },
+    {
+      "path": "assets/js/builders.js",
+      "bytes": 18056,
+      "sha256": "97108a049bb5def95b8df292878fa6955d32668f86e94872076178ce7f0a7e78"
+    },
+    {
+      "path": "assets/js/cart.js",
+      "bytes": 28509,
+      "sha256": "722356baeb105809a95cb6cd6b331a489a67a7313928d3ef1e3ccf74df4f870d"
+    },
+    {
+      "path": "assets/js/catalog-v2.js",
+      "bytes": 29615,
+      "sha256": "febff12d1d1ab701fd16f6e7a0bf0d0f7d284385970997fa52ba6117dc545838"
+    },
+    {
+      "path": "assets/js/config.js",
+      "bytes": 34417,
+      "sha256": "733422f31f809cda3551a80d7da5430b9789eeab9b854119a29515ebcf47c222"
+    },
+    {
+      "path": "assets/js/core.js",
+      "bytes": 18580,
+      "sha256": "838e45b21f4a57267178af3e18cdc36de12deffc5c7c4a5e49f54c3e37b7f533"
+    },
+    {
+      "path": "assets/js/decants-v2.js",
+      "bytes": 20629,
+      "sha256": "9d9e3296c70961497878854ce024b5812cc283e4b326e5e000f7e45d48465be4"
+    },
+    {
+      "path": "assets/js/events.js",
+      "bytes": 28514,
+      "sha256": "9e84621b726c1493fd315c42e07858fb13a0dac83f6d3ba5542de4cf7d26d0ce"
+    },
+    {
+      "path": "assets/js/games.js",
+      "bytes": 35843,
+      "sha256": "cd1fffdd74da62a2b2823be07f85b0ecc930a1601f9ffe99549e7361a32b7cbb"
+    },
+    {
+      "path": "assets/js/home.js",
+      "bytes": 15667,
+      "sha256": "5f4868cd7f9e37e553b4c123f40f2d5fc33cdcaae0ae62249cbbcd6e64992981"
+    },
+    {
+      "path": "assets/js/product-v2.js",
+      "bytes": 30651,
+      "sha256": "877415cb1c766010cec22f79cd95c5802f8365ec638e0a26af2fb0f42424d0ff"
+    },
+    {
+      "path": "assets/js/products.js",
+      "bytes": 16860,
+      "sha256": "22a89ec8bad04a4dbcd5ddb1d74a5156c9adba44f16d8c9f89d841fa801265ca"
+    },
+    {
+      "path": "assets/js/store.js",
+      "bytes": 61963,
+      "sha256": "3783662afbb6cf1630ba66293fbedd4f3934988c6e065a6c8978014117a98293"
+    },
+    {
+      "path": "assets/js/supabase-data.js",
+      "bytes": 10450,
+      "sha256": "c3531c8fa7ec5438ea4de80b6bbe396c73f96e5c3622dc4c6f418860f3a719e6"
+    },
+    {
+      "path": "backup/admin_index_paso39.html",
+      "bytes": 5792,
+      "sha256": "43a15dc088dfa18767089a6eaf963fa7222338a56136837368d91981bae64412"
+    },
+    {
+      "path": "backup/app_paso36.js",
+      "bytes": 370067,
+      "sha256": "912563de2fda344b4b8c17a7272cd55d745e761c5b9ff32174d3d116a4b2a3dd"
+    },
+    {
+      "path": "backup/app_paso39.css",
+      "bytes": 104438,
+      "sha256": "7fd033ea00f4cd82eb81bb7137cf97e37d7d8ff1fc82c846e1b5d75fdd7cac72"
+    },
+    {
+      "path": "backup/app_paso40.css",
+      "bytes": 115367,
+      "sha256": "d7ce512897ac848f1070847103a5009fcbce219288b9c5200073e7154ebfbc8f"
+    },
+    {
+      "path": "backup/builders_paso40.js",
+      "bytes": 18056,
+      "sha256": "97108a049bb5def95b8df292878fa6955d32668f86e94872076178ce7f0a7e78"
+    },
+    {
+      "path": "backup/config_paso37.js",
+      "bytes": 33921,
+      "sha256": "ba7e8d8035cfa29b5fcd9eb763287719aeb939da20ded90cc0f9c2dc5876abea"
+    },
+    {
+      "path": "backup/config_paso38.js",
+      "bytes": 34067,
+      "sha256": "9dbd08983c7824798bb09cef3714ce1701a9c506d3191aeb3f739536c1e0133d"
+    },
+    {
+      "path": "backup/events_paso38.js",
+      "bytes": 27003,
+      "sha256": "9576e594d2e2f7fb0965901f88be9583a78510d262a1b05032c4e32960db61fa"
+    },
+    {
+      "path": "backup/events_paso39.js",
+      "bytes": 28001,
+      "sha256": "c45e8368a67cd06c7826f66b8e7d7a7215847c3cc9f47576750c76cfa52244ee"
+    },
+    {
+      "path": "backup/events_paso40.js",
+      "bytes": 28428,
+      "sha256": "ff5befe14ca6150c79c583a078abeae8accacf0a58d0e0921ad63e9ece6d9780"
+    },
+    {
+      "path": "backup/index_original.html",
+      "bytes": 467003,
+      "sha256": "f21008af075857946a92a4862f7455e653915d17ad7bf66a5707456725e53421"
+    },
+    {
+      "path": "backup/index_paso39.html",
+      "bytes": 5788,
+      "sha256": "81e6b4ead9c4516b0e68ea4dc1e4effedded726856962f24b6919f83d69a270b"
+    },
+    {
+      "path": "backup/store_paso38.js",
+      "bytes": 61365,
+      "sha256": "34a342224e4dadf8e4224d6529ad7e6727b8c458b39446558199497a0e1efea5"
+    },
+    {
+      "path": "backup/store_paso39.js",
+      "bytes": 61365,
+      "sha256": "34a342224e4dadf8e4224d6529ad7e6727b8c458b39446558199497a0e1efea5"
+    },
+    {
+      "path": "backup/supabase-data_paso37.js",
+      "bytes": 10334,
+      "sha256": "2f94f2490d70bd5f41249be820c22a56d838e81929ff93dc66b86eba7f17ac22"
+    },
+    {
+      "path": "index.html",
+      "bytes": 5898,
+      "sha256": "8f86268912caad413a9035720f6230155b173c0474ce18434d1551aff4bd0d5e"
+    }
+  ]
+}

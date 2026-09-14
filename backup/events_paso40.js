@@ -1061,10 +1061,8 @@
           state.selectedGiftOption =
           target.value;
 
-          if (typeof alp41PersistBuilderDrafts === "function")
-          {
-            alp41PersistBuilderDrafts();
-          }
+          state.giftDraft =
+          [];
 
           renderCurrentRoute();
 
