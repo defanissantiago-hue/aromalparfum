@@ -865,6 +865,126 @@
           break;
         }
 
+        case "admin-packs-refresh":
+        {
+          if (typeof alp53LoadPacks === "function") await alp53LoadPacks({ force: true });
+          break;
+        }
+
+        case "admin-packs-section":
+        {
+          if (typeof alp53SetSection === "function") alp53SetSection(element.dataset.section);
+          break;
+        }
+
+        case "admin-giftset-new":
+        {
+          if (typeof alp53NewGiftSet === "function") alp53NewGiftSet();
+          break;
+        }
+
+        case "admin-giftset-edit":
+        {
+          if (typeof alp53EditGiftSet === "function") alp53EditGiftSet(element.dataset.id);
+          break;
+        }
+
+        case "admin-giftset-cancel":
+        {
+          if (typeof alp53CancelGiftSet === "function") alp53CancelGiftSet();
+          break;
+        }
+
+        case "admin-giftset-save":
+        {
+          if (typeof alp53SaveGiftSet === "function") await alp53SaveGiftSet();
+          break;
+        }
+
+        case "admin-giftset-toggle":
+        {
+          if (typeof alp53Toggle === "function") await alp53Toggle("gift_set", element.dataset.id, element.dataset.active === "true");
+          break;
+        }
+
+        case "admin-giftset-component-add":
+        {
+          if (typeof alp53AddGiftComponent === "function") await alp53AddGiftComponent(element.dataset.id);
+          break;
+        }
+
+        case "admin-giftset-component-save":
+        {
+          if (typeof alp53SaveGiftComponent === "function") await alp53SaveGiftComponent(element.dataset.id);
+          break;
+        }
+
+        case "admin-giftset-component-remove":
+        {
+          if (typeof alp53RemoveGiftComponent === "function") await alp53RemoveGiftComponent(element.dataset.id);
+          break;
+        }
+
+        case "admin-giftset-component-move":
+        {
+          if (typeof alp53MoveComponent === "function") await alp53MoveComponent("gift", element.dataset.id, element.dataset.direction);
+          break;
+        }
+
+        case "admin-discovery-new":
+        {
+          if (typeof alp53NewDiscovery === "function") alp53NewDiscovery();
+          break;
+        }
+
+        case "admin-discovery-edit":
+        {
+          if (typeof alp53EditDiscovery === "function") alp53EditDiscovery(element.dataset.id);
+          break;
+        }
+
+        case "admin-discovery-cancel":
+        {
+          if (typeof alp53CancelDiscovery === "function") alp53CancelDiscovery();
+          break;
+        }
+
+        case "admin-discovery-save":
+        {
+          if (typeof alp53SaveDiscovery === "function") await alp53SaveDiscovery();
+          break;
+        }
+
+        case "admin-discovery-toggle":
+        {
+          if (typeof alp53Toggle === "function") await alp53Toggle("discovery_box", element.dataset.id, element.dataset.active === "true");
+          break;
+        }
+
+        case "admin-discovery-component-add":
+        {
+          if (typeof alp53AddDiscoveryComponent === "function") await alp53AddDiscoveryComponent(element.dataset.id);
+          break;
+        }
+
+        case "admin-discovery-component-save":
+        {
+          if (typeof alp53SaveDiscoveryComponent === "function") await alp53SaveDiscoveryComponent(element.dataset.id);
+          break;
+        }
+
+        case "admin-discovery-component-remove":
+        {
+          if (typeof alp53RemoveDiscoveryComponent === "function") await alp53RemoveDiscoveryComponent(element.dataset.id);
+          break;
+        }
+
+        case "admin-discovery-component-move":
+        {
+          if (typeof alp53MoveComponent === "function") await alp53MoveComponent("discovery", element.dataset.id, element.dataset.direction);
+          break;
+        }
+
         case "admin-merch-refresh":
         {
           if (typeof alp52LoadMerchandising === "function")
