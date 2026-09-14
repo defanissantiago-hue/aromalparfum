@@ -1,0 +1,35 @@
+{
+  "step": 40,
+  "name": "Ficha de Producto V2 + recomendaciones + comparador",
+  "new_files": [
+    "assets/js/product-v2.js",
+    "README_PASO40.txt",
+    "PASO40_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/js/store.js",
+    "assets/js/events.js",
+    "assets/css/app.css"
+  ],
+  "backup_files": [
+    "backup/store_paso39.js",
+    "backup/events_paso39.js",
+    "backup/app_paso39.css",
+    "backup/index_paso39.html",
+    "backup/admin_index_paso39.html"
+  ],
+  "backend_dependencies": [
+    "get_similar_products",
+    "get_recently_viewed_recommendations",
+    "compare_products",
+    "site_settings.recently_viewed"
+  ],
+  "local_storage": [
+    "alp_compare_v1",
+    "configured recently_viewed storage key (fallback alp_recently_viewed_v1)"
+  ],
+  "max_compare_products": 3,
+  "notes": "No backend migration required in this step. Uses RPCs already created in earlier steps with local fallbacks."
+}

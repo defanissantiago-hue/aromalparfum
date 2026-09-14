@@ -148,41 +148,14 @@ function renderCurrentRoute()
 
     case "product":
     {
-      const productId =
-      state.routePayload.id;
-
       app.innerHTML =
-      typeof renderProductDetailPageV2 === "function"
-      ?
-      renderProductDetailPageV2(
-        productId
-      )
-      :
       renderProductDetailPage(
-        productId
+        state.routePayload.id
       );
 
       ensureProductGallery(
-        productId
+        state.routePayload.id
       );
-
-      if (
-        typeof productV2AfterRender === "function"
-      )
-      {
-        Promise.resolve(
-          productV2AfterRender(
-            productId
-          )
-        )
-        .catch(
-          error =>
-          console.debug(
-            "Product V2 after-render error",
-            error
-          )
-        );
-      }
 
       break;
     }
@@ -247,13 +220,6 @@ function renderCurrentRoute()
   applyLanguageToChrome();
 
   updateHeaderCounts();
-
-  if (
-    typeof productV2AfterRouteRender === "function"
-  )
-  {
-    productV2AfterRouteRender();
-  }
 
   if (
     state.route === "games"

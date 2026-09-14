@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 40
+// AromaLParfum Frontend V2 — Paso 39
 // Módulo: eventos globales, compatibilidad e inicialización
 
     function openSearchModal()
@@ -271,30 +271,6 @@
           addProductToCart(
             element.dataset.productId
           );
-
-          break;
-        }
-
-        case "product-v2-compare-toggle":
-        {
-          productV2ToggleCompare(
-            element.dataset.productId
-          );
-
-          break;
-        }
-
-        case "product-v2-compare-open":
-        {
-          await productV2OpenComparator();
-
-          break;
-        }
-
-        case "product-v2-compare-clear":
-        {
-          productV2ClearCompare();
-          closeModal();
 
           break;
         }
