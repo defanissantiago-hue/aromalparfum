@@ -1,0 +1,27 @@
+{
+  "step": 45,
+  "name": "Carrito V2 inteligente",
+  "base": "AromaLParfum Frontend V2 Paso 44",
+  "changes": [
+    "Nuevo módulo cart-v2.js",
+    "Barra flotante móvil con cantidad y total",
+    "Recomendaciones por RPC get_cart_recommendations",
+    "Máximo de 2 recomendaciones",
+    "Ocultación automática de recomendaciones en carritos grandes",
+    "Cache corto de recomendaciones para reducir consultas",
+    "Actualización instantánea de la barra al modificar el carrito"
+  ],
+  "new_files": [
+    "assets/js/cart-v2.js",
+    "README_PASO45.txt",
+    "PASO45_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/js/cart.js",
+    "assets/js/core.js",
+    "assets/css/app.css"
+  ],
+  "backup_source_step": 44
+}

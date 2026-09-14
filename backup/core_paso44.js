@@ -705,13 +705,6 @@ function updateHeaderCounts()
       state.favorites.length
     );
   }
-
-  if (
-    typeof cart45UpdateFloatingBar === "function"
-  )
-  {
-    cart45UpdateFloatingBar();
-  }
 }
 
 function toast(

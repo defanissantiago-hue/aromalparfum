@@ -458,8 +458,6 @@
 
       summaryHost.innerHTML =
       `
-        <div id="cart45Recommendations"></div>
-
         <div class="cart-summary">
           <div class="cart-total-row grand">
             <span>
@@ -482,13 +480,6 @@
       `;
 
       saveLocalState();
-
-      if (
-        typeof cart45RefreshRecommendations === "function"
-      )
-      {
-        cart45RefreshRecommendations();
-      }
     }
 
     function renderCartLine(
