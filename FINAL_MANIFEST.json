@@ -1,0 +1,39 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 68,
+  "name": "Final Stable Release",
+  "version": "2.68.0",
+  "channel": "stable-final",
+  "date": "2026-09-15",
+  "sql_required": false,
+  "runtime_js_files": 42,
+  "production_cleanup": [
+    "historical backup directory removed from deployable package",
+    "prior step README/manifest files removed from deployable package",
+    "already-executed setup SQL files removed from deployable package",
+    "unused legacy assets/js/app.js removed"
+  ],
+  "runtime_changes_from_step_67": [
+    "index.html build/cache marker 68",
+    "admin/index.html build/cache marker 68",
+    "release-v2.js version 2.68.0 and stable-final channel"
+  ],
+  "validations": [
+    "JS_SYNTAX_OK (42 files)",
+    "STATIC_REFERENCES_OK (76 refs)",
+    "ALL_RUNTIME_ASSETS_V68_OK",
+    "RUNTIME_DIFF_SCOPE_OK",
+    "ACTION_LITERAL_AUDIT_OK (165 actions)",
+    "CSS_URL_REFERENCES_OK",
+    "SITEMAP_XML_OK",
+    "SHARE_IMAGE_OK (1200x630)",
+    "HTTP_FINAL_OK",
+    "IMAGENES_NOT_PACKAGED_OK"
+  ],
+  "deployment": {
+    "preserve_images_folder": true,
+    "requires_new_sql": false,
+    "rollback_source": "AromaLParfum_FRONTEND_V2_PASO67.zip",
+    "post_deploy": "Ctrl+F5 and Admin > Auditoría > Ejecutar auditoría"
+  }
+}

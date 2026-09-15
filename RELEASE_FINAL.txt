@@ -1,0 +1,24 @@
+AromaLParfum — RELEASE FINAL ESTABLE
+Build: 68
+Version: 2.68.0
+Channel: stable-final
+Fecha: 2026-09-15
+
+DESPLIEGUE
+1. Subir el contenido de esta carpeta sobre la versión anterior.
+2. Reemplazar los archivos existentes.
+3. NO borrar la carpeta /imagenes ya publicada.
+4. Hacer Ctrl+F5 después del despliegue.
+5. Entrar a /admin/ → Auditoría y ejecutar la auditoría de release.
+
+BACKEND
+Esta release no requiere SQL nuevo.
+Asume que ya fueron ejecutados correctamente los SQL de los pasos 57, 58, 59, 60, 61 y 65.
+
+ROLLBACK
+Conservar el ZIP AromaLParfum_FRONTEND_V2_PASO67.zip fuera del sitio.
+Si hubiera una regresión inesperada, restaurar ese ZIP sin borrar /imagenes.
+
+NOTA DE PRODUCCIÓN
+Se eliminaron del paquete desplegable los backups históricos, manifests de desarrollo,
+READMEs de pasos y scripts SQL ya ejecutados. Ninguno era necesario para el runtime.
