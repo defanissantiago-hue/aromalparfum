@@ -73,6 +73,13 @@ async function reloadAdminData()
         }
         break;
 
+      case "security":
+        if (typeof alp65VerifyAdminAccess === "function")
+        {
+          await alp65VerifyAdminAccess(state.admin.currentUser, { force: true });
+        }
+        break;
+
       case "settings":
         await loadSiteSettings();
         await Promise.all([
@@ -232,7 +239,12 @@ async function renderAdminRoute()
     user = session.user;
   }
 
-  if (!isAdminEmail(user?.email))
+  const serverAuthorized =
+  typeof alp65VerifyAdminAccess === "function"
+  ? await alp65VerifyAdminAccess(user)
+  : false;
+
+  if (!serverAuthorized)
   {
     await supabaseClient.auth.signOut();
     state.admin.currentUser = null;
@@ -244,8 +256,8 @@ async function renderAdminRoute()
           <div class="empty-state">
             <h3>${state.language === "en" ? "Access denied" : "Sin permisos"}</h3>
             <p>${state.language === "en"
-              ? "This account is not authorized to manage AromaLParfum."
-              : "Esta cuenta no está autorizada para administrar AromaLParfum."
+              ? "Server verification did not authorize this session. Run the Paso 65 SQL if the security RPC is not installed yet."
+              : "La verificación del servidor no autorizó esta sesión. Ejecutá el SQL del Paso 65 si todavía no instalaste la RPC de seguridad."
             }</p>
           </div>
         </div>
@@ -385,28 +397,31 @@ async function adminLogin()
     result.error
   )
   {
+    console.warn("Admin login failed:", result.error.message);
+
     toast(
-      result.error.message,
+      state.language === "en"
+      ? "Could not sign in. Check your credentials and try again."
+      : "No se pudo ingresar. Revisá tus credenciales e intentá de nuevo.",
       "error"
     );
 
     return;
   }
 
-  if (
-    !isAdminEmail(
-      result.data?.user?.email
-    )
-  )
+  const serverAuthorized =
+  typeof alp65VerifyAdminAccess === "function"
+  ? await alp65VerifyAdminAccess(result.data?.user, { force: true })
+  : false;
+
+  if (!serverAuthorized)
   {
     await supabaseClient.auth.signOut();
 
     toast(
       state.language === "en"
-      ?
-      "This account is not an administrator."
-      :
-      "Esta cuenta no es administradora.",
+      ? "Access denied by server verification."
+      : "Acceso rechazado por la verificación del servidor.",
       "error"
     );
 
@@ -479,6 +494,11 @@ async function adminLogout()
 {
   await supabaseClient.auth.signOut();
 
+  if (typeof alp65ClearAdminVerification === "function")
+  {
+    alp65ClearAdminVerification();
+  }
+
   state.admin.currentUser =
   null;
 
@@ -546,6 +566,11 @@ function renderAdminDashboard()
           <p class="section-subtitle">
             ${escapeHtml(state.admin.currentUser?.email || "")}
           </p>
+
+          <div class="alp65-admin-verified" role="status">
+            <span aria-hidden="true">✓</span>
+            ${state.language === "en" ? "Access verified by Supabase" : "Acceso verificado por Supabase"}
+          </div>
         </div>
 
         <div style="display:flex;gap:8px;flex-wrap:wrap">
@@ -576,6 +601,7 @@ function renderAdminDashboard()
 
       <div class="admin-tabs">
         ${renderAdminTabButton("dashboard", state.language === "en" ? "Dashboard" : "Dashboard")}
+        ${renderAdminTabButton("security", state.language === "en" ? "Security" : "Seguridad")}
         ${renderAdminTabButton("analytics", state.language === "en" ? "Analytics" : "Analytics")}
         ${renderAdminTabButton("products", t("admin.products"))}
         ${renderAdminTabButton("new", t("admin.new"))}
@@ -648,6 +674,13 @@ function renderAdminTabContent()
       return typeof renderAdminDashboardV2 === "function"
         ? renderAdminDashboardV2()
         : `<div class="admin-message error">Dashboard V2 no disponible.</div>`;
+    }
+
+    case "security":
+    {
+      return typeof alp65RenderSecurityV2 === "function"
+        ? alp65RenderSecurityV2()
+        : `<div class="admin-message error">Security V2 no disponible.</div>`;
     }
 
     case "analytics":

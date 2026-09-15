@@ -8206,3 +8206,7 @@
     border-width: 2px;
   }
 }
+
+
+/* ===== PASO 65 · Security Hardening V2 ===== */
+.alp65-admin-verified{display:inline-flex;align-items:center;gap:7px;margin-top:8px;padding:6px 10px;border:1px solid rgba(75,120,76,.25);border-radius:999px;background:rgba(75,120,76,.08);font-size:.78rem;font-weight:700;letter-spacing:.02em;color:#355d39}.alp65-security-panel{display:grid;gap:18px}.alp65-security-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.alp65-security-card{display:flex;gap:12px;align-items:flex-start;padding:16px;border:1px solid var(--border);border-radius:16px;background:var(--surface,#fff)}.alp65-security-card strong{display:block;margin-bottom:5px}.alp65-security-card p{margin:0;color:var(--muted);line-height:1.55;font-size:.9rem}.alp65-check{display:grid;place-items:center;width:28px;height:28px;min-width:28px;border-radius:50%;font-weight:900}.alp65-check.ok{background:rgba(75,120,76,.12);color:#35613a}.alp65-check.bad{background:rgba(166,62,49,.12);color:#8d3328}.alp65-security-note{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 16px;border-radius:14px;background:rgba(176,137,73,.08);border:1px solid rgba(176,137,73,.18)}@media(max-width:720px){.alp65-security-grid{grid-template-columns:1fr}.alp65-security-note{align-items:flex-start;flex-direction:column}}

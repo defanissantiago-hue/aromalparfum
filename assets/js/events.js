@@ -711,6 +711,15 @@
           break;
         }
 
+        case "admin-security-refresh":
+        {
+          if (typeof alp65RefreshSecurityPanel === "function")
+          {
+            await alp65RefreshSecurityPanel();
+          }
+          break;
+        }
+
         case "admin-dashboard-refresh":
         {
           if (typeof alp48RefreshDashboard === "function")
@@ -2349,6 +2358,11 @@
           session
         ) =>
         {
+          if (typeof alp65ClearAdminVerification === "function" && event !== "TOKEN_REFRESHED")
+          {
+            alp65ClearAdminVerification();
+          }
+
           state.admin.currentUser =
           session?.user
           ||

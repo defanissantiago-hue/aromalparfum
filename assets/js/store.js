@@ -763,10 +763,9 @@ function renderSocialButton(
 )
 {
   const safeUrl =
-  String(
-    url ||
-    ""
-  ).trim();
+  typeof alp65SafeExternalUrl === "function"
+  ? alp65SafeExternalUrl(url)
+  : (/^https?:\/\//i.test(String(url || "").trim()) ? String(url || "").trim() : "");
 
   if (
     safeUrl === ""

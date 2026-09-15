@@ -1156,6 +1156,21 @@ const CONFIG =
   ],
 };
 
+const ALP65_ADMIN_ENTRY =
+String(document.body?.dataset?.entry || "") === "admin";
+
+// Paso 65: la tienda pública no necesita una sesión autenticada persistente.
+// Admin conserva la sesión solo durante la pestaña actual (sessionStorage),
+// reduciendo la exposición de tokens después de cerrar el navegador.
+try
+{
+  localStorage.removeItem("sb-klppiznssciyveufmoff-auth-token");
+}
+catch (_error)
+{
+  // localStorage puede estar bloqueado por el navegador; no afecta la tienda.
+}
+
 const supabaseClient =
 supabase.createClient(
   CONFIG.supabaseUrl,
@@ -1164,13 +1179,18 @@ supabase.createClient(
     auth:
     {
       persistSession:
-      true,
+      ALP65_ADMIN_ENTRY,
 
       autoRefreshToken:
-      true,
+      ALP65_ADMIN_ENTRY,
 
       detectSessionInUrl:
-      true,
+      ALP65_ADMIN_ENTRY,
+
+      ...(ALP65_ADMIN_ENTRY
+        ? { storage: window.sessionStorage }
+        : {}
+      ),
     },
   }
 );
