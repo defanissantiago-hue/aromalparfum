@@ -1,0 +1,29 @@
+{
+  "step": 67,
+  "generated_at": "2026-09-15",
+  "js_file_count": 43,
+  "literal_data_actions": 165,
+  "literal_actions_seen_only_once": [],
+  "asset_cache_version": "67",
+  "sql_required": false,
+  "intentional_override_groups": [
+    "store.js -> home.js: renderHomePage",
+    "store.js -> catalog-v2.js: renderCatalogPage/getCatalogProducts",
+    "builders.js -> decants-v2.js: decant builder functions",
+    "builders.js/decants-v2.js -> gift-v2.js: gift builder functions"
+  ],
+  "notes": [
+    "No destructive database checks are executed by Release Audit.",
+    "Live Supabase read smoke test is Admin-only and manual."
+  ],
+  "validations": {
+    "js_syntax": "OK (43 files)",
+    "static_references": "OK",
+    "cache_and_build_67": "OK",
+    "backup_rollback": "OK",
+    "imagenes_not_packaged": "OK",
+    "release_wiring": "OK",
+    "literal_actions": "OK (165)",
+    "http_smoke": "OK (root, admin, css, release JS, events JS, robots, sitemap)"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 67,
+  "name": "Auditoría final + Release Stability Guard V2",
+  "date": "2026-09-15",
+  "sql_required": false,
+  "new_files": [
+    "assets/js/release-v2.js",
+    "README_PASO67.txt",
+    "PASO67_MANIFEST.json",
+    "PASO67_AUDIT_REPORT.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/js/admin.js",
+    "assets/js/events.js",
+    "assets/js/resilience-v2.js",
+    "assets/css/app.css"
+  ],
+  "features": [
+    "single-boot guard",
+    "bootstrap failure recovery",
+    "Admin Release Audit tab",
+    "deployment/cache version verification",
+    "critical module verification",
+    "DOM consistency checks",
+    "safe Supabase read smoke test on demand",
+    "server-side Admin guard recheck on demand",
+    "sanitized copyable audit report"
+  ],
+  "performance": [
+    "no new Supabase queries during normal storefront navigation",
+    "live database checks run only from Admin > Auditoría"
+  ],
+  "privacy": [
+    "audit report contains no customer names, email, phone, address, order code or free-text customer content"
+  ],
+  "rollback_backups": [
+    "backup/index_paso66.html",
+    "backup/admin_index_paso66.html",
+    "backup/admin_paso66.js",
+    "backup/events_paso66.js",
+    "backup/resilience-v2_paso66.js",
+    "backup/app_paso66.css"
+  ]
+}
