@@ -2295,13 +2295,6 @@
 
     async function initialize()
     {
-      if (window.__alp67BootState === "running" || window.__alp67BootState === "ready")
-      {
-        return;
-      }
-
-      window.__alp67BootState = "running";
-
       applyLanguageToChrome();
 
       renderMobileMenu();
@@ -2434,25 +2427,6 @@
           }
         }
       );
-
-      window.__alp67BootState = "ready";
     }
 
-    initialize().catch(error =>
-    {
-      window.__alp67BootState = "failed";
-      console.error("AromaLParfum bootstrap failed:", error);
-
-      if (typeof alp66RenderBootstrapFailure === "function")
-      {
-        alp66RenderBootstrapFailure(error);
-      }
-      else
-      {
-        const app = document.getElementById("app");
-        if (app)
-        {
-          app.innerHTML = `<section class="section"><div class="container"><div class="empty-state"><h2>AromaLParfum</h2><p>No se pudo iniciar la tienda. Actualizá la página e intentá nuevamente.</p></div></div></section>`;
-        }
-      }
-    });
+    initialize();
