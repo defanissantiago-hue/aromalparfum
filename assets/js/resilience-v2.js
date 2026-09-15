@@ -348,7 +348,7 @@ function alp66DiagnosticSnapshot()
 
   return {
     product: "AromaLParfum",
-    frontend_build: ALP66_BUILD,
+    frontend_build: String(window.ALP_RELEASE?.step || ALP66_BUILD),
     generated_at: new Date().toISOString(),
     online: navigator.onLine !== false,
     local_storage: typeof alp66StorageAvailable === "function" ? alp66StorageAvailable() : false,
@@ -366,6 +366,7 @@ function alp66DiagnosticSnapshot()
       analytics_v2: typeof analyticsV2Init === "function",
       security_v2: typeof alp65VerifyAdminAccess === "function",
       resilience_v2: true,
+      release_audit_v2: typeof alp67RunAudit === "function",
     },
     recent_errors: alp66ReadDiagnostics(),
   };

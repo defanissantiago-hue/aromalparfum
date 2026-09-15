@@ -87,6 +87,13 @@ async function reloadAdminData()
         }
         break;
 
+      case "audit":
+        if (typeof alp67RunAudit === "function")
+        {
+          await alp67RunAudit({ live: true });
+        }
+        break;
+
       case "settings":
         await loadSiteSettings();
         await Promise.all([
@@ -610,6 +617,7 @@ function renderAdminDashboard()
         ${renderAdminTabButton("dashboard", state.language === "en" ? "Dashboard" : "Dashboard")}
         ${renderAdminTabButton("security", state.language === "en" ? "Security" : "Seguridad")}
         ${renderAdminTabButton("diagnostics", state.language === "en" ? "Diagnostics" : "Diagnóstico")}
+        ${renderAdminTabButton("audit", state.language === "en" ? "Release audit" : "Auditoría")}
         ${renderAdminTabButton("analytics", state.language === "en" ? "Analytics" : "Analytics")}
         ${renderAdminTabButton("products", t("admin.products"))}
         ${renderAdminTabButton("new", t("admin.new"))}
@@ -696,6 +704,13 @@ function renderAdminTabContent()
       return typeof alp66RenderAdminDiagnostics === "function"
         ? alp66RenderAdminDiagnostics()
         : `<div class="admin-message error">Diagnóstico V2 no disponible.</div>`;
+    }
+
+    case "audit":
+    {
+      return typeof alp67RenderAdminAudit === "function"
+        ? alp67RenderAdminAudit()
+        : `<div class="admin-message error">Auditoría de release no disponible.</div>`;
     }
 
     case "analytics":
