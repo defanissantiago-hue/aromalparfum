@@ -1,7 +1,7 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 62
-// Módulo: eventos globales, compatibilidad e inicialización
+// AromaLParfum Frontend V2 — Paso 63
+// Módulo: eventos globales, navegación diferida e inicialización
 
     function openSearchModal()
     {
@@ -224,6 +224,8 @@
 
         case "open-cart":
         {
+          // Validación local y bajo demanda. Paso 63 elimina el polling de 45 s.
+          validateCartAgainstStock();
           openCart();
 
           break;
@@ -343,6 +345,7 @@
 
         case "checkout":
         {
+          validateCartAgainstStock();
           openCheckout();
 
           break;
@@ -671,6 +674,11 @@
 
         case "reload-data":
         {
+          if (typeof alp63ResetLazyState === "function")
+          {
+            alp63ResetLazyState();
+          }
+
           await loadAllData();
 
           break;
@@ -2330,13 +2338,10 @@
 
       updateHeaderCounts();
 
-      window.setInterval(
-        () =>
-        {
-          validateCartAgainstStock();
-        },
-        45000
-      );
+      // Paso 63: se elimina el setInterval de validación del carrito. Ese
+      // polling solo releía el estado local (no renovaba stock desde Supabase),
+      // por lo que consumía CPU sin mejorar la exactitud. Se valida al abrir el
+      // carrito, antes del checkout y el backend vuelve a validar al crear orden.
 
       supabaseClient.auth.onAuthStateChange(
         (

@@ -1,7 +1,7 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 62
-// Módulo: rutas y render de tienda/catálogo/productos
+// AromaLParfum Frontend V2 — Paso 63
+// Módulo: rutas con hidratación diferida y render de tienda
 
 function setRoute(
   route,
@@ -22,17 +22,63 @@ function setRoute(
 
   closeModal();
 
-  renderCurrentRoute();
+  const navToken =
+  (Number(window.__alp63NavigationToken || 0) + 1);
 
-  window.scrollTo(
+  window.__alp63NavigationToken = navToken;
+
+  const finishNavigation = () =>
+  {
+    if (
+      Number(window.__alp63NavigationToken || 0) !== navToken ||
+      state.route !== route
+    )
     {
-      top:
-      0,
-
-      behavior:
-      "smooth",
+      return;
     }
-  );
+
+    renderCurrentRoute();
+
+    window.scrollTo(
+      {
+        top:
+        0,
+
+        behavior:
+        "smooth",
+      }
+    );
+  };
+
+  // Paso 63: antes de renderizar una ruta que necesita datos secundarios,
+  // esperamos únicamente esas consultas. Las rutas ya hidratadas siguen siendo
+  // instantáneas y no vuelven a consultar Supabase.
+  if (
+    typeof alp63EnsureRouteData === "function" &&
+    typeof alp63RouteNeedsHydration === "function" &&
+    alp63RouteNeedsHydration(route, state.routePayload)
+  )
+  {
+    setAppLoading(
+      state.language === "en"
+        ? "Loading this section..."
+        : "Cargando esta sección..."
+    );
+
+    Promise.resolve(
+      alp63EnsureRouteData(route, state.routePayload)
+    )
+    .then(finishNavigation)
+    .catch(error =>
+    {
+      console.warn("Carga diferida de ruta:", route, error);
+      finishNavigation();
+    });
+
+    return;
+  }
+
+  finishNavigation();
 }
 
 function renderCurrentRoute()

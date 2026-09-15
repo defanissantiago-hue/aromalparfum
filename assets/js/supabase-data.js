@@ -1,7 +1,7 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 37
-// Módulo: carga secundaria de datos y configuración desde Supabase
+// AromaLParfum Frontend V2 — Paso 63
+// Módulo: datos Supabase con bootstrap optimizado y carga por ruta
 
 async function loadPopularity()
 {
@@ -744,33 +744,44 @@ async function loadAllData()
 
   try
   {
-    await Promise.all(
-      [
-        loadProducts(),
-        loadSiteSettings(),
-        loadPopularity(),
-        loadCollections(),
-        loadGameConfigs(),
-        loadDailyLeaderboard(),
-        loadProductTypes(),
-        loadComboTemplates(),
-        loadComboProducts(),
-        loadDecantSizes(),
-        loadGiftOptions(),
-        document.body?.dataset.entry === "admin"
-          ? Promise.resolve()
-          : loadHomeMerchandising(),
-      ]
-    );
+    // Paso 63: la tienda pública carga solo el núcleo + los datos de la ruta
+    // inicial. El Admin conserva la carga completa porque sus formularios sí
+    // necesitan el esquema/producto completo. Hay fallback al flujo anterior
+    // para que un error de inclusión del módulo Performance no rompa la tienda.
+    if (typeof alp63LoadBootstrapData === "function")
+    {
+      await alp63LoadBootstrapData();
+    }
+    else
+    {
+      await Promise.all(
+        [
+          loadProducts(),
+          loadSiteSettings(),
+          loadPopularity(),
+          loadCollections(),
+          loadGameConfigs(),
+          loadDailyLeaderboard(),
+          loadProductTypes(),
+          loadComboTemplates(),
+          loadComboProducts(),
+          loadDecantSizes(),
+          loadGiftOptions(),
+          document.body?.dataset.entry === "admin"
+            ? Promise.resolve()
+            : loadHomeMerchandising(),
+        ]
+      );
 
-    await loadMainProductImages();
+      await loadMainProductImages();
 
-    await Promise.all(
-      [
-        loadSiteCoverUrls(),
-        loadSeasonalVideoUrl(),
-      ]
-    );
+      await Promise.all(
+        [
+          loadSiteCoverUrls(),
+          loadSeasonalVideoUrl(),
+        ]
+      );
+    }
 
     state.loading =
     false;

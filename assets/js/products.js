@@ -1,7 +1,7 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 37
-// Módulo: productos, columnas, imágenes y galería
+// AromaLParfum Frontend V2 — Paso 63
+// Módulo: productos, carga liviana, detalle diferido, imágenes y galería
 
 const PRODUCT_COLUMNS_CACHE_KEY = "alp_product_columns_v4";
 
@@ -39,6 +39,61 @@ const PRODUCT_COLUMNS_PREFERRED = [
   "familia_en",
   "created_at",
   "new_until",
+];
+
+// Paso 63: la tienda pública ya no descarga las fichas largas de TODOS los
+// perfumes en cada visita. Este resumen conserva todo lo necesario para cards,
+// stock, filtros estructurados, colecciones y builders. La descripción/notas se
+// cargan únicamente al entrar a una ficha o a una experiencia que realmente
+// necesita búsqueda olfativa profunda.
+const PRODUCT_COLUMNS_PUBLIC_SUMMARY = [
+  "id",
+  "nombre",
+  "marca",
+  "precio",
+  "ml",
+  "stock",
+  "categoria",
+  "genero",
+  "familia",
+  "estaciones",
+  "ocasiones",
+  "destacado",
+  "nuevo",
+  "vendido",
+  "tipo_producto",
+  "tipo_producto_slug",
+  "subcategoria",
+  "imagen_url",
+  "created_at",
+  "new_until",
+];
+
+const PRODUCT_COLUMNS_LAZY_DETAIL = [
+  "id",
+  "descripcion",
+  "salida",
+  "corazon",
+  "fondo",
+  "duracion",
+  "proyeccion",
+  "recomendacion_uso",
+  "descripcion_en",
+  "salida_en",
+  "corazon_en",
+  "fondo_en",
+  "familia_en",
+];
+
+const PRODUCT_COLUMNS_CATALOG_METADATA = [
+  "id",
+  "descripcion",
+  "salida",
+  "corazon",
+  "fondo",
+  "duracion",
+  "proyeccion",
+  "recomendacion_uso",
 ];
 
 const PRODUCT_COLUMNS_CORE = new Set([
@@ -114,11 +169,61 @@ function getProductSelectColumns()
   return (cached || PRODUCT_COLUMNS_PREFERRED).join(",");
 }
 
-async function loadProducts()
+function alp63ColumnsAvailable(preferred)
 {
-  let columns =
-    getCachedProductColumns() ||
-    PRODUCT_COLUMNS_PREFERRED.slice();
+  const cached = getCachedProductColumns();
+
+  if (!Array.isArray(cached) || !cached.length)
+  {
+    return preferred.slice();
+  }
+
+  const available = new Set(cached);
+  const filtered = preferred.filter(column => available.has(column));
+
+  // Estos campos son indispensables para que la tienda pueda funcionar.
+  for (const required of ["id", "nombre", "precio", "stock"])
+  {
+    if (!filtered.includes(required) && available.has(required))
+    {
+      filtered.push(required);
+    }
+  }
+
+  return filtered.length ? filtered : preferred.slice();
+}
+
+function alp63MergeProductRows(rows)
+{
+  const byId = new Map(
+    state.products.map(product => [Number(product.id), product])
+  );
+
+  for (const row of rows || [])
+  {
+    const id = Number(row?.id || 0);
+    const current = byId.get(id);
+    if (!id || !current) continue;
+
+    Object.assign(current, row);
+
+    // Normalizamos los campos que pueden llegar en la carga diferida.
+    if ("descripcion" in row) current.descripcion = String(row.descripcion || "");
+    if ("salida" in row) current.salida = String(row.salida || "");
+    if ("corazon" in row) current.corazon = String(row.corazon || "");
+    if ("fondo" in row) current.fondo = String(row.fondo || "");
+    if ("duracion" in row) current.duracion = String(row.duracion || "Consultar");
+    if ("proyeccion" in row) current.proyeccion = String(row.proyeccion || "Consultar");
+    if ("recomendacion_uso" in row) current.recomendacion_uso = String(row.recomendacion_uso || "");
+  }
+}
+
+async function loadProducts(options = {})
+{
+  const publicSummary = Boolean(options.publicSummary);
+  let columns = publicSummary
+    ? alp63ColumnsAvailable(PRODUCT_COLUMNS_PUBLIC_SUMMARY)
+    : (getCachedProductColumns() || PRODUCT_COLUMNS_PREFERRED.slice());
 
   let result =
     await supabaseClient
@@ -126,9 +231,29 @@ async function loadProducts()
       .select(columns.join(","))
       .order("id", { ascending: true });
 
-  // Si el esquema real no coincide con la lista optimizada, hacemos UNA
-  // detección automática con select('*'), guardamos las columnas reales y
-  // desde la siguiente carga volvemos a una selección explícita.
+  // Si el esquema real no coincide, hacemos UNA detección automática. En la
+  // carga pública intentamos primero una lista mínima de columnas estables para
+  // no convertir un campo opcional ausente en un select('*') innecesario.
+  if (result.error && publicSummary)
+  {
+    const minimal = [
+      "id", "nombre", "marca", "precio", "ml", "stock", "categoria",
+      "genero", "familia", "destacado", "nuevo", "vendido", "imagen_url"
+    ];
+
+    const minimalResult =
+      await supabaseClient
+        .from("products")
+        .select(minimal.join(","))
+        .order("id", { ascending: true });
+
+    if (!minimalResult.error)
+    {
+      result = minimalResult;
+      columns = minimal;
+    }
+  }
+
   if (result.error)
   {
     console.warn(
@@ -160,11 +285,20 @@ async function loadProducts()
 
   const rows = result.data || [];
 
-  if (rows.length)
+  // Solo una carga completa puede afirmar cuáles son todas las columnas reales.
+  // La carga pública resumida NO pisa esa caché con un subconjunto.
+  if (!publicSummary)
   {
-    const realColumns = Object.keys(rows[0]);
-    state.productColumns = new Set(realColumns);
-    cacheProductColumns(realColumns);
+    if (rows.length)
+    {
+      const realColumns = Object.keys(rows[0]);
+      state.productColumns = new Set(realColumns);
+      cacheProductColumns(realColumns);
+    }
+    else
+    {
+      state.productColumns = new Set(columns);
+    }
   }
   else
   {
@@ -172,6 +306,63 @@ async function loadProducts()
   }
 
   state.products = rows.map(row => normalizeProduct(row));
+}
+
+async function loadProductDetailFields(productId)
+{
+  const id = Number(productId || 0);
+  if (!id) return null;
+
+  const current = getProductById(id);
+  if (!current) return null;
+
+  const columns = alp63ColumnsAvailable(PRODUCT_COLUMNS_LAZY_DETAIL);
+  let result = await supabaseClient
+    .from("products")
+    .select(columns.join(","))
+    .eq("id", id)
+    .maybeSingle();
+
+  // Si alguna columna opcional (por ejemplo una traducción) no existe en una
+  // instalación vieja, el fallback afecta SOLO a esta ficha, nunca a todo el
+  // catálogo. Así mantenemos compatibilidad sin volver al egress masivo.
+  if (result.error)
+  {
+    result = await supabaseClient
+      .from("products")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+  }
+
+  if (result.error)
+  {
+    console.warn("Detalle diferido de producto:", result.error.message);
+    return current;
+  }
+
+  if (result.data)
+  {
+    alp63MergeProductRows([result.data]);
+  }
+
+  return getProductById(id);
+}
+
+async function loadCatalogProductMetadata()
+{
+  const columns = alp63ColumnsAvailable(PRODUCT_COLUMNS_CATALOG_METADATA);
+  const result = await supabaseClient
+    .from("products")
+    .select(columns.join(","));
+
+  if (result.error)
+  {
+    console.warn("Metadatos diferidos del catálogo:", result.error.message);
+    return;
+  }
+
+  alp63MergeProductRows(result.data || []);
 }
 
 function normalizeProduct(
