@@ -26,10 +26,9 @@
   <meta name="twitter:description" content="Perfumes, fragancias, decants y regalos seleccionados por AromaLParfum.">
   <meta name="twitter:image" content="https://defanissantiago-hue.github.io/aromalparfum/assets/seo/aromalparfum-share.png">
 
-    <link rel="stylesheet" href="assets/css/app.css?v=64">
+    <link rel="stylesheet" href="assets/css/app.css?v=62">
 </head>
 <body data-entry="store">
-  <a class="skip-link" href="#app">Saltar al contenido principal</a>
   <div class="topbar">
     <span id="topbarPrimary">ENVÍO SEGURO Y CONFIABLE</span>
     <span class="topbar-separator">|</span>
@@ -42,18 +41,16 @@
         class="icon-btn mobile-menu-btn"
         type="button"
         aria-label="Abrir menú"
-        aria-controls="menuDrawer"
-        aria-expanded="false"
         data-action="open-menu">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16"></path>
         </svg>
       </button>
 
-      <button class="brand brand-button" type="button" data-action="home" aria-label="Ir al inicio de AromaLParfum">
+      <div class="brand" data-action="home">
         AROMA
         <small>LPARFUM</small>
-      </button>
+      </div>
 
       <nav class="desktop-nav" aria-label="Navegación principal">
         <button type="button" data-route="catalog" data-filter="Todos">Perfumes</button>
@@ -92,8 +89,6 @@
           class="icon-btn"
           type="button"
           aria-label="Carrito"
-          aria-controls="cartDrawer"
-          aria-expanded="false"
           data-action="open-cart">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M6 7h13l-1.5 9h-10z"></path>
@@ -115,16 +110,7 @@
     </div>
   </header>
 
-  <div class="trust-strip" aria-label="Garantías de compra">
-    <div class="trust-strip-inner">
-      <span><b aria-hidden="true">✓</b> Stock validado</span>
-      <span><b aria-hidden="true">✓</b> Pedido seguro</span>
-      <span><b aria-hidden="true">✓</b> Seguimiento</span>
-      <span><b aria-hidden="true">✓</b> Reseñas verificadas</span>
-    </div>
-  </div>
-
-  <main id="app" class="page-shell" tabindex="-1">
+  <main id="app" class="page-shell">
     <div class="loading-state">
       <div class="spinner"></div>
       <p>Cargando AromaLParfum...</p>
@@ -133,9 +119,9 @@
 
   <aside id="menuDrawer" class="drawer menu" aria-hidden="true">
     <div class="drawer-shade" data-action="close-menu"></div>
-    <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="menuDrawerTitle" tabindex="-1">
+    <div class="drawer-panel">
       <div class="drawer-head">
-        <h2 class="drawer-title" id="menuDrawerTitle">AromaLParfum</h2>
+        <h2 class="drawer-title">AromaLParfum</h2>
         <button class="close-btn" type="button" data-action="close-menu" aria-label="Cerrar">×</button>
       </div>
       <div class="drawer-body">
@@ -146,9 +132,9 @@
 
   <aside id="cartDrawer" class="drawer cart" aria-hidden="true">
     <div class="drawer-shade" data-action="close-cart"></div>
-    <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="cartDrawerTitle" tabindex="-1">
+    <div class="drawer-panel">
       <div class="drawer-head">
-        <h2 class="drawer-title" id="cartDrawerTitle" data-i18n="cart.title">Tu carrito</h2>
+        <h2 class="drawer-title" data-i18n="cart.title">Tu carrito</h2>
         <button class="close-btn" type="button" data-action="close-cart" aria-label="Cerrar">×</button>
       </div>
       <div class="drawer-body">
@@ -160,7 +146,7 @@
 
   <div id="modal" class="modal" aria-hidden="true">
     <div class="modal-shade" data-action="close-modal"></div>
-    <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle" tabindex="-1">
+    <div class="modal-panel">
       <div class="modal-head">
         <h2 class="modal-title" id="modalTitle">AromaLParfum</h2>
         <button class="close-btn" type="button" data-action="close-modal" aria-label="Cerrar">×</button>
@@ -169,51 +155,41 @@
     </div>
   </div>
 
-  <div class="toast-stack" id="toastStack" aria-live="polite" aria-atomic="false"></div>
-  <div id="a11yLiveRegion" class="sr-only" aria-live="polite" aria-atomic="true"></div>
-
-  <nav class="mobile-bottom-nav" aria-label="Navegación rápida">
-    <button type="button" data-route="home" data-mobile-nav="home" aria-label="Inicio"><span aria-hidden="true">⌂</span><small>Inicio</small></button>
-    <button type="button" data-action="open-search" data-mobile-nav="search" aria-label="Buscar"><span aria-hidden="true">⌕</span><small>Buscar</small></button>
-    <button type="button" data-route="favorites" data-mobile-nav="favorites" aria-label="Favoritos"><span aria-hidden="true">♡</span><small>Favoritos</small></button>
-    <button type="button" data-action="open-cart" data-mobile-nav="cart" aria-label="Carrito" aria-controls="cartDrawer" aria-expanded="false"><span aria-hidden="true">▱</span><small>Carrito</small><em id="mobileCartCount" aria-hidden="true" hidden>0</em></button>
-  </nav>
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
   <footer class="footer" id="siteFooter"></footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="assets/js/config.js?v=64"></script>
-  <script src="assets/js/core.js?v=64"></script>
-  <script src="assets/js/products.js?v=64"></script>
-  <script src="assets/js/supabase-data.js?v=64"></script>
-  <script src="assets/js/analytics-v2.js?v=64"></script>
-  <script src="assets/js/seo-v2.js?v=64"></script>
-  <script src="assets/js/store.js?v=64"></script>
-  <script src="assets/js/product-v2.js?v=64"></script>
-  <script src="assets/js/catalog-v2.js?v=64"></script>
-  <script src="assets/js/home.js?v=64"></script>
-  <script src="assets/js/campaigns-v2.js?v=64"></script>
-  <script src="assets/js/cart.js?v=64"></script>
-  <script src="assets/js/cart-v2.js?v=64"></script>
-  <script src="assets/js/wishlist-v2.js?v=64"></script>
-  <script src="assets/js/builders.js?v=64"></script>
-  <script src="assets/js/decants-v2.js?v=64"></script>
-  <script src="assets/js/gift-v2.js?v=64"></script>
-  <script src="assets/js/packs-v2.js?v=64"></script>
-  <script src="assets/js/checkout-v2.js?v=64"></script>
-  <script src="assets/js/order-tracking-v2.js?v=64"></script>
-  <script src="assets/js/reviews-v2.js?v=64"></script>
-  <script src="assets/js/loyalty-v2.js?v=64"></script>
-  <script src="assets/js/games.js?v=64"></script>
-  <script src="assets/js/discover-v2.js?v=64"></script>
-  <script src="assets/js/advisor.js?v=64"></script>
-  <script src="assets/js/dashboard-v2.js?v=64"></script>
-  <script src="assets/js/orders-v2.js?v=64"></script>
-  <script src="assets/js/collections-v2.js?v=64"></script>
-  <script src="assets/js/customers-v2.js?v=64"></script>
-  <script src="assets/js/admin.js?v=64"></script>
-  <script src="assets/js/performance-v2.js?v=64"></script>
-  <script src="assets/js/accessibility-v2.js?v=64"></script>
-  <script src="assets/js/events.js?v=64"></script>
+  <script src="assets/js/config.js?v=62"></script>
+  <script src="assets/js/core.js?v=62"></script>
+  <script src="assets/js/products.js?v=62"></script>
+  <script src="assets/js/supabase-data.js?v=62"></script>
+  <script src="assets/js/analytics-v2.js?v=62"></script>
+  <script src="assets/js/seo-v2.js?v=62"></script>
+  <script src="assets/js/store.js?v=62"></script>
+  <script src="assets/js/product-v2.js?v=62"></script>
+  <script src="assets/js/catalog-v2.js?v=62"></script>
+  <script src="assets/js/home.js?v=62"></script>
+  <script src="assets/js/campaigns-v2.js?v=62"></script>
+  <script src="assets/js/cart.js?v=62"></script>
+  <script src="assets/js/cart-v2.js?v=62"></script>
+  <script src="assets/js/wishlist-v2.js?v=62"></script>
+  <script src="assets/js/builders.js?v=62"></script>
+  <script src="assets/js/decants-v2.js?v=62"></script>
+  <script src="assets/js/gift-v2.js?v=62"></script>
+  <script src="assets/js/packs-v2.js?v=62"></script>
+  <script src="assets/js/checkout-v2.js?v=62"></script>
+  <script src="assets/js/order-tracking-v2.js?v=62"></script>
+  <script src="assets/js/reviews-v2.js?v=62"></script>
+  <script src="assets/js/loyalty-v2.js?v=62"></script>
+  <script src="assets/js/games.js?v=62"></script>
+  <script src="assets/js/discover-v2.js?v=62"></script>
+  <script src="assets/js/advisor.js?v=62"></script>
+  <script src="assets/js/dashboard-v2.js?v=62"></script>
+  <script src="assets/js/orders-v2.js?v=62"></script>
+  <script src="assets/js/collections-v2.js?v=62"></script>
+  <script src="assets/js/customers-v2.js?v=62"></script>
+  <script src="assets/js/admin.js?v=62"></script>
+  <script src="assets/js/events.js?v=62"></script>
 </body>
 </html>
