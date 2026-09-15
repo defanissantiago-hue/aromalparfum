@@ -1,14 +1,14 @@
 "use strict";
 
-// AromaLParfum — PASO 67
+// AromaLParfum — PASO 68 FINAL STABLE
 // Release Audit & Stability Guard V2.
 // No agrega telemetría ni consultas durante la navegación normal. Las pruebas
 // de Supabase se ejecutan únicamente al abrir/ejecutar Admin → Auditoría.
 
 const ALP67_RELEASE = Object.freeze({
-  step: 67,
-  version: "2.67.0",
-  channel: "stable-candidate",
+  step: 68,
+  version: "2.68.0",
+  channel: "stable-final",
   date: "2026-09-15",
 });
 
@@ -144,7 +144,7 @@ function alp67StaticChecks()
       "release_meta",
       alp67Text("Versión HTML", "HTML version"),
       htmlBuild === expectedVersion,
-      htmlBuild ? `PASO ${htmlBuild}` : alp67Text("Falta meta alp-build", "alp-build meta missing")
+      htmlBuild ? `BUILD ${htmlBuild}` : alp67Text("Falta meta alp-build", "alp-build meta missing")
     ),
     alp67Check(
       "asset_versions",
@@ -341,7 +341,7 @@ function alp67RenderAdminAudit()
       </div>
 
       <div class="alp66-diagnostic-grid">
-        <article class="alp66-diagnostic-card"><span>${en ? "Release" : "Release"}</span><strong>PASO ${ALP67_RELEASE.step}</strong></article>
+        <article class="alp66-diagnostic-card"><span>${en ? "Release" : "Release"}</span><strong>FINAL · BUILD ${ALP67_RELEASE.step}</strong></article>
         <article class="alp66-diagnostic-card"><span>${en ? "Passed" : "Correctos"}</span><strong>${formatInteger(summary.passed)}</strong></article>
         <article class="alp66-diagnostic-card"><span>${en ? "Warnings" : "Advertencias"}</span><strong>${formatInteger(summary.warnings)}</strong></article>
         <article class="alp66-diagnostic-card"><span>${en ? "Critical failures" : "Fallos críticos"}</span><strong>${formatInteger(summary.critical_failures)}</strong></article>
