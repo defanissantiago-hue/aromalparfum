@@ -799,6 +799,12 @@ function renderProductDetailPageV2(id)
               </button>
             </div>
 
+            <div class="purchase-confidence" aria-label="${state.language === "en" ? "Purchase guarantees" : "Garantías de compra"}">
+              <div><span aria-hidden="true">✓</span><strong>${state.language === "en" ? "Verified stock" : "Stock validado"}</strong><small>${state.language === "en" ? "Rechecked before the order is created" : "Se vuelve a controlar al crear el pedido"}</small></div>
+              <div><span aria-hidden="true">✓</span><strong>${state.language === "en" ? "Order tracking" : "Seguimiento"}</strong><small>${state.language === "en" ? "Track status with your order code" : "Consultá el estado con tu código"}</small></div>
+              <div><span aria-hidden="true">✓</span><strong>${state.language === "en" ? "Verified reviews" : "Reseñas verificadas"}</strong><small>${state.language === "en" ? "Only approved purchases can verify a review" : "La compra real valida la reseña"}</small></div>
+            </div>
+
             <div class="product-v2-try-decant">
               <div>
                 <strong>${state.language === "en" ? "Not sure yet?" : "¿Todavía no estás seguro?"}</strong>

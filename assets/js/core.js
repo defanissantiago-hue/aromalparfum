@@ -672,28 +672,32 @@ function updateHeaderCounts()
     "favCount"
   );
 
+  const mobileCartCount =
+  document.getElementById(
+    "mobileCartCount"
+  );
+
+  const cartQuantity =
+  state.cart.reduce(
+    (total, line) =>
+      total + Math.max(1, asNumber(line.qty, 1)),
+    0
+  );
+
   if (
     cartCount
   )
   {
     cartCount.textContent =
     String(
-      state.cart.reduce(
-        (
-          total,
-          line
-        ) =>
-        total +
-        Math.max(
-          1,
-          asNumber(
-            line.qty,
-            1
-          )
-        ),
-        0
-      )
+      cartQuantity
     );
+  }
+
+  if (mobileCartCount)
+  {
+    mobileCartCount.textContent = String(cartQuantity);
+    mobileCartCount.hidden = cartQuantity <= 0;
   }
 
   if (
@@ -740,6 +744,16 @@ function toast(
   node.className =
   "toast " +
   type;
+
+  node.setAttribute(
+    "role",
+    type === "error" ? "alert" : "status"
+  );
+
+  node.setAttribute(
+    "aria-live",
+    type === "error" ? "assertive" : "polite"
+  );
 
   node.textContent =
   String(

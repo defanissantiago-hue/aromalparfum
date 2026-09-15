@@ -386,6 +386,13 @@ function alp43RenderCheckout()
         </div>
       </div>
 
+      <div class="checkout64-assurances" aria-label="${state.language === "en" ? "Checkout guarantees" : "Garantías del checkout"}">
+        <span><b aria-hidden="true">✓</b>${state.language === "en" ? "Price revalidated" : "Precio revalidado"}</span>
+        <span><b aria-hidden="true">✓</b>${state.language === "en" ? "Stock revalidated" : "Stock revalidado"}</span>
+        <span><b aria-hidden="true">✓</b>${state.language === "en" ? "Order code" : "Código de pedido"}</span>
+        <span><b aria-hidden="true">✓</b>${state.language === "en" ? "Tracking included" : "Seguimiento incluido"}</span>
+      </div>
+
       <div class="settings-card">
         <h3>${escapeHtml(t("checkout.client"))}</h3>
         <div class="admin-form-grid">
