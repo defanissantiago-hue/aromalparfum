@@ -1,0 +1,48 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 65,
+  "name": "Security Hardening V2 + Admin Server Guard",
+  "new_files": [
+    "assets/js/security-v2.js",
+    "SETUP_PASO65_SECURITY_HARDENING.sql",
+    "README_PASO65.txt",
+    "PASO65_MANIFEST.json"
+  ],
+  "modified_files": [
+    "assets/js/config.js",
+    "assets/js/admin.js",
+    "assets/js/events.js",
+    "assets/js/store.js",
+    "assets/css/app.css",
+    "index.html",
+    "admin/index.html"
+  ],
+  "backend_added": [
+    "alp_admin_is_authorized_v2",
+    "admin_security_status_v2"
+  ],
+  "security_changes": [
+    "server-side admin authorization",
+    "admin session moved to sessionStorage",
+    "legacy persisted Supabase token cleanup",
+    "direct Club/CRM table grants revoked",
+    "RLS reaffirmed on sensitive tables",
+    "public RPC execute grants reaffirmed",
+    "external social URL protocol guard",
+    "Supabase JS CDN dependency pinned to 2.116.0",
+    "referrer policy hardened"
+  ],
+  "sql_required": true,
+  "public_store_new_business_queries": 0,
+  "validation": [
+    "JS_SYNTAX_OK",
+    "STATIC_REFERENCES_OK",
+    "SDK_PIN_AND_CACHE_65_OK",
+    "SQL_SECURITY_WIRING_OK",
+    "ADMIN_SERVER_GUARD_OK",
+    "EXTERNAL_URL_GUARD_OK",
+    "BACKUP_ROLLBACK_OK",
+    "IMAGENES_NOT_PACKAGED_OK",
+    "ZIP_OK"
+  ]
+}
