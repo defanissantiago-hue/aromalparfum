@@ -1,0 +1,36 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 66,
+  "name": "Resilience & Diagnostics V2",
+  "new_files": [
+    "assets/js/resilience-v2.js",
+    "README_PASO66.txt",
+    "PASO66_MANIFEST.json"
+  ],
+  "modified_files": [
+    "assets/js/config.js",
+    "assets/js/core.js",
+    "assets/js/store.js",
+    "assets/js/supabase-data.js",
+    "assets/js/performance-v2.js",
+    "assets/js/events.js",
+    "assets/js/admin.js",
+    "assets/css/app.css",
+    "index.html",
+    "admin/index.html",
+    "404.html"
+  ],
+  "features": [
+    "online/offline status",
+    "recoverable bootstrap errors",
+    "recoverable lazy-route errors",
+    "sanitized diagnostic codes",
+    "admin local diagnostics",
+    "safe localStorage fallback",
+    "async UI action guard",
+    "single retry for thrown transient network errors"
+  ],
+  "sql_required": false,
+  "new_supabase_queries": 0,
+  "diagnostics_pii": false
+}
