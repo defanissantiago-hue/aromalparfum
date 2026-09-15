@@ -1,0 +1,50 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 63,
+  "name": "Performance V2 + Supabase Lazy Data",
+  "sql_required": false,
+  "new_files": [
+    "assets/js/performance-v2.js",
+    "README_PASO63.txt",
+    "PASO63_MANIFEST.json"
+  ],
+  "modified_files": [
+    "assets/js/products.js",
+    "assets/js/supabase-data.js",
+    "assets/js/store.js",
+    "assets/js/events.js",
+    "index.html",
+    "admin/index.html"
+  ],
+  "optimizations": [
+    "public product summary instead of all long product fields",
+    "single product detail lazy load",
+    "catalog metadata lazy batch",
+    "route-scoped Supabase loaders",
+    "in-flight query deduplication",
+    "no global 45-second cart interval",
+    "admin full product editing preserved"
+  ],
+  "bootstrap_blocks": {
+    "before_public_all_routes": 12,
+    "home": 5,
+    "product_direct": 3,
+    "about_contact_tracking_club": 2,
+    "gifts": 3,
+    "decants": 5,
+    "catalog": 5
+  },
+  "supabase_schema_changes": false,
+  "images_folder_packaged": false,
+  "validation": [
+    "JS_SYNTAX_OK_39",
+    "STATIC_REFERENCES_OK",
+    "ROUTE_LAZY_MAP_OK",
+    "BACKUP_ROLLBACK_OK",
+    "IMAGENES_NOT_PACKAGED_OK",
+    "HTTP_ROOT_200",
+    "HTTP_ADMIN_200",
+    "HTTP_PERFORMANCE_JS_200",
+    "ZIP_OK"
+  ]
+}
