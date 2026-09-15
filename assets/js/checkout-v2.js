@@ -47,7 +47,7 @@ function alp43GenerateCheckoutToken()
 
 function alp43GetSessionId()
 {
-  let sessionId = localStorage.getItem(ALP43_SESSION_KEY) || "";
+  let sessionId = alp66StorageGet(ALP43_SESSION_KEY) || "";
 
   if (!sessionId)
   {
@@ -55,7 +55,7 @@ function alp43GetSessionId()
       ? globalThis.crypto.randomUUID()
       : `alp-${Date.now().toString(36)}-${Math.random().toString(36).slice(2)}`;
 
-    localStorage.setItem(ALP43_SESSION_KEY, sessionId);
+    alp66StorageSet(ALP43_SESSION_KEY, sessionId);
   }
 
   return sessionId;
@@ -112,7 +112,7 @@ function alp43LoadSavedContact()
 {
   try
   {
-    return alp43SafeObject(JSON.parse(localStorage.getItem(ALP43_CHECKOUT_CONTACT_KEY) || "{}"));
+    return alp43SafeObject(JSON.parse(alp66StorageGet(ALP43_CHECKOUT_CONTACT_KEY) || "{}"));
   }
   catch (_error)
   {
@@ -122,7 +122,7 @@ function alp43LoadSavedContact()
 
 function alp43SaveContact(contact)
 {
-  localStorage.setItem(
+  alp66StorageSet(
     ALP43_CHECKOUT_CONTACT_KEY,
     JSON.stringify({
       name: String(contact.name || "").slice(0, 120),

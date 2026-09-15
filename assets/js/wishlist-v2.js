@@ -12,7 +12,7 @@ let alp46SharedWishlistLoading = false;
 function alp46ReadActiveWishlist()
 {
   return safeJsonParse(
-    localStorage.getItem(ALP46_FAVORITES_SHARE_STORAGE),
+    alp66StorageGet(ALP46_FAVORITES_SHARE_STORAGE),
     null
   );
 }
@@ -21,11 +21,11 @@ function alp46WriteActiveWishlist(value)
 {
   if (!value)
   {
-    localStorage.removeItem(ALP46_FAVORITES_SHARE_STORAGE);
+    alp66StorageRemove(ALP46_FAVORITES_SHARE_STORAGE);
     return;
   }
 
-  localStorage.setItem(
+  alp66StorageSet(
     ALP46_FAVORITES_SHARE_STORAGE,
     JSON.stringify(value)
   );

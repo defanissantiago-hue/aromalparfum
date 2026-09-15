@@ -3,6 +3,79 @@
 // AromaLParfum Frontend V2 — Paso 39
 // Módulo: configuración, traducciones, Supabase y estado global
 
+// PASO 66 · Storage seguro.
+// Algunos navegadores/modos de privacidad pueden bloquear localStorage. La tienda
+// debe seguir funcionando en memoria aunque no pueda persistir carrito/favoritos.
+const alp66MemoryStorage = new Map();
+
+function alp66StorageGet(key, fallback = null)
+{
+  const safeKey = String(key || "");
+  if (!safeKey) return fallback;
+
+  try
+  {
+    const value = window.localStorage.getItem(safeKey);
+    if (value !== null) return value;
+  }
+  catch (_) {}
+
+  return alp66MemoryStorage.has(safeKey)
+    ? alp66MemoryStorage.get(safeKey)
+    : fallback;
+}
+
+function alp66StorageSet(key, value)
+{
+  const safeKey = String(key || "");
+  if (!safeKey) return false;
+  const safeValue = String(value ?? "");
+
+  alp66MemoryStorage.set(safeKey, safeValue);
+
+  try
+  {
+    window.localStorage.setItem(safeKey, safeValue);
+    return true;
+  }
+  catch (_)
+  {
+    return false;
+  }
+}
+
+function alp66StorageRemove(key)
+{
+  const safeKey = String(key || "");
+  if (!safeKey) return false;
+  alp66MemoryStorage.delete(safeKey);
+
+  try
+  {
+    window.localStorage.removeItem(safeKey);
+    return true;
+  }
+  catch (_)
+  {
+    return false;
+  }
+}
+
+function alp66StorageAvailable()
+{
+  const probe = "__alp66_probe__";
+  try
+  {
+    window.localStorage.setItem(probe, "1");
+    window.localStorage.removeItem(probe);
+    return true;
+  }
+  catch (_)
+  {
+    return false;
+  }
+}
+
 const I18N =
     {
       "es":
@@ -1164,7 +1237,7 @@ String(document.body?.dataset?.entry || "") === "admin";
 // reduciendo la exposición de tokens después de cerrar el navegador.
 try
 {
-  localStorage.removeItem("sb-klppiznssciyveufmoff-auth-token");
+  alp66StorageRemove("sb-klppiznssciyveufmoff-auth-token");
 }
 catch (_error)
 {
@@ -1318,7 +1391,7 @@ function normalizeStoredCart(
 const state =
 {
   language:
-  localStorage.getItem(
+  alp66StorageGet(
     "alp_language"
   ) ||
   "es",
@@ -1393,7 +1466,7 @@ const state =
 
   gamePlayer:
   safeJsonParse(
-    localStorage.getItem(
+    alp66StorageGet(
       "alp_game_player"
     ),
     null
@@ -1434,7 +1507,7 @@ const state =
 
   favorites:
   safeJsonParse(
-    localStorage.getItem(
+    alp66StorageGet(
       "alp_fav"
     ),
     []
@@ -1443,7 +1516,7 @@ const state =
   cart:
   normalizeStoredCart(
     safeJsonParse(
-      localStorage.getItem(
+      alp66StorageGet(
         "alp_cart"
       ),
       []

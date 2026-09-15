@@ -527,7 +527,7 @@ function saveGamePlayerFromForm()
     phone,
   };
 
-  localStorage.setItem(
+  alp66StorageSet(
     "alp_game_player",
     JSON.stringify(
       state.gamePlayer
@@ -551,7 +551,7 @@ function clearGamePlayer()
   state.gamePlayer =
   null;
 
-  localStorage.removeItem(
+  alp66StorageRemove(
     "alp_game_player"
   );
 

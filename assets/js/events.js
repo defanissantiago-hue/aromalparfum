@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 63
+// AromaLParfum Frontend V2 — Paso 66
 // Módulo: eventos globales, navegación diferida e inicialización
 
     function openSearchModal()
@@ -716,6 +716,38 @@
           if (typeof alp65RefreshSecurityPanel === "function")
           {
             await alp65RefreshSecurityPanel();
+          }
+          break;
+        }
+
+        case "admin-diagnostics-copy":
+        {
+          if (typeof alp66CopyDiagnosticReport === "function")
+          {
+            await alp66CopyDiagnosticReport();
+          }
+          break;
+        }
+
+        case "admin-diagnostics-clear":
+        {
+          if (typeof alp66ClearDiagnostics === "function")
+          {
+            alp66ClearDiagnostics();
+            refreshAdminTab();
+          }
+          break;
+        }
+
+        case "retry-route":
+        {
+          if (typeof alp66RetryCurrentRoute === "function")
+          {
+            await alp66RetryCurrentRoute();
+          }
+          else
+          {
+            setRoute(state.route, state.routePayload);
           }
           break;
         }
@@ -1602,9 +1634,23 @@
         {
           event.preventDefault();
 
-          await handleAction(
-            actionElement
-          );
+          try
+          {
+            await handleAction(actionElement);
+          }
+          catch (error)
+          {
+            console.error("Acción de interfaz falló:", actionElement.dataset.action, error);
+
+            if (typeof alp66HandleActionError === "function")
+            {
+              alp66HandleActionError(error, actionElement.dataset.action || "unknown");
+            }
+            else
+            {
+              toast(state.language === "en" ? "The action could not be completed." : "No se pudo completar la acción.", "error");
+            }
+          }
         }
       }
     );

@@ -20,7 +20,7 @@ function productV2ReadStoredIds(key, maxItems = 20)
 {
   try
   {
-    const raw = safeJsonParse(localStorage.getItem(key), []);
+    const raw = safeJsonParse(alp66StorageGet(key), []);
 
     if (!Array.isArray(raw))
     {
@@ -59,7 +59,7 @@ function productV2ReadRecentEntries()
 
   try
   {
-    const raw = safeJsonParse(localStorage.getItem(config.storageKey), []);
+    const raw = safeJsonParse(alp66StorageGet(config.storageKey), []);
 
     if (!Array.isArray(raw))
     {
@@ -98,7 +98,7 @@ function productV2SaveRecentEntries(entries)
 
   try
   {
-    localStorage.setItem(
+    alp66StorageSet(
       config.storageKey,
       JSON.stringify(entries.slice(0, config.maxItems))
     );
@@ -155,7 +155,7 @@ function productV2PersistCompare()
 {
   try
   {
-    localStorage.setItem(
+    alp66StorageSet(
       PRODUCT_V2_COMPARE_KEY,
       JSON.stringify(productV2State.compareIds)
     );

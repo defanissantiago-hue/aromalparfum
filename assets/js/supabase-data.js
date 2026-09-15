@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 63
+// AromaLParfum Frontend V2 — Paso 66
 // Módulo: datos Supabase con bootstrap optimizado y carga por ruta
 
 async function loadPopularity()
@@ -805,36 +805,16 @@ async function loadAllData()
       error
     );
 
-    const app =
-    document.getElementById(
-      "app"
-    );
-
-    if (
-      app
-    )
+    if (typeof alp66RenderBootstrapFailure === "function")
     {
-      app.innerHTML =
-      `
-        <section class="section">
-          <div class="container">
-            <div class="empty-state">
-              <h3>
-                No se pudo cargar AromaLParfum
-              </h3>
-              <p>
-                ${escapeHtml(error?.message || "Error desconocido")}
-              </p>
-              <button
-                class="btn"
-                type="button"
-                data-action="reload-data">
-                ${escapeHtml(t("common.retry"))}
-              </button>
-            </div>
-          </div>
-        </section>
-      `;
+      alp66RenderBootstrapFailure(error);
+      return;
+    }
+
+    const app = document.getElementById("app");
+    if (app)
+    {
+      app.innerHTML = `<section class="section"><div class="container"><div class="empty-state"><h3>No se pudo cargar AromaLParfum</h3><p>Revisá tu conexión e intentá nuevamente.</p><button class="btn" type="button" data-action="reload-data">${escapeHtml(t("common.retry"))}</button></div></div></section>`;
     }
   }
 }

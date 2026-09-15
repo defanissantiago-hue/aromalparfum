@@ -24,7 +24,11 @@ function alp63LoadOnce(key, loader)
   if (alp63InflightData.has(safeKey)) return alp63InflightData.get(safeKey);
 
   const promise = Promise.resolve()
-    .then(loader)
+    .then(() =>
+      typeof alp66RunWithRetry === "function"
+        ? alp66RunWithRetry(loader, { attempts: 2 })
+        : loader()
+    )
     .then(result =>
     {
       alp63LoadedData.add(safeKey);

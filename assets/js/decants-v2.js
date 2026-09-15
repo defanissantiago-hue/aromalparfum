@@ -16,12 +16,12 @@ function alp41SafeArray(value)
 function alp41LoadBuilderDrafts()
 {
   const standalone = safeJsonParse(
-    localStorage.getItem(ALP41_STANDALONE_DRAFT_KEY),
+    alp66StorageGet(ALP41_STANDALONE_DRAFT_KEY),
     []
   );
 
   const gift = safeJsonParse(
-    localStorage.getItem(ALP41_GIFT_DRAFT_KEY),
+    alp66StorageGet(ALP41_GIFT_DRAFT_KEY),
     {}
   ) || {};
 
@@ -38,12 +38,12 @@ function alp41LoadBuilderDrafts()
 
 function alp41PersistBuilderDrafts()
 {
-  localStorage.setItem(
+  alp66StorageSet(
     ALP41_STANDALONE_DRAFT_KEY,
     JSON.stringify(alp41SafeArray(state.decantDraft))
   );
 
-  localStorage.setItem(
+  alp66StorageSet(
     ALP41_GIFT_DRAFT_KEY,
     JSON.stringify({
       giftDraft: alp41SafeArray(state.giftDraft),

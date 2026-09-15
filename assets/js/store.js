@@ -1,6 +1,6 @@
 "use strict";
 
-// AromaLParfum Frontend V2 — Paso 63
+// AromaLParfum Frontend V2 — Paso 66
 // Módulo: rutas con hidratación diferida y render de tienda
 
 function setRoute(
@@ -72,6 +72,13 @@ function setRoute(
     .catch(error =>
     {
       console.warn("Carga diferida de ruta:", route, error);
+
+      if (typeof alp66RenderRouteFailure === "function")
+      {
+        alp66RenderRouteFailure(route, state.routePayload, error);
+        return;
+      }
+
       finishNavigation();
     });
 

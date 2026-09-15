@@ -25,13 +25,13 @@ function orderTrackingV2SafeJson(value, fallback)
 
 function orderTrackingV2ReadRecent()
 {
-  const rows = orderTrackingV2SafeJson(localStorage.getItem(ORDER57_STORAGE_KEY) || "[]", []);
+  const rows = orderTrackingV2SafeJson(alp66StorageGet(ORDER57_STORAGE_KEY) || "[]", []);
   return Array.isArray(rows) ? rows.filter(row => row && row.orderCode).slice(0, 5) : [];
 }
 
 function orderTrackingV2WriteRecent(rows)
 {
-  try { localStorage.setItem(ORDER57_STORAGE_KEY, JSON.stringify(rows.slice(0, 5))); } catch (_) {}
+  try { alp66StorageSet(ORDER57_STORAGE_KEY, JSON.stringify(rows.slice(0, 5))); } catch (_) {}
 }
 
 function orderTrackingV2RememberOrder(order)

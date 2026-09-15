@@ -116,7 +116,7 @@ function getCachedProductColumns()
   try
   {
     const parsed = JSON.parse(
-      localStorage.getItem(PRODUCT_COLUMNS_CACHE_KEY) || "null"
+      alp66StorageGet(PRODUCT_COLUMNS_CACHE_KEY) || "null"
     );
 
     if (
@@ -143,7 +143,7 @@ function cacheProductColumns(columns)
   {
     if (Array.isArray(columns) && columns.length)
     {
-      localStorage.setItem(
+      alp66StorageSet(
         PRODUCT_COLUMNS_CACHE_KEY,
         JSON.stringify(columns)
       );

@@ -80,6 +80,13 @@ async function reloadAdminData()
         }
         break;
 
+      case "diagnostics":
+        if (typeof alp66RefreshDiagnostics === "function")
+        {
+          alp66RefreshDiagnostics();
+        }
+        break;
+
       case "settings":
         await loadSiteSettings();
         await Promise.all([
@@ -602,6 +609,7 @@ function renderAdminDashboard()
       <div class="admin-tabs">
         ${renderAdminTabButton("dashboard", state.language === "en" ? "Dashboard" : "Dashboard")}
         ${renderAdminTabButton("security", state.language === "en" ? "Security" : "Seguridad")}
+        ${renderAdminTabButton("diagnostics", state.language === "en" ? "Diagnostics" : "Diagnóstico")}
         ${renderAdminTabButton("analytics", state.language === "en" ? "Analytics" : "Analytics")}
         ${renderAdminTabButton("products", t("admin.products"))}
         ${renderAdminTabButton("new", t("admin.new"))}
@@ -681,6 +689,13 @@ function renderAdminTabContent()
       return typeof alp65RenderSecurityV2 === "function"
         ? alp65RenderSecurityV2()
         : `<div class="admin-message error">Security V2 no disponible.</div>`;
+    }
+
+    case "diagnostics":
+    {
+      return typeof alp66RenderAdminDiagnostics === "function"
+        ? alp66RenderAdminDiagnostics()
+        : `<div class="admin-message error">Diagnóstico V2 no disponible.</div>`;
     }
 
     case "analytics":

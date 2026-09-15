@@ -23,10 +23,10 @@ function alp42PersistGiftState()
 {
   if (typeof ALP41_STANDALONE_DRAFT_KEY !== "undefined")
   {
-    localStorage.setItem(ALP41_STANDALONE_DRAFT_KEY, JSON.stringify(alp42Arr(state.decantDraft)));
+    alp66StorageSet(ALP41_STANDALONE_DRAFT_KEY, JSON.stringify(alp42Arr(state.decantDraft)));
   }
 
-  localStorage.setItem(
+  alp66StorageSet(
     ALP42_GIFT_STORAGE_KEY,
     JSON.stringify({
       giftDraft: alp42Arr(state.giftDraft),
@@ -46,7 +46,7 @@ if (typeof alp41PersistBuilderDrafts === "function")
 
 function alp42LoadGiftState()
 {
-  const saved = safeJsonParse(localStorage.getItem(ALP42_GIFT_STORAGE_KEY), {}) || {};
+  const saved = safeJsonParse(alp66StorageGet(ALP42_GIFT_STORAGE_KEY), {}) || {};
   state.selectedGiftAddons = alp42Arr(saved.selectedGiftAddons).map(String);
   state.giftCardMessage = String(saved.giftCardMessage || "");
 

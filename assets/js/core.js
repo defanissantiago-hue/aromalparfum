@@ -638,21 +638,21 @@ function isFavorite(
 
 function saveLocalState()
 {
-  localStorage.setItem(
+  alp66StorageSet(
     "alp_cart",
     JSON.stringify(
       state.cart
     )
   );
 
-  localStorage.setItem(
+  alp66StorageSet(
     "alp_fav",
     JSON.stringify(
       state.favorites
     )
   );
 
-  localStorage.setItem(
+  alp66StorageSet(
     "alp_language",
     state.language
   );
@@ -1336,7 +1336,7 @@ function readStorageModeCache()
   try
   {
     const parsed = JSON.parse(
-      localStorage.getItem(STORAGE_MODE_CACHE_KEY) || "null"
+      alp66StorageGet(STORAGE_MODE_CACHE_KEY) || "null"
     );
 
     if (
@@ -1357,7 +1357,7 @@ function writeStorageModeCache(mode)
 {
   try
   {
-    localStorage.setItem(
+    alp66StorageSet(
       STORAGE_MODE_CACHE_KEY,
       JSON.stringify({
         mode,
@@ -1373,7 +1373,7 @@ function readSignedImageCache()
   try
   {
     const parsed = JSON.parse(
-      localStorage.getItem(SIGNED_IMAGE_CACHE_KEY) || "{}"
+      alp66StorageGet(SIGNED_IMAGE_CACHE_KEY) || "{}"
     );
 
     return parsed && typeof parsed === "object" ? parsed : {};
@@ -1403,7 +1403,7 @@ function getCachedSignedUrl(path)
     delete cache[path];
     try
     {
-      localStorage.setItem(SIGNED_IMAGE_CACHE_KEY, JSON.stringify(cache));
+      alp66StorageSet(SIGNED_IMAGE_CACHE_KEY, JSON.stringify(cache));
     }
     catch (_) {}
   }
@@ -1440,7 +1440,7 @@ function cacheSignedUrl(path, url)
 
   try
   {
-    localStorage.setItem(SIGNED_IMAGE_CACHE_KEY, JSON.stringify(cache));
+    alp66StorageSet(SIGNED_IMAGE_CACHE_KEY, JSON.stringify(cache));
   }
   catch (_) {}
 }
