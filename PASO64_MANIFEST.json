@@ -1,0 +1,43 @@
+{
+  "project": "AromaLParfum Frontend V2",
+  "step": 64,
+  "name": "Mobile UX + Accesibilidad + Confianza de Compra",
+  "new_files": [
+    "assets/js/accessibility-v2.js",
+    "README_PASO64.txt",
+    "PASO64_MANIFEST.json"
+  ],
+  "modified_files": [
+    "index.html",
+    "admin/index.html",
+    "assets/css/app.css",
+    "assets/js/core.js",
+    "assets/js/product-v2.js",
+    "assets/js/checkout-v2.js"
+  ],
+  "features": [
+    "skip link",
+    "keyboard focus trap",
+    "escape closes overlays",
+    "focus restoration",
+    "accessible dialog semantics",
+    "mobile bottom navigation",
+    "44px mobile touch targets",
+    "focus-visible",
+    "reduced motion support",
+    "higher contrast support",
+    "purchase trust strip",
+    "product purchase guarantees",
+    "checkout assurances",
+    "accessible toasts"
+  ],
+  "sql_required": false,
+  "supabase_new_queries": 0,
+  "checkout_rpc_changed": false,
+  "performance": [
+    "frontend-only module",
+    "no polling",
+    "no Supabase reads or writes",
+    "small MutationObserver scoped to #app child changes"
+  ]
+}
