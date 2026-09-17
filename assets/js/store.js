@@ -466,6 +466,28 @@ function renderMobileMenu()
 
     {
       route:
+      "catalog",
+
+      filter:
+      "Originales",
+
+      label:
+      state.language === "en" ? "Originals" : "Originales",
+    },
+
+    {
+      route:
+      "catalog",
+
+      filter:
+      "G5 / Inspiraciones",
+
+      label:
+      state.language === "en" ? "G5 / Inspired" : "G5 / Inspiraciones",
+    },
+
+    {
+      route:
       "best",
 
       label:
@@ -599,7 +621,8 @@ function renderMobileMenu()
       <button
         class="menu-link"
         type="button"
-        data-route="${escapeAttribute(item.route)}">
+        data-route="${escapeAttribute(item.route)}"
+        ${item.filter ? `data-filter="${escapeAttribute(item.filter)}"` : ""}>
         ${escapeHtml(item.label)}
       </button>
     `
@@ -1654,6 +1677,81 @@ function renderProductRowSection(
   `;
 }
 
+
+function getCommercialQualityLabel(product)
+{
+  const value = String(product?.calidad_comercial || "").toLowerCase();
+
+  if (value === "original")
+  {
+    return "Original";
+  }
+
+  if (value === "g5_imitacion")
+  {
+    return state.language === "en" ? "G5 / Inspired" : "G5 / Inspiración";
+  }
+
+  return "";
+}
+
+function getPresentationTypeLabel(product)
+{
+  const value = String(product?.presentacion_tipo || "").toLowerCase();
+
+  if (value === "30ml")
+  {
+    return "30 ml";
+  }
+
+  if (value === "kit")
+  {
+    return "Kit / Combo";
+  }
+
+  return "";
+}
+
+function renderProductClassificationTags(product)
+{
+  const quality = getCommercialQualityLabel(product);
+  const presentation = getPresentationTypeLabel(product);
+
+  if (!quality && !presentation)
+  {
+    return "";
+  }
+
+  const qualityClass =
+    String(product?.calidad_comercial || "") === "original"
+      ? "original"
+      : "g5";
+
+  return `
+    <div class="product-classification-tags">
+      ${quality ? `<span class="product-classification-tag ${qualityClass}">${escapeHtml(quality)}</span>` : ""}
+      ${presentation ? `<span class="product-classification-tag presentation">${escapeHtml(presentation)}</span>` : ""}
+    </div>
+  `;
+}
+
+function renderProductClassificationDisclosure(product)
+{
+  if (String(product?.calidad_comercial || "") !== "g5_imitacion")
+  {
+    return "";
+  }
+
+  return `
+    <div class="product-classification-disclosure">
+      <strong>${state.language === "en" ? "G5 / inspired product" : "Producto G5 / inspirado"}</strong>
+      <span>${state.language === "en"
+        ? "This item is identified as an inspired/G5 alternative and is not presented as an original product from the reference brand."
+        : "Este artículo está identificado como alternativa inspirada/G5 y no se presenta como producto original de la marca de referencia."}</span>
+    </div>
+  `;
+}
+
 function renderProductCard(
   product,
   options = {}
@@ -1815,6 +1913,8 @@ function renderProductCard(
         <h3 class="product-title">
           ${escapeHtml(product.nombre)}
         </h3>
+
+        ${renderProductClassificationTags(product)}
 
         <p class="product-notes">
           ${escapeHtml(notes || localizedField(product, "familia") || t("common.consult"))}

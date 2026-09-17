@@ -87,6 +87,13 @@ async function reloadAdminData()
         }
         break;
 
+      case "audit":
+        if (typeof alp67RunAudit === "function")
+        {
+          await alp67RunAudit({ live: true });
+        }
+        break;
+
       case "settings":
         await loadSiteSettings();
         await Promise.all([
@@ -610,6 +617,7 @@ function renderAdminDashboard()
         ${renderAdminTabButton("dashboard", state.language === "en" ? "Dashboard" : "Dashboard")}
         ${renderAdminTabButton("security", state.language === "en" ? "Security" : "Seguridad")}
         ${renderAdminTabButton("diagnostics", state.language === "en" ? "Diagnostics" : "Diagnóstico")}
+        ${renderAdminTabButton("audit", state.language === "en" ? "Release audit" : "Auditoría")}
         ${renderAdminTabButton("analytics", state.language === "en" ? "Analytics" : "Analytics")}
         ${renderAdminTabButton("products", t("admin.products"))}
         ${renderAdminTabButton("new", t("admin.new"))}
@@ -696,6 +704,13 @@ function renderAdminTabContent()
       return typeof alp66RenderAdminDiagnostics === "function"
         ? alp66RenderAdminDiagnostics()
         : `<div class="admin-message error">Diagnóstico V2 no disponible.</div>`;
+    }
+
+    case "audit":
+    {
+      return typeof alp67RenderAdminAudit === "function"
+        ? alp67RenderAdminAudit()
+        : `<div class="admin-message error">Auditoría de release no disponible.</div>`;
     }
 
     case "analytics":
@@ -1122,6 +1137,8 @@ function renderAdminProducts()
             <th>${escapeHtml(t("admin.seasons"))}</th>
             <th>${escapeHtml(t("admin.occasions"))}</th>
             <th>${escapeHtml(t("admin.type"))}</th>
+            <th>Calidad</th>
+            <th>Presentación</th>
             <th>${escapeHtml(t("admin.featured"))}</th>
             <th>${escapeHtml(t("admin.newflag"))}</th>
             <th>${escapeHtml(t("admin.save"))}</th>
@@ -1250,6 +1267,14 @@ function renderAdminProductRow(
 
       <td>
         ${renderAdminProductTypeSelect(product)}
+      </td>
+
+      <td>
+        ${renderAdminCommercialQualitySelect(product)}
+      </td>
+
+      <td>
+        ${renderAdminPresentationTypeSelect(product)}
       </td>
 
       <td style="text-align:center">
@@ -1604,6 +1629,34 @@ function renderAdminProductTypeSelect(
   `;
 }
 
+
+function renderAdminCommercialQualitySelect(product)
+{
+  const selected = String(product?.calidad_comercial || "sin_clasificar");
+
+  return `
+    <select id="ap-quality-${product.id}">
+      <option value="sin_clasificar" ${selected === "sin_clasificar" ? "selected" : ""}>Sin clasificar</option>
+      <option value="original" ${selected === "original" ? "selected" : ""}>Original</option>
+      <option value="g5_imitacion" ${selected === "g5_imitacion" ? "selected" : ""}>G5 / Imitación</option>
+    </select>
+  `;
+}
+
+function renderAdminPresentationTypeSelect(product)
+{
+  const fallback = Number(product?.ml || 0) === 30 ? "30ml" : "regular";
+  const selected = String(product?.presentacion_tipo || fallback);
+
+  return `
+    <select id="ap-presentation-${product.id}">
+      <option value="regular" ${selected === "regular" ? "selected" : ""}>Regular</option>
+      <option value="30ml" ${selected === "30ml" ? "selected" : ""}>30 ml</option>
+      <option value="kit" ${selected === "kit" ? "selected" : ""}>Kit / Combo</option>
+    </select>
+  `;
+}
+
 function renderAdminNewProduct()
 {
   const aiEnabled =
@@ -1713,6 +1766,24 @@ function renderAdminNewProduct()
               id="np-type"
               class="select-input">
               ${renderProductTypeOptions("perfume")}
+            </select>
+          </div>
+
+          <div class="admin-field">
+            <label for="np-quality">Calidad comercial</label>
+            <select id="np-quality" class="select-input">
+              <option value="sin_clasificar">Sin clasificar</option>
+              <option value="original">Original</option>
+              <option value="g5_imitacion">G5 / Imitación</option>
+            </select>
+          </div>
+
+          <div class="admin-field">
+            <label for="np-presentation">Presentación</label>
+            <select id="np-presentation" class="select-input">
+              <option value="regular">Regular</option>
+              <option value="30ml">30 ml</option>
+              <option value="kit">Kit / Combo</option>
             </select>
           </div>
 
@@ -1923,6 +1994,8 @@ function filterProductPayload(
       "tipo_producto",
       "tipo_producto_slug",
       "subcategoria",
+      "calidad_comercial",
+      "presentacion_tipo",
       "destacado",
       "nuevo",
       "vendido",
@@ -2155,6 +2228,20 @@ async function createProductFromAdmin()
       )
       ||
       "Perfume",
+
+      calidad_comercial:
+      getInputValue(
+        "np-quality"
+      )
+      ||
+      "sin_clasificar",
+
+      presentacion_tipo:
+      getInputValue(
+        "np-presentation"
+      )
+      ||
+      (ml === 30 ? "30ml" : "regular"),
 
       destacado:
       getInputChecked(
@@ -2432,6 +2519,20 @@ function readAdminProductPayload(
       getInputValue(
         `ap-type-${productId}`
       ),
+
+      calidad_comercial:
+      getInputValue(
+        `ap-quality-${productId}`
+      )
+      ||
+      "sin_clasificar",
+
+      presentacion_tipo:
+      getInputValue(
+        `ap-presentation-${productId}`
+      )
+      ||
+      "regular",
 
       destacado:
       getInputChecked(

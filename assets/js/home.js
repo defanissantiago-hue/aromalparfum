@@ -579,6 +579,93 @@ function renderHomeSecondaryBanners()
 
 // Sobrescribe renderHomePage() del módulo store.js de forma intencional.
 // Conserva todas las secciones existentes y agrega merchandising dinámico.
+
+function renderCommercialSegments()
+{
+  const segments = [
+    {
+      filter: "Originales",
+      eyebrow: state.language === "en" ? "Authenticity" : "Autenticidad",
+      title: state.language === "en" ? "Originals" : "Originales",
+      text: state.language === "en"
+        ? "Products explicitly classified as original in AromaLParfum."
+        : "Productos identificados explícitamente como originales en AromaLParfum.",
+      icon: "✦",
+      className: "original",
+    },
+    {
+      filter: "G5 / Inspiraciones",
+      eyebrow: state.language === "en" ? "Alternatives" : "Alternativas",
+      title: state.language === "en" ? "G5 / Inspired" : "G5 / Inspiraciones",
+      text: state.language === "en"
+        ? "Inspired/G5 alternatives clearly separated from originals."
+        : "Alternativas inspiradas/G5 claramente separadas de los originales.",
+      icon: "◇",
+      className: "g5",
+    },
+    {
+      filter: "30 ml",
+      eyebrow: state.language === "en" ? "Size" : "Presentación",
+      title: "30 ml",
+      text: state.language === "en"
+        ? "Explore the compact 30 ml presentations."
+        : "Explorá las presentaciones compactas de 30 ml.",
+      icon: "◌",
+      className: "small",
+    },
+    {
+      filter: "Kits",
+      eyebrow: state.language === "en" ? "Sets" : "Packs",
+      title: state.language === "en" ? "Kits & Combos" : "Kits y Combos",
+      text: state.language === "en"
+        ? "Multi-product packs and special combinations."
+        : "Packs de varios productos y combinaciones especiales.",
+      icon: "▦",
+      className: "kit",
+    },
+  ];
+
+  return `
+    <section class="section commercial-segments-section">
+      <div class="container">
+        <div class="section-title-row">
+          <div>
+            <p class="eyebrow">${state.language === "en" ? "Choose clearly" : "Elegí con claridad"}</p>
+            <h2 class="section-title">${state.language === "en" ? "What type of product are you looking for?" : "¿Qué tipo de producto buscás?"}</h2>
+            <p class="section-subtitle">
+              ${state.language === "en"
+                ? "Originals, inspired/G5 alternatives, 30 ml presentations and kits are shown separately."
+                : "Originales, alternativas G5/inspiradas, presentaciones de 30 ml y kits se muestran por separado."}
+            </p>
+          </div>
+        </div>
+
+        <div class="commercial-segments-grid">
+          ${segments.map(item => `
+            <button
+              class="commercial-segment-card ${escapeAttribute(item.className)}"
+              type="button"
+              data-route="catalog"
+              data-filter="${escapeAttribute(item.filter)}">
+              <span class="commercial-segment-icon" aria-hidden="true">${escapeHtml(item.icon)}</span>
+              <span class="eyebrow">${escapeHtml(item.eyebrow)}</span>
+              <strong>${escapeHtml(item.title)}</strong>
+              <small>${escapeHtml(item.text)}</small>
+              <span class="commercial-segment-link">${state.language === "en" ? "Explore" : "Ver productos"} →</span>
+            </button>
+          `).join("")}
+        </div>
+
+        <p class="commercial-segments-note">
+          ${state.language === "en"
+            ? "Products without a confirmed commercial classification are not labeled as original or G5 until they are reviewed in Admin."
+            : "Los productos sin clasificación comercial confirmada no se etiquetan como Original ni G5 hasta que se revisen desde Admin."}
+        </p>
+      </div>
+    </section>
+  `;
+}
+
 function renderHomePage()
 {
   const heroCollections = getHeroCollections();
@@ -604,6 +691,8 @@ function renderHomePage()
     ${renderDynamicHomeHero(heroCollection, heroProduct, heroCollections)}
 
     ${renderCategoryRail()}
+
+    ${renderCommercialSegments()}
 
     ${renderWeeklyFragrance()}
 

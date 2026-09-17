@@ -1,15 +1,15 @@
 "use strict";
 
-// AromaLParfum — PASO 68 FINAL STABLE
+// AromaLParfum — V2.69 CLASIFICACIÓN COMERCIAL
 // Release Audit & Stability Guard V2.
 // No agrega telemetría ni consultas durante la navegación normal. Las pruebas
 // de Supabase se ejecutan únicamente al abrir/ejecutar Admin → Auditoría.
 
 const ALP67_RELEASE = Object.freeze({
-  step: 68,
-  version: "2.68.0",
-  channel: "stable-final",
-  date: "2026-09-15",
+  step: 69,
+  version: "2.69.0",
+  channel: "stable",
+  date: "2026-09-17",
 });
 
 window.ALP_RELEASE = ALP67_RELEASE;

@@ -745,6 +745,9 @@ function renderProductDetailPageV2(id)
 
             <h1>${escapeHtml(product.nombre)}</h1>
 
+            ${renderProductClassificationTags(product)}
+            ${renderProductClassificationDisclosure(product)}
+
             <div class="product-v2-price-row">
               <strong>${money(product.precio)}</strong>
               ${product.ml ? `<span>${escapeHtml(String(product.ml))} ml</span>` : ""}

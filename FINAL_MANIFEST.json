@@ -1,39 +1,32 @@
 {
   "project": "AromaLParfum Frontend V2",
-  "step": 68,
-  "name": "Final Stable Release",
-  "version": "2.68.0",
-  "channel": "stable-final",
-  "date": "2026-09-15",
-  "sql_required": false,
-  "runtime_js_files": 42,
-  "production_cleanup": [
-    "historical backup directory removed from deployable package",
-    "prior step README/manifest files removed from deployable package",
-    "already-executed setup SQL files removed from deployable package",
-    "unused legacy assets/js/app.js removed"
+  "step": 69,
+  "name": "Clasificacion comercial y presentaciones",
+  "version": "2.69.0",
+  "channel": "stable",
+  "date": "2026-09-17",
+  "sql_required": true,
+  "features": [
+    "separacion entre Original y G5/Inspiracion",
+    "separacion de presentaciones Regular, 30 ml y Kit/Combo",
+    "apartado publico en Inicio para elegir tipo de producto",
+    "filtros de catalogo por clasificacion",
+    "etiquetas visibles en cards y ficha de producto",
+    "disclosure explicito para productos G5/inspirados",
+    "campos editables desde Admin para nuevos y existentes",
+    "CSV de actualizacion que conserva IDs y fotos"
   ],
-  "runtime_changes_from_step_67": [
-    "index.html build/cache marker 68",
-    "admin/index.html build/cache marker 68",
-    "release-v2.js version 2.68.0 and stable-final channel"
-  ],
-  "validations": [
-    "JS_SYNTAX_OK (42 files)",
-    "STATIC_REFERENCES_OK (76 refs)",
-    "ALL_RUNTIME_ASSETS_V68_OK",
-    "RUNTIME_DIFF_SCOPE_OK",
-    "ACTION_LITERAL_AUDIT_OK (165 actions)",
-    "CSS_URL_REFERENCES_OK",
-    "SITEMAP_XML_OK",
-    "SHARE_IMAGE_OK (1200x630)",
-    "HTTP_FINAL_OK",
-    "IMAGENES_NOT_PACKAGED_OK"
+  "database_fields": [
+    "products.calidad_comercial",
+    "products.presentacion_tipo"
   ],
   "deployment": {
     "preserve_images_folder": true,
-    "requires_new_sql": false,
-    "rollback_source": "AromaLParfum_FRONTEND_V2_PASO67.zip",
-    "post_deploy": "Ctrl+F5 and Admin > Auditoría > Ejecutar auditoría"
+    "sql_order": [
+      "01_PREPARAR_SUPABASE_CLASIFICACION.sql",
+      "importar SUPABASE_PRODUCTOS_CLASIFICADOS_SIN_TOCAR_FOTOS.csv en product_updates_import",
+      "02_APLICAR_CSV_CLASIFICADO_SIN_PERDER_FOTOS.sql",
+      "subir frontend V2.69"
+    ]
   }
 }

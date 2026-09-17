@@ -3,7 +3,7 @@
 // AromaLParfum Frontend V2 — Paso 63
 // Módulo: productos, carga liviana, detalle diferido, imágenes y galería
 
-const PRODUCT_COLUMNS_CACHE_KEY = "alp_product_columns_v4";
+const PRODUCT_COLUMNS_CACHE_KEY = "alp_product_columns_v5";
 
 const PRODUCT_COLUMNS_PREFERRED = [
   "id",
@@ -30,6 +30,8 @@ const PRODUCT_COLUMNS_PREFERRED = [
   "tipo_producto",
   "tipo_producto_slug",
   "subcategoria",
+  "calidad_comercial",
+  "presentacion_tipo",
   "imagen_url",
   "created_by_ai",
   "descripcion_en",
@@ -64,6 +66,8 @@ const PRODUCT_COLUMNS_PUBLIC_SUMMARY = [
   "tipo_producto",
   "tipo_producto_slug",
   "subcategoria",
+  "calidad_comercial",
+  "presentacion_tipo",
   "imagen_url",
   "created_at",
   "new_until",
@@ -109,6 +113,8 @@ const PRODUCT_COLUMNS_CORE = new Set([
   "corazon",
   "fondo",
   "familia",
+  "calidad_comercial",
+  "presentacion_tipo",
 ]);
 
 function getCachedProductColumns()
@@ -524,6 +530,20 @@ function normalizeProduct(
       row.subcategoria
       ||
       ""
+    ),
+
+    calidad_comercial:
+    String(
+      row.calidad_comercial
+      ||
+      "sin_clasificar"
+    ),
+
+    presentacion_tipo:
+    String(
+      row.presentacion_tipo
+      ||
+      (asNumber(row.ml, 0) === 30 ? "30ml" : "regular")
     ),
 
     imagen_url:

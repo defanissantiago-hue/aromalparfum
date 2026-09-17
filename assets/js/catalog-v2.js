@@ -199,6 +199,8 @@ function catalogProductText(product)
       product.subcategoria,
       product.genero,
       product.familia,
+      product.calidad_comercial,
+      product.presentacion_tipo,
       product.salida,
       product.corazon,
       product.fondo,
@@ -326,7 +328,35 @@ function getCatalogProducts()
 
   let list = state.products.filter(product =>
   {
-    if (filter === "Nuevo")
+    if (filter === "Originales")
+    {
+      if (String(product.calidad_comercial || "") !== "original")
+      {
+        return false;
+      }
+    }
+    else if (filter === "G5 / Inspiraciones")
+    {
+      if (String(product.calidad_comercial || "") !== "g5_imitacion")
+      {
+        return false;
+      }
+    }
+    else if (filter === "30 ml")
+    {
+      if (String(product.presentacion_tipo || "") !== "30ml")
+      {
+        return false;
+      }
+    }
+    else if (filter === "Kits")
+    {
+      if (String(product.presentacion_tipo || "") !== "kit")
+      {
+        return false;
+      }
+    }
+    else if (filter === "Nuevo")
     {
       if (!isNewProduct(product))
       {
@@ -347,6 +377,8 @@ function getCatalogProducts()
         product.genero,
         product.tipo_producto_slug,
         product.tipo_producto,
+        product.calidad_comercial,
+        product.presentacion_tipo,
       ].some(value => normalizeText(value) === normalizeText(filter));
 
       if (!matches)
@@ -932,6 +964,10 @@ function renderCatalogPage()
 
   const chips = [
     "Todos",
+    "Originales",
+    "G5 / Inspiraciones",
+    "30 ml",
+    "Kits",
     "Nuevo",
     "Destacado",
     "Hombre",

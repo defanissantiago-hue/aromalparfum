@@ -8214,3 +8214,40 @@
 
 /* ===== PASO 66 · Resilience & Diagnostics V2 ===== */
 .alp66-network-banner{position:fixed;z-index:1600;right:18px;bottom:18px;width:min(430px,calc(100vw - 36px));padding:13px 16px;border:1px solid var(--line);border-radius:14px;background:#fff;box-shadow:0 14px 38px rgba(36,28,20,.16);display:grid;gap:3px}.alp66-network-banner[hidden]{display:none!important}.alp66-network-banner strong{font-size:.86rem}.alp66-network-banner span{font-size:.79rem;line-height:1.45;color:var(--muted)}.alp66-network-banner.offline{border-color:rgba(164,85,55,.28);background:#fff9f6}.alp66-network-banner.online{border-color:rgba(64,126,77,.26);background:#f7fcf7}.alp66-recovery-section{min-height:45vh;display:grid;align-items:center}.alp66-recovery-card{max-width:760px;margin:0 auto;display:grid;grid-template-columns:auto 1fr;gap:18px;padding:28px;border:1px solid var(--line);border-radius:22px;background:var(--surface,#fff);box-shadow:0 14px 44px rgba(34,26,18,.07)}.alp66-recovery-icon{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:rgba(176,137,73,.12);font-weight:900;font-size:1.3rem}.alp66-recovery-card h2{margin:.2rem 0 .55rem}.alp66-recovery-card p{margin:0 0 9px;color:var(--muted);line-height:1.65}.alp66-recovery-card small{display:block;color:var(--muted);font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.alp66-recovery-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.alp66-diagnostics{display:grid;gap:16px}.alp66-diagnostic-actions{display:flex;gap:8px;flex-wrap:wrap}.alp66-diagnostic-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.alp66-diagnostic-card{padding:15px;border:1px solid var(--line);border-radius:14px;background:var(--surface,#fff);display:grid;gap:8px}.alp66-diagnostic-card>span:first-child{font-size:.78rem;color:var(--muted)}.alp66-status-pill{width:max-content;padding:5px 9px;border-radius:999px;font-size:.76rem;font-weight:800}.alp66-status-pill.ok{background:rgba(64,126,77,.10);color:#35613a}.alp66-status-pill.bad{background:rgba(166,62,49,.10);color:#8d3328}.alp66-diagnostic-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.alp66-diagnostic-facts span{padding:12px;border:1px solid var(--line);border-radius:12px;color:var(--muted);font-size:.83rem;display:grid;gap:5px}.alp66-diagnostic-facts strong{color:var(--text);font-size:1.05rem}.alp66-error-list{display:grid;gap:8px}.alp66-error-list>div{display:grid;grid-template-columns:150px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:.79rem}.alp66-error-list code{font-weight:800}.alp66-error-list span{color:var(--muted)}.alp66-error-list time{color:var(--muted);white-space:nowrap}@media(max-width:900px){.alp66-diagnostic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.alp66-diagnostic-facts{grid-template-columns:1fr}.alp66-error-list>div{grid-template-columns:1fr;gap:3px}}@media(max-width:720px){.alp66-network-banner{right:10px;bottom:78px;width:calc(100vw - 20px)}.alp66-recovery-card{grid-template-columns:1fr;padding:20px}.alp66-diagnostic-grid{grid-template-columns:1fr}}
+
+
+/* PASO 67 · Auditoría de release */
+.alp67-audit-list{display:grid;gap:10px}
+.alp67-audit-row{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid rgba(36,29,24,.09)}
+.alp67-audit-row:last-child{border-bottom:0}
+.alp67-audit-row div{display:grid;gap:3px}
+.alp67-audit-row small{color:var(--muted);overflow-wrap:anywhere}
+.alp67-status-pill.warn{display:inline-flex;align-items:center;justify-content:center;min-width:30px;height:30px;border-radius:999px;background:#fff4d6;color:#765500;font-weight:800}
+@media (max-width:720px){.alp67-audit-row{align-items:start}.alp67-audit .section-head{gap:16px}}
+
+
+/* ===== V2.69 · Clasificación comercial: Original / G5 / 30 ml / Kits ===== */
+.commercial-segments-section{padding-top:34px;padding-bottom:34px}
+.commercial-segments-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:20px}
+.commercial-segment-card{appearance:none;text-align:left;min-height:190px;padding:20px;border:1px solid var(--line);border-radius:18px;background:var(--paper);color:var(--ink);display:grid;grid-template-rows:auto auto auto 1fr auto;gap:8px;box-shadow:var(--shadow-card);transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+.commercial-segment-card:hover{transform:translateY(-3px);border-color:var(--line-strong);box-shadow:var(--shadow-soft)}
+.commercial-segment-card .eyebrow{margin:0}
+.commercial-segment-card strong{font-family:var(--serif);font-size:1.35rem;line-height:1.15}
+.commercial-segment-card small{font-size:.88rem;line-height:1.55;color:var(--muted)}
+.commercial-segment-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:50%;background:var(--accent-soft);font-size:1.12rem}
+.commercial-segment-card.original .commercial-segment-icon{background:rgba(47,111,79,.12);color:var(--success)}
+.commercial-segment-card.g5 .commercial-segment-icon{background:rgba(168,111,36,.12);color:var(--warning)}
+.commercial-segment-card.small .commercial-segment-icon,.commercial-segment-card.kit .commercial-segment-icon{background:rgba(155,116,73,.12);color:var(--accent)}
+.commercial-segment-link{font-size:.8rem;font-weight:800;letter-spacing:.04em;text-transform:uppercase}
+.commercial-segments-note{margin:14px 0 0;color:var(--muted);font-size:.78rem;line-height:1.55}
+.product-classification-tags{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin:7px 0 4px}
+.product-classification-tag{display:inline-flex;align-items:center;min-height:24px;padding:4px 8px;border-radius:999px;border:1px solid var(--line);font-size:.67rem;font-weight:800;letter-spacing:.03em;line-height:1;text-transform:uppercase}
+.product-classification-tag.original{background:rgba(47,111,79,.08);border-color:rgba(47,111,79,.20);color:var(--success)}
+.product-classification-tag.g5{background:rgba(168,111,36,.08);border-color:rgba(168,111,36,.22);color:#7f541d}
+.product-classification-tag.presentation{background:rgba(155,116,73,.08);border-color:rgba(155,116,73,.20);color:#745534}
+.product-classification-disclosure{display:grid;gap:3px;margin:10px 0 2px;padding:11px 13px;border:1px solid rgba(168,111,36,.24);border-radius:12px;background:rgba(168,111,36,.06);font-size:.78rem;line-height:1.45}
+.product-classification-disclosure strong{color:#76501e}
+.product-classification-disclosure span{color:var(--muted)}
+.admin-table select[id^="ap-quality-"],.admin-table select[id^="ap-presentation-"]{min-width:128px}
+@media(max-width:980px){.commercial-segments-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.commercial-segments-grid{grid-template-columns:1fr 1fr;gap:10px}.commercial-segment-card{min-height:170px;padding:15px}.commercial-segment-card strong{font-size:1.12rem}.commercial-segment-card small{font-size:.78rem}.commercial-segment-icon{width:36px;height:36px}.commercial-segments-note{font-size:.74rem}}
