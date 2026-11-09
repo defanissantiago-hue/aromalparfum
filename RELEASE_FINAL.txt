@@ -1,31 +1,37 @@
-AromaLParfum — V2.69 CLASIFICACIÓN COMERCIAL
-Build: 69
-Version: 2.69.0
+AromaLParfum — V2.70 EXPERIENCIA CINEMATOGRÁFICA
+Build: 70
+Version: 2.70.0
 Channel: stable
-Fecha: 2026-09-17
+Fecha: 2026-11-09
 
 OBJETIVO
-Separar claramente en la tienda:
-- Originales
-- G5 / Inspiraciones
-- Presentaciones de 30 ml
-- Kits / Combos
-
-La calidad comercial y la presentación son campos independientes. Un producto puede ser,
-por ejemplo, G5 + 30 ml u Original + Kit.
+Llevar a la tienda el formato de las dos referencias en video:
+- Inicio tipo "película": una escena fija que avanza con el scroll, con el frasco,
+  las notas del catálogo en letras gigantes, la anatomía de un perfume con líneas,
+  la bruma del atomizador, momentos del día y la marca armada con partículas.
+- Navegación tipo píldora y header de vidrio oscuro mientras se ve la película.
+- Tarjetas de producto con "Vista rápida": imagen, notas, precio, stock,
+  selector de cantidad y agregar al carrito sin salir de la página.
+- Avisos (toasts) con estilo oscuro y check dorado.
 
 DESPLIEGUE
-1. Ejecutar 01_PREPARAR_SUPABASE_CLASIFICACION.sql.
-2. Importar SUPABASE_PRODUCTOS_CLASIFICADOS_SIN_TOCAR_FOTOS.csv en product_updates_import.
-3. Ejecutar 02_APLICAR_CSV_CLASIFICADO_SIN_PERDER_FOTOS.sql.
-4. Subir el frontend encima del Build 68.
-5. NO borrar /imagenes.
-6. Hacer Ctrl+F5.
+1. No requiere SQL ni cambios en Supabase.
+2. Subir el frontend encima del Build 69 (ver README_PASO70.txt para la lista de archivos).
+3. NO borrar /imagenes.
+4. Hacer Ctrl+F5.
 
-SEGURIDAD DE FOTOS
-El flujo actualiza por nombre + ml y mantiene los IDs existentes de products.
-No actualiza products.imagen_url ni borra/reescribe product_images.
+DATOS REALES, NADA INVENTADO
+- Las notas gigantes salen de las notas más repetidas del catálogo (salida, corazón y fondo).
+- "Ver N fragancias" de cada momento del día cuenta productos reales del catálogo.
+  Si no hay coincidencias, el botón no aparece.
+- Las cifras del cierre salen del catálogo cargado (cantidad de productos y tamaños de decant).
 
-CLASIFICACIÓN CONSERVADORA
-El CSV solo marca Original cuando el Excel lo indica explícitamente y G5/Imitación
-cuando existe una señal explícita. El resto queda sin_clasificar para revisión manual.
+ACCESIBILIDAD
+- Botón "Pausar animación" (queda recordado en el navegador).
+- Con "reducir movimiento" activado en el sistema se muestra una versión estática
+  con el mismo contenido.
+- "Ir a la tienda" y los puntos laterales permiten saltar la película.
+
+CÓMO VOLVER ATRÁS
+Quitar de index.html las líneas de film-v2.css, film-v2.js y la fuente Fraunces.
+El resto de la tienda no fue modificado.

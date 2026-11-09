@@ -1,15 +1,15 @@
 "use strict";
 
-// AromaLParfum — V2.69 CLASIFICACIÓN COMERCIAL
+// AromaLParfum — V2.70 EXPERIENCIA CINEMATOGRÁFICA
 // Release Audit & Stability Guard V2.
 // No agrega telemetría ni consultas durante la navegación normal. Las pruebas
 // de Supabase se ejecutan únicamente al abrir/ejecutar Admin → Auditoría.
 
 const ALP67_RELEASE = Object.freeze({
-  step: 69,
-  version: "2.69.0",
+  step: 70,
+  version: "2.70.0",
   channel: "stable",
-  date: "2026-09-17",
+  date: "2026-11-09",
 });
 
 window.ALP_RELEASE = ALP67_RELEASE;
@@ -101,7 +101,8 @@ function alp67ModuleChecks()
       ["Reviews V2", () => typeof reviewsV2LoadProduct === "function"],
       ["Club V2", () => typeof loyaltyV2ApplyInitialRoute === "function"],
       ["Analytics V2", () => typeof analyticsV2Init === "function"],
-      ["SEO V2", () => typeof seoV2ApplyInitialRoute === "function"]
+      ["SEO V2", () => typeof seoV2ApplyInitialRoute === "function"],
+      ["Film V2", () => typeof alp70Install === "function"]
     );
   }
 
