@@ -1,13 +1,13 @@
 "use strict";
 
-// AromaLParfum — V2.70 EXPERIENCIA CINEMATOGRÁFICA
+// AromaLParfum — V2.71 NUEVA VISIÓN
 // Release Audit & Stability Guard V2.
 // No agrega telemetría ni consultas durante la navegación normal. Las pruebas
 // de Supabase se ejecutan únicamente al abrir/ejecutar Admin → Auditoría.
 
 const ALP67_RELEASE = Object.freeze({
-  step: 70,
-  version: "2.70.0",
+  step: 71,
+  version: "2.71.0",
   channel: "stable",
   date: "2026-11-09",
 });

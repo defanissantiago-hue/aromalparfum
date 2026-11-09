@@ -1,68 +1,97 @@
 "use strict";
 
-// AromaLParfum — PASO 70 · Experiencia cinematográfica
-// - Home: "película" controlada por el scroll (escena fija con frasco, notas,
-//   anatomía de un perfume, bruma, momentos del día y la marca en partículas).
-// - Tarjetas: botón de vista rápida con cantidad y agregado al carrito.
-// - Navegación tipo píldora y header de vidrio sobre la película.
-// Se instala envolviendo renderHomePage, renderProductCard y renderCurrentRoute,
-// sin tocar los módulos existentes. Para desactivarlo alcanza con quitar
-// film-v2.js y film-v2.css del index.html.
+// AromaLParfum — PASO 71 · Nueva visión
+// - Inicio: "película" controlada por el scroll con el Le Male Elixir Absolu
+//   (inspiración G5): frasco real recortado, pirámide olfativa con líneas,
+//   bruma, momentos de uso y el nombre armado con partículas.
+// - Sección "Un perfume para cada hora" con conteos reales del catálogo.
+// - Tarjetas: vista rápida con cantidad y agregado al carrito.
+// - Navegación tipo píldora con la página activa marcada.
+// Se instala envolviendo renderHomePage, renderCommercialSegments,
+// renderProductCard y renderCurrentRoute, sin tocar los módulos existentes.
+
+// La ruta se resuelve desde este script: así no depende de la URL que muestre
+// el navegador (el router la reescribe al navegar).
+const ALP70_HERO_IMAGE = (() =>
+{
+  const file = "../img/le-male-elixir-absolu.webp?v=71";
+  try
+  {
+    return new URL(file, document.currentScript?.src || location.href).href;
+  }
+  catch (_)
+  {
+    return "assets/img/le-male-elixir-absolu.webp?v=71";
+  }
+})();
+
+// Producto protagonista. Se busca por id y, si cambiara, por nombre.
+const ALP70_HERO = {
+  id: 1862,
+  match: "elixir absolu",
+  title: "Le Male",
+  titleEm: "Elixir Absolu",
+  word: "ABSOLU",
+  // Valores de la ficha en Supabase: se usan mientras carga el detalle y se
+  // reemplazan por lo que diga la base apenas llega.
+  fallback: {
+    descripcion: "Fragancia masculina intensa, cálida y especiada, con un perfil dulce, sensual y elegante.",
+    salida: "ciruela y canela",
+    corazon: "lavanda y davana",
+    fondo: "haba tonka y benjui",
+    duracion: "Media-alta / alta (orientativa)",
+    proyeccion: "Media-alta (orientativa)",
+  },
+};
 
 const ALP70_SCENES = [
-  { id: "intro", start: 0, end: 0.17, es: "Inicio", en: "Intro" },
-  { id: "anatomy", start: 0.15, end: 0.38, es: "Cómo se lee un perfume", en: "How to read a perfume" },
-  { id: "mist", start: 0.36, end: 0.53, es: "Un disparo", en: "One spray" },
-  { id: "moments", start: 0.51, end: 0.78, es: "Momentos", en: "Moments" },
-  { id: "brand", start: 0.76, end: 1, es: "AromaLParfum", en: "AromaLParfum" },
+  { id: "intro", start: 0, end: 0.17, es: "Elixir Absolu", en: "Elixir Absolu" },
+  { id: "anatomy", start: 0.15, end: 0.38, es: "Pirámide olfativa", en: "Fragrance pyramid" },
+  { id: "mist", start: 0.36, end: 0.53, es: "Duración y estela", en: "Longevity and trail" },
+  { id: "moments", start: 0.51, end: 0.78, es: "Cuándo usarlo", en: "When to wear it" },
+  { id: "brand", start: 0.76, end: 1, es: "Comprar", en: "Buy" },
 ];
 
-const ALP70_MOMENTS = [
-  {
-    time: "09:00",
-    range: [0.53, 0.62],
-    es: { title: "Para arrancar.", em: "Fresco y luminoso.", text: "Cítricos, notas verdes y acuáticas que acompañan el día." },
-    en: { title: "To start the day.", em: "Fresh and bright.", text: "Citrus, green and aquatic notes that carry you through the day." },
-    keywords: ["citric", "bergamot", "limon", "mandarin", "acuatic", "marin", "verde", "fresc"],
-    mood: "morning",
-  },
-  {
-    time: "18:00",
-    range: [0.61, 0.70],
-    es: { title: "Después de todo.", em: "Cálido y cercano.", text: "Aromáticos y amaderados que se sienten sin invadir." },
-    en: { title: "After it all.", em: "Warm and close.", text: "Aromatic and woody scents you feel without them taking over." },
-    keywords: ["amader", "lavanda", "aromatic", "cedro", "vetiver", "fougere", "sandal"],
-    mood: "dusk",
-  },
-  {
-    time: "23:00",
-    range: [0.69, 0.78],
-    es: { title: "La noche es tuya.", em: "Intenso.", text: "Ámbar, vainilla y oud para dejar huella." },
-    en: { title: "The night is yours.", em: "Intense.", text: "Amber, vanilla and oud to leave a trace." },
-    keywords: ["vainilla", "ambar", "oud", "oriental", "gourmand", "tabaco", "cuero"],
-    mood: "night",
-  },
+// Ocasiones de la base → hora, texto y luz de fondo para la escena de momentos.
+const ALP70_OCCASIONS = {
+  diario: { order: 1, time: "09:00", mood: "morning", es: ["Todos los días.", "Fácil de llevar."], en: ["Every day.", "Easy to wear."] },
+  oficina: { order: 2, time: "14:00", mood: "morning", es: ["En la oficina.", "Prolijo."], en: ["At the office.", "Polished."] },
+  eventos: { order: 3, time: "19:00", mood: "dusk", es: ["Eventos.", "A la altura."], en: ["Events.", "Up to it."] },
+  citas: { order: 4, time: "20:30", mood: "dusk", es: ["Citas.", "Cerca y cálido."], en: ["Dates.", "Close and warm."] },
+  salidas: { order: 5, time: "21:30", mood: "dusk", es: ["Salidas.", "Con presencia."], en: ["Nights out.", "With presence."] },
+  noche: { order: 6, time: "23:00", mood: "night", es: ["La noche.", "Intenso."], en: ["The night.", "Intense."] },
+  fiesta: { order: 7, time: "01:30", mood: "night", es: ["Fiesta.", "Que se sienta."], en: ["Party.", "Make it felt."] },
+};
+
+const ALP70_MOMENT_RANGES = [[0.53, 0.62], [0.61, 0.70], [0.69, 0.78]];
+
+// Sección de la home: momentos del día con conteos reales del catálogo.
+const ALP70_DAY_MOMENTS = [
+  { time: "09:00", keyword: "diario", mood: "morning", es: ["Para todos los días.", "Liviano y prolijo."], en: ["For every day.", "Light and polished."] },
+  { time: "14:00", keyword: "oficina", mood: "noon", es: ["En la oficina.", "Presente sin invadir."], en: ["At the office.", "Present, never loud."] },
+  { time: "20:30", keyword: "citas", mood: "dusk", es: ["Para una cita.", "Cálido y cercano."], en: ["For a date.", "Warm and close."] },
+  { time: "23:00", keyword: "noche", mood: "night", es: ["La noche es tuya.", "Intenso."], en: ["The night is yours.", "Intense."] },
 ];
 
-// Puntos del frasco (coordenadas del SVG, viewBox 0 0 400 640) a los que apuntan
-// las líneas de la anatomía.
+// Puntos del frasco (fracciones del recorte) a los que apuntan las líneas.
 const ALP70_ANCHORS = [
-  { x: 186, y: 117 },
-  { x: 96, y: 290 },
-  { x: 146, y: 400 },
-  { x: 100, y: 560 },
+  { x: 0.40, y: 0.05 },
+  { x: 0.13, y: 0.40 },
+  { x: 0.2, y: 0.86 },
 ];
+
+const ALP70_NOZZLE = { x: 0.47, y: 0.045 };
 
 const alp70 = {
   film: null,
   stage: null,
   bottle: null,
-  bottleSvg: null,
-  cap: null,
+  bottleImg: null,
   canvas: null,
   ctx: null,
   lines: null,
   els: {},
+  hero: null,
   progress: 0,
   target: 0,
   applied: -1,
@@ -181,57 +210,82 @@ function alp70Products()
   return Array.isArray(state?.products) ? state.products : [];
 }
 
+
 // ---------------------------------------------------------------------------
-// Datos reales del catálogo para la película
+// Datos reales del catálogo
 // ---------------------------------------------------------------------------
 
-function alp70SplitNotes(value)
+function alp70HeroProduct()
 {
-  const list = typeof arrayFromDb === "function" && Array.isArray(value)
-    ? arrayFromDb(value)
-    : Array.isArray(value) ? value : String(value || "").split(/[,;·/]|\sy\s|\sand\s/i);
+  const byId = typeof getProductById === "function" ? getProductById(ALP70_HERO.id) : null;
+  if (byId && alp70Norm(byId.nombre).includes(ALP70_HERO.match)) return byId;
 
-  return list
-    .map(item => String(item || "").trim())
-    .filter(item => item.length > 1 && item.length < 13);
+  const matches = alp70Products().filter(product => alp70Norm(product?.nombre).includes(ALP70_HERO.match));
+  return matches.sort((a, b) => Number(b.ml || 0) - Number(a.ml || 0))[0] || null;
 }
 
-// Las notas más repetidas del catálogo (una de salida, una de corazón y una de
-// fondo). Si el catálogo no tiene notas cargadas usa un trío clásico.
-function alp70TopNotes()
+function alp70Field(product, field)
 {
-  const layers = ["salida", "corazon", "fondo"];
-  const picked = [];
+  const raw = typeof localizedField === "function" ? localizedField(product, field) : product?.[field];
+  const text = Array.isArray(raw) ? raw.filter(Boolean).join(", ") : String(raw || "").trim();
+  if (text && !/^consultar$/i.test(text)) return text;
+  return state?.language === "en" ? "" : ALP70_HERO.fallback[field] || "";
+}
 
-  layers.forEach(layer =>
-  {
-    const counts = new Map();
+function alp70Capitalize(text)
+{
+  const value = String(text || "").trim();
+  return value ? value.charAt(0).toUpperCase() + value.slice(1) : "";
+}
 
-    alp70Products().forEach(product =>
-    {
-      const raw = typeof localizedField === "function" ? localizedField(product, layer) : product?.[layer];
-      alp70SplitNotes(raw).forEach(note =>
-      {
-        const key = alp70Norm(note);
-        const entry = counts.get(key) || { label: note, count: 0 };
-        entry.count += 1;
-        counts.set(key, entry);
-      });
-    });
+function alp70FirstSentence(text)
+{
+  const value = String(text || "").trim();
+  const end = value.indexOf(".");
+  return end > 40 ? value.slice(0, end + 1) : value;
+}
 
-    const best = [...counts.values()]
-      .sort((a, b) => b.count - a.count)
-      .find(entry => !picked.some(item => alp70Norm(item) === alp70Norm(entry.label)));
+function alp70CleanLevel(text)
+{
+  return String(text || "").replace(/\s*\(orientativa\)\s*/i, "").trim();
+}
 
-    if (best && best.count >= 2)
-    {
-      picked.push(best.label);
-    }
-  });
+function alp70FirstNote(text)
+{
+  return String(text || "").split(/,|\sy\s|\sand\s/i)[0].trim();
+}
 
-  const fallback = alp70L(["Bergamota", "Jazmín", "Vainilla"], ["Bergamot", "Jasmine", "Vanilla"]);
+function alp70HeroData(product)
+{
+  const notes = {
+    salida: alp70Field(product, "salida"),
+    corazon: alp70Field(product, "corazon"),
+    fondo: alp70Field(product, "fondo"),
+  };
+  const occasions = (typeof arrayFromDb === "function" ? arrayFromDb(product.ocasiones) : product.ocasiones || [])
+    .map(item => alp70Norm(item))
+    .filter(key => ALP70_OCCASIONS[key]);
+  const ordered = [...new Set(occasions)]
+    .sort((a, b) => ALP70_OCCASIONS[a].order - ALP70_OCCASIONS[b].order)
+    .slice(0, 3);
+  const seasons = (typeof arrayFromDb === "function" ? arrayFromDb(product.estaciones) : product.estaciones || []).filter(Boolean);
 
-  return picked.length === 3 ? picked : fallback;
+  return {
+    product,
+    id: Number(product.id),
+    price: typeof money === "function" ? money(product.precio) : String(product.precio),
+    ml: Number(product.ml || 0),
+    stock: Number(product.stock || 0),
+    gender: String(product.genero || ""),
+    family: alp70Capitalize(alp70Field(product, "familia")),
+    description: alp70FirstSentence(alp70Field(product, "descripcion")),
+    notes,
+    words: [notes.salida, notes.corazon, notes.fondo].map(alp70FirstNote).filter(Boolean),
+    longevity: alp70CleanLevel(alp70Field(product, "duracion")),
+    projection: alp70CleanLevel(alp70Field(product, "proyeccion")),
+    occasions: ordered.length ? ordered : ["citas", "noche", "fiesta"],
+    seasons,
+  };
 }
 
 function alp70ProductText(product)
@@ -245,203 +299,83 @@ function alp70ProductText(product)
     catch (_) {}
   }
 
-  return alp70Norm([product?.nombre, product?.familia, product?.salida, product?.corazon, product?.fondo].join(" "));
+  return alp70Norm([
+    product?.nombre,
+    product?.familia,
+    ...(Array.isArray(product?.ocasiones) ? product.ocasiones : []),
+    ...(Array.isArray(product?.estaciones) ? product.estaciones : []),
+  ].join(" "));
 }
 
-// Busca la palabra con más resultados del catálogo para cada momento del día.
-// Si ninguna coincide, el momento se muestra sin botón (nunca lleva a un
-// catálogo vacío).
-function alp70MomentSearch(moment)
+function alp70CountKeyword(keyword)
 {
-  const texts = alp70Products().map(alp70ProductText);
-  let best = { keyword: "", count: 0 };
-
-  moment.keywords.forEach(keyword =>
-  {
-    const count = texts.filter(text => text.includes(keyword)).length;
-    if (count > best.count) best = { keyword, count };
-  });
-
-  return best;
-}
-
-function alp70Stats()
-{
-  const total = alp70Products().length;
-  const shown = total >= 20 ? `${Math.floor(total / 10) * 10}+` : String(total || "");
-  const sizes = (Array.isArray(state?.decantSizes) ? state.decantSizes : [])
-    .map(item => Number(item?.ml))
-    .filter(ml => ml > 0);
-  const minDecant = sizes.length ? Math.min(...sizes) : 0;
-  const stats = [];
-
-  if (total)
-  {
-    stats.push({ value: shown, label: alp70L("productos en catálogo", "products in the catalog") });
-  }
-
-  stats.push({ value: "4", label: alp70L("líneas: Originales, G5, 30 ml y Kits", "lines: Originals, G5, 30 ml and Kits") });
-
-  stats.push(minDecant
-    ? { value: `${minDecant} ml`, label: alp70L("decants para probar antes de elegir", "decants to try before you choose") }
-    : { value: "1:1", label: alp70L("atención personalizada por WhatsApp", "personal service on WhatsApp") });
-
-  return stats;
+  return alp70Products().filter(product => alp70ProductText(product).includes(keyword)).length;
 }
 
 // ---------------------------------------------------------------------------
-// Ilustraciones (SVG propio, sin imágenes externas)
+// Ilustraciones de las notas (SVG propio)
 // ---------------------------------------------------------------------------
-
-function alp70BottleSvg()
-{
-  return `
-    <svg class="alp70-bottle-svg" viewBox="0 0 400 640" role="presentation" focusable="false">
-      <defs>
-        <linearGradient id="alp70Liquid" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#ffd98c"/>
-          <stop offset=".35" stop-color="#eba23a"/>
-          <stop offset=".78" stop-color="#b5661a"/>
-          <stop offset="1" stop-color="#6a3409"/>
-        </linearGradient>
-        <linearGradient id="alp70LiquidSide" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#5a2a06" stop-opacity=".55"/>
-          <stop offset=".18" stop-color="#5a2a06" stop-opacity="0"/>
-          <stop offset=".82" stop-color="#5a2a06" stop-opacity="0"/>
-          <stop offset="1" stop-color="#5a2a06" stop-opacity=".6"/>
-        </linearGradient>
-        <radialGradient id="alp70Glow" cx=".5" cy=".55" r=".5">
-          <stop offset="0" stop-color="#fff2c6" stop-opacity=".9"/>
-          <stop offset=".55" stop-color="#ffcf73" stop-opacity=".25"/>
-          <stop offset="1" stop-color="#ffcf73" stop-opacity="0"/>
-        </radialGradient>
-        <linearGradient id="alp70Glass" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#fff" stop-opacity=".55"/>
-          <stop offset=".07" stop-color="#fff" stop-opacity=".12"/>
-          <stop offset=".5" stop-color="#fff" stop-opacity=".03"/>
-          <stop offset=".93" stop-color="#fff" stop-opacity=".14"/>
-          <stop offset="1" stop-color="#fff" stop-opacity=".5"/>
-        </linearGradient>
-        <linearGradient id="alp70Gold" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0" stop-color="#6b4a17"/>
-          <stop offset=".22" stop-color="#f3d68f"/>
-          <stop offset=".45" stop-color="#a9772b"/>
-          <stop offset=".68" stop-color="#fff0c4"/>
-          <stop offset="1" stop-color="#7d5820"/>
-        </linearGradient>
-        <radialGradient id="alp70CapFill" cx=".36" cy=".3" r=".75">
-          <stop offset="0" stop-color="#7d6f82"/>
-          <stop offset=".18" stop-color="#2b2430"/>
-          <stop offset=".6" stop-color="#0c0a0e"/>
-          <stop offset="1" stop-color="#030203"/>
-        </radialGradient>
-        <linearGradient id="alp70Label" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#fbf6ec"/>
-          <stop offset="1" stop-color="#e6dccb"/>
-        </linearGradient>
-        <linearGradient id="alp70Fade" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stop-color="#fff" stop-opacity="0"/>
-          <stop offset=".55" stop-color="#fff" stop-opacity="0"/>
-          <stop offset="1" stop-color="#fff" stop-opacity=".6"/>
-        </linearGradient>
-        <mask id="alp70ReflectMask">
-          <rect x="0" y="0" width="400" height="640" fill="url(#alp70Fade)"/>
-        </mask>
-        <filter id="alp70Blur" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="6"/>
-        </filter>
-      </defs>
-
-      <ellipse cx="200" cy="598" rx="190" ry="26" fill="#ffb54a" opacity=".18" filter="url(#alp70Blur)"/>
-
-      <g id="alp70BottleCore">
-        <g class="alp70-atomizer">
-          <rect x="193" y="120" width="14" height="36" fill="url(#alp70Gold)"/>
-          <rect x="183" y="106" width="34" height="18" rx="4" fill="url(#alp70Gold)"/>
-          <circle cx="186" cy="115" r="2.6" fill="#2a1a08"/>
-        </g>
-
-        <g class="alp70-collar">
-          <rect x="164" y="150" width="72" height="40" rx="4" fill="url(#alp70Gold)"/>
-          <path d="M164 160h72M164 169h72M164 178h72" stroke="#4a3210" stroke-opacity=".35" stroke-width="1"/>
-        </g>
-
-        <rect x="62" y="188" width="276" height="402" rx="34" fill="#ffe7c2" fill-opacity=".07" stroke="#ffe9c9" stroke-opacity=".6" stroke-width="1.6"/>
-        <rect x="86" y="228" width="228" height="340" rx="20" fill="url(#alp70Liquid)"/>
-        <rect x="86" y="228" width="228" height="340" rx="20" fill="url(#alp70LiquidSide)"/>
-        <ellipse cx="200" cy="420" rx="118" ry="150" fill="url(#alp70Glow)" opacity=".7"/>
-        <path d="M92 236 Q200 222 308 236" stroke="#fff4d2" stroke-opacity=".75" stroke-width="2" fill="none"/>
-        <rect x="86" y="560" width="228" height="22" rx="10" fill="#ffd27a" fill-opacity=".28"/>
-        <rect x="62" y="188" width="276" height="402" rx="34" fill="url(#alp70Glass)"/>
-        <rect x="72" y="204" width="14" height="368" rx="7" fill="#fff" fill-opacity=".2"/>
-        <rect x="316" y="214" width="10" height="350" rx="5" fill="#fff" fill-opacity=".12"/>
-        <path d="M96 200 H304" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
-
-        <g class="alp70-label">
-          <rect x="146" y="338" width="108" height="124" rx="3" fill="url(#alp70Label)" stroke="#c9b48f" stroke-opacity=".7"/>
-          <text x="200" y="388" text-anchor="middle" font-family="Fraunces, Georgia, serif" font-size="17" letter-spacing="3.5" fill="#2a2018">AROMA</text>
-          <path d="M178 400 H222" stroke="#b08a4a" stroke-width="1"/>
-          <text x="200" y="415" text-anchor="middle" font-family="Inter, Arial, sans-serif" font-size="7" letter-spacing="3.2" fill="#6d5c48">LPARFUM</text>
-          <text x="200" y="446" text-anchor="middle" font-family="Georgia, serif" font-size="9" fill="#b08a4a">✦</text>
-        </g>
-      </g>
-
-      <g class="alp70-cap" id="alp70Cap">
-        <rect x="168" y="146" width="64" height="9" rx="3" fill="url(#alp70Gold)"/>
-        <circle cx="200" cy="94" r="64" fill="url(#alp70CapFill)"/>
-        <ellipse cx="176" cy="66" rx="24" ry="14" fill="#fff" opacity=".2" filter="url(#alp70Blur)"/>
-        <path d="M150 120 Q200 152 250 120" stroke="#ffcf87" stroke-opacity=".35" stroke-width="2" fill="none"/>
-      </g>
-
-      <g class="alp70-reflection" mask="url(#alp70ReflectMask)" opacity=".32" transform="translate(0 1180) scale(1 -1)">
-        <use href="#alp70BottleCore"/>
-      </g>
-    </svg>
-  `;
-}
 
 function alp70IngredientsSvg()
 {
   return `
-    <svg class="alp70-ing alp70-ing-petal" viewBox="0 0 170 90" role="presentation" focusable="false">
+    <svg class="alp70-ing alp70-ing-plum" viewBox="0 0 120 120" role="presentation" focusable="false">
       <defs>
-        <linearGradient id="alp70Petal" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#f4e9ff"/>
-          <stop offset=".45" stop-color="#a98be6"/>
-          <stop offset="1" stop-color="#5b3aa6"/>
-        </linearGradient>
-      </defs>
-      <path d="M6 58 C38 4 118 0 164 30 C128 68 52 86 6 58Z" fill="url(#alp70Petal)"/>
-      <path d="M12 58 C60 44 104 34 156 31" stroke="#fff6c9" stroke-opacity=".75" stroke-width="2" fill="none"/>
-    </svg>
-    <svg class="alp70-ing alp70-ing-citrus" viewBox="0 0 100 100" role="presentation" focusable="false">
-      <defs>
-        <radialGradient id="alp70Citrus" cx=".5" cy=".5" r=".5">
-          <stop offset="0" stop-color="#fff2b8"/>
-          <stop offset=".75" stop-color="#ffb43a"/>
-          <stop offset="1" stop-color="#e3790f"/>
+        <radialGradient id="alp70Plum" cx=".36" cy=".32" r=".75">
+          <stop offset="0" stop-color="#b56aa8"/>
+          <stop offset=".35" stop-color="#5c2357"/>
+          <stop offset="1" stop-color="#1c0820"/>
         </radialGradient>
       </defs>
-      <circle cx="50" cy="50" r="46" fill="#f08a19"/>
-      <circle cx="50" cy="50" r="39" fill="url(#alp70Citrus)"/>
-      <g stroke="#fff6dc" stroke-width="2.4" stroke-linecap="round">
-        <path d="M50 14V86M14 50H86M25 25L75 75M75 25L25 75"/>
-      </g>
-      <circle cx="50" cy="50" r="5" fill="#fff6dc"/>
+      <path d="M60 22c-4-10 2-16 8-18" stroke="#6b4a2a" stroke-width="4" fill="none" stroke-linecap="round"/>
+      <path d="M66 14c14-10 32-6 36 4-14 8-28 6-36-4Z" fill="#4f6b2e"/>
+      <circle cx="58" cy="68" r="46" fill="url(#alp70Plum)"/>
+      <path d="M58 24c-8 16-8 60 0 90" stroke="#140617" stroke-opacity=".45" stroke-width="2" fill="none"/>
+      <ellipse cx="40" cy="48" rx="12" ry="7" fill="#fff" opacity=".18" transform="rotate(-30 40 48)"/>
     </svg>
-    <svg class="alp70-ing alp70-ing-wood" viewBox="0 0 140 70" role="presentation" focusable="false">
+    <svg class="alp70-ing alp70-ing-cinnamon" viewBox="0 0 170 70" role="presentation" focusable="false">
       <defs>
-        <linearGradient id="alp70Wood" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stop-color="#d79a5a"/>
-          <stop offset=".5" stop-color="#8a5226"/>
-          <stop offset="1" stop-color="#4b2a12"/>
+        <linearGradient id="alp70Cinnamon" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#c47a3e"/>
+          <stop offset=".55" stop-color="#7a3f17"/>
+          <stop offset="1" stop-color="#4a230b"/>
         </linearGradient>
       </defs>
-      <path d="M4 22 L120 4 L136 40 L18 66Z" fill="url(#alp70Wood)"/>
-      <path d="M14 30 L124 14 M18 42 L128 26 M22 54 L132 38" stroke="#3a1f0c" stroke-opacity=".45" stroke-width="1.6"/>
+      <g transform="rotate(-8 85 35)">
+        <rect x="8" y="14" width="150" height="20" rx="10" fill="url(#alp70Cinnamon)"/>
+        <ellipse cx="152" cy="24" rx="7" ry="10" fill="#9a5a2a"/>
+        <path d="M152 18c-4 3-4 9 0 12" stroke="#3a1a06" stroke-width="1.6" fill="none"/>
+        <rect x="16" y="36" width="140" height="18" rx="9" fill="url(#alp70Cinnamon)"/>
+        <ellipse cx="150" cy="45" rx="6" ry="9" fill="#9a5a2a"/>
+        <path d="M30 20h110M34 42h100" stroke="#e3a467" stroke-opacity=".35" stroke-width="1.4"/>
+      </g>
     </svg>
-    <svg class="alp70-ing alp70-ing-petal2" viewBox="0 0 170 90" role="presentation" focusable="false">
-      <path d="M6 58 C38 4 118 0 164 30 C128 68 52 86 6 58Z" fill="url(#alp70Petal)" opacity=".9"/>
+    <svg class="alp70-ing alp70-ing-lavender" viewBox="0 0 70 180" role="presentation" focusable="false">
+      <path d="M36 176C34 120 33 70 35 20" stroke="#5f7d47" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <g fill="#9b7fd6">
+        <ellipse cx="35" cy="18" rx="5" ry="8"/>
+        <ellipse cx="28" cy="30" rx="5" ry="8" transform="rotate(-20 28 30)"/>
+        <ellipse cx="42" cy="34" rx="5" ry="8" transform="rotate(20 42 34)"/>
+        <ellipse cx="29" cy="46" rx="5.5" ry="8" transform="rotate(-20 29 46)"/>
+        <ellipse cx="42" cy="50" rx="5.5" ry="8" transform="rotate(20 42 50)"/>
+        <ellipse cx="30" cy="63" rx="5.5" ry="8.5" transform="rotate(-20 30 63)"/>
+        <ellipse cx="41" cy="67" rx="5.5" ry="8.5" transform="rotate(20 41 67)"/>
+        <ellipse cx="31" cy="80" rx="5" ry="8" transform="rotate(-18 31 80)" fill="#7d60bd"/>
+        <ellipse cx="40" cy="84" rx="5" ry="8" transform="rotate(18 40 84)" fill="#7d60bd"/>
+      </g>
+    </svg>
+    <svg class="alp70-ing alp70-ing-tonka" viewBox="0 0 120 70" role="presentation" focusable="false">
+      <defs>
+        <linearGradient id="alp70Tonka" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#6b4430"/>
+          <stop offset="1" stop-color="#1f120b"/>
+        </linearGradient>
+      </defs>
+      <g fill="url(#alp70Tonka)">
+        <ellipse cx="38" cy="30" rx="32" ry="12" transform="rotate(-14 38 30)"/>
+        <ellipse cx="78" cy="46" rx="30" ry="11" transform="rotate(10 78 46)"/>
+      </g>
+      <path d="M14 34c10-4 22-8 44-12M52 44c12 2 26 4 46 8" stroke="#a87a5a" stroke-opacity=".35" stroke-width="1.4" fill="none"/>
     </svg>
   `;
 }
@@ -450,48 +384,51 @@ function alp70IngredientsSvg()
 // Markup de la película
 // ---------------------------------------------------------------------------
 
-function alp70RenderFilm()
+function alp70RenderFilm(product)
 {
-  const notes = alp70TopNotes();
-  const stats = alp70Stats();
-  const moments = ALP70_MOMENTS.map(moment =>
-  {
-    const copy = alp70L(moment.es, moment.en);
-    const search = alp70MomentSearch(moment);
-    return { ...moment, copy, search };
-  });
-  const anatomy = [
+  const hero = alp70HeroData(product);
+  alp70.hero = hero;
+  const out = hero.stock <= 0;
+  const g5 = alp70L("Inspiración G5", "G5 inspiration");
+  const sizeLine = hero.ml ? `${hero.ml} ml` : "";
+  const legal = alp70L(
+    "Inspiración G5 de la fragancia de Jean Paul Gaultier. No es el producto original.",
+    "G5 inspiration of the Jean Paul Gaultier fragrance. Not the original product."
+  );
+  const pyramid = [
     {
+      field: "salida",
       title: alp70L("Salida", "Top notes"),
-      text: alp70L("Lo primero que sentís. Cítricos y notas frescas de los primeros minutos.", "What you notice first. Citrus and fresh notes in the first minutes."),
+      text: alp70L("Lo primero que sentís al aplicarlo.", "What you notice first."),
     },
     {
+      field: "corazon",
       title: alp70L("Corazón", "Heart"),
-      text: alp70L("La personalidad de la fragancia. Aparece después y te acompaña varias horas.", "The character of the scent. It opens up next and stays for hours."),
+      text: alp70L("Aparece a los pocos minutos y le da carácter.", "It opens up after a few minutes."),
     },
     {
-      title: alp70L("Concentración", "Concentration"),
-      text: alp70L("EDT, EDP o Extrait: a mayor concentración, más duración en la piel.", "EDT, EDP or Extrait: the higher the concentration, the longer it lasts."),
-    },
-    {
+      field: "fondo",
       title: alp70L("Fondo", "Base"),
-      text: alp70L("Maderas, ámbar y vainilla. Es lo que queda al final del día.", "Woods, amber and vanilla. What remains at the end of the day."),
+      text: alp70L("Lo que queda en la piel al final del día.", "What stays on the skin at the end of the day."),
     },
   ];
-
-  const momentButton = moment => moment.search.count
-    ? `<button class="alp70-link" type="button" data-alp70="moment" data-keyword="${alp70Attr(moment.search.keyword)}">${alp70Esc(alp70L(`Ver ${moment.search.count} fragancias`, `See ${moment.search.count} fragrances`))} <span aria-hidden="true">→</span></button>`
-    : "";
-
-  const statsHtml = stats.map(item => `
-    <div class="alp70-stat">
-      <strong>${alp70Esc(item.value)}</strong>
-      <span>${alp70Esc(item.label)}</span>
+  const buyButtons = (secondaryLabel) => `
+    <div class="alp70-actions">
+      <button class="alp70-btn" type="button" data-action="add-product" data-product-id="${hero.id}" ${out ? "disabled" : ""}>
+        ${alp70Esc(out ? alp70L("Sin stock", "Out of stock") : alp70L("Agregar al carrito", "Add to cart"))}
+      </button>
+      <button class="alp70-btn ghost" type="button" data-route="product" data-product-id="${hero.id}">${alp70Esc(secondaryLabel)}</button>
     </div>
-  `).join("");
+  `;
+  const priceBlock = `
+    <div class="alp70-price">
+      <strong data-alp70-price>${alp70Esc(hero.price)}</strong>
+      <span>${alp70Esc([sizeLine, out ? alp70L("Sin stock", "Out of stock") : alp70L("En stock", "In stock")].filter(Boolean).join(" · "))}</span>
+    </div>
+  `;
 
   return `
-    <section class="alp70-film" id="alp70Film" aria-label="${alp70Attr(alp70L("Presentación de AromaLParfum", "AromaLParfum introduction"))}">
+    <section class="alp70-film" id="alp70Film" aria-label="${alp70Attr(`${ALP70_HERO.title} ${ALP70_HERO.titleEm} · ${g5}`)}">
       <div class="alp70-stage" id="alp70Stage">
         <div class="alp70-bg" aria-hidden="true">
           <div class="alp70-glow alp70-glow-base"></div>
@@ -504,40 +441,41 @@ function alp70RenderFilm()
         </div>
 
         <div class="alp70-notes" aria-hidden="true">
-          ${notes.map((note, index) => `<span class="alp70-note alp70-note-${index}">${alp70Esc(String(note).toUpperCase())}</span>`).join("")}
+          ${hero.words.map((note, index) => `<span class="alp70-note alp70-note-${index}">${alp70Esc(note.toUpperCase())}</span>`).join("")}
         </div>
 
         <div class="alp70-ingredients" aria-hidden="true">${alp70IngredientsSvg()}</div>
 
         <div class="alp70-bottle" id="alp70Bottle" aria-hidden="true">
-          <div class="alp70-bottle-float">${alp70BottleSvg()}</div>
+          <div class="alp70-bottle-float">
+            <span class="alp70-bottle-halo"></span>
+            <img class="alp70-bottle-img" src="${alp70Attr(ALP70_HERO_IMAGE)}" alt="" width="273" height="610" decoding="async" fetchpriority="high">
+            <img class="alp70-bottle-reflect" src="${alp70Attr(ALP70_HERO_IMAGE)}" alt="" width="273" height="610" decoding="async">
+          </div>
         </div>
 
         <canvas class="alp70-canvas" id="alp70Canvas" aria-hidden="true"></canvas>
         <svg class="alp70-lines" id="alp70Lines" aria-hidden="true"></svg>
 
         <div class="alp70-scene alp70-s-intro" data-scene="intro">
-          <p class="alp70-eyebrow">AromaLParfum · ${alp70Esc(alp70L("Perfumería", "Perfumery"))}</p>
+          <p class="alp70-eyebrow"><span class="alp70-tag">${alp70Esc(g5)}</span>${hero.gender ? ` · ${alp70Esc(hero.gender)}` : ""}</p>
           <h1 class="alp70-display">
-            <span class="alp70-line"><span>${alp70Esc(alp70L("Para lo que", "For what"))}</span></span>
-            <span class="alp70-line"><em>${alp70Esc(alp70L("no se ve.", "can't be seen."))}</em></span>
+            <span class="alp70-line"><span>${alp70Esc(ALP70_HERO.title)}</span></span>
+            <span class="alp70-line"><em>${alp70Esc(ALP70_HERO.titleEm)}</em></span>
           </h1>
-          <p class="alp70-lead">${alp70Esc(alp70L(
-            "Una fragancia llega antes que vos y se queda cuando te vas. Originales, inspiraciones G5, decants y regalos.",
-            "A fragrance arrives before you and stays after you leave. Originals, G5 inspirations, decants and gifts."
-          ))}</p>
-          <div class="alp70-actions">
-            <button class="alp70-btn" type="button" data-route="catalog" data-filter="Todos">${alp70Esc(alp70L("Explorar perfumes", "Explore perfumes"))} <span aria-hidden="true">→</span></button>
-            <button class="alp70-btn ghost" type="button" data-route="games">${alp70Esc(alp70L("Descubrí tu aroma", "Find your scent"))}</button>
-          </div>
+          <p class="alp70-lead" data-alp70-field="description">${alp70Esc(hero.description)}</p>
+          ${priceBlock}
+          ${buyButtons(alp70L("Ver ficha", "View details"))}
+          <p class="alp70-legal">${alp70Esc(legal)}</p>
         </div>
 
         <div class="alp70-scene alp70-s-anatomy" data-scene="anatomy">
-          <p class="alp70-eyebrow alp70-corner">${alp70Esc(alp70L("Cómo se lee un perfume", "How to read a perfume"))}</p>
+          <p class="alp70-eyebrow alp70-corner">${alp70Esc(alp70L("Pirámide olfativa", "Fragrance pyramid"))}${hero.family ? ` · ${alp70Esc(hero.family)}` : ""}</p>
           <ol class="alp70-callouts">
-            ${anatomy.map((item, index) => `
+            ${pyramid.map((item, index) => `
               <li class="alp70-callout" data-index="${index}">
-                <strong>${alp70Esc(item.title)}</strong>
+                <small>${alp70Esc(item.title)}</small>
+                <strong data-alp70-field="${item.field}">${alp70Esc(alp70Capitalize(hero.notes[item.field]))}</strong>
                 <span>${alp70Esc(item.text)}</span>
               </li>
             `).join("")}
@@ -547,40 +485,41 @@ function alp70RenderFilm()
         <div class="alp70-scene alp70-s-mist" data-scene="mist">
           <h2 class="alp70-display alp70-display-sm">
             <span class="alp70-line"><span>${alp70Esc(alp70L("Un disparo.", "One spray."))}</span></span>
-            <span class="alp70-line"><em>${alp70Esc(alp70L("Una sensación.", "One feeling."))}</em></span>
+            <span class="alp70-line"><em>${alp70Esc(alp70L("Una estela.", "A trail."))}</em></span>
           </h2>
-          <p class="alp70-lead">${alp70Esc(alp70L(
-            "Probala en decants de pocos mililitros antes de elegir tu frasco.",
-            "Try it as a small decant before choosing your bottle."
-          ))}</p>
-          <button class="alp70-link" type="button" data-route="decants">${alp70Esc(alp70L("Armá tu combo de decants", "Build your decant set"))} <span aria-hidden="true">→</span></button>
+          <div class="alp70-levels">
+            <div><span>${alp70Esc(alp70L("Duración", "Longevity"))}</span><strong data-alp70-field="longevity">${alp70Esc(hero.longevity || alp70L("Consultar", "Ask us"))}</strong></div>
+            <div><span>${alp70Esc(alp70L("Proyección", "Projection"))}</span><strong data-alp70-field="projection">${alp70Esc(hero.projection || alp70L("Consultar", "Ask us"))}</strong></div>
+          </div>
+          <p class="alp70-footnote">${alp70Esc(alp70L("Valores orientativos: dependen de la piel y del clima.", "Approximate values: they depend on skin and weather."))}</p>
+          <button class="alp70-link" type="button" data-route="decants">${alp70Esc(alp70L("Probalo primero en decant", "Try it first as a decant"))} <span aria-hidden="true">→</span></button>
         </div>
 
         <div class="alp70-scene alp70-s-moments" data-scene="moments">
-          <p class="alp70-eyebrow alp70-corner">${alp70Esc(alp70L("Un perfume para cada hora", "A scent for every hour"))}</p>
-          ${moments.map((moment, index) => `
-            <article class="alp70-moment" data-moment="${index}">
-              <p class="alp70-time">${alp70Esc(moment.time)}</p>
-              <h2 class="alp70-display alp70-display-sm">
-                <span class="alp70-line"><span>${alp70Esc(moment.copy.title)}</span></span>
-                <span class="alp70-line"><em>${alp70Esc(moment.copy.em)}</em></span>
-              </h2>
-              <p class="alp70-lead">${alp70Esc(moment.copy.text)}</p>
-              ${momentButton(moment)}
-            </article>
-          `).join("")}
+          <p class="alp70-eyebrow alp70-corner">${alp70Esc(alp70L("Cuándo usarlo", "When to wear it"))}${hero.seasons.length ? ` · ${alp70Esc(hero.seasons.join(alp70L(" y ", " & ")))}` : ""}</p>
+          ${hero.occasions.map((key, index) => {
+            const occasion = ALP70_OCCASIONS[key];
+            const [title, em] = alp70L(occasion.es, occasion.en);
+            return `
+              <article class="alp70-moment" data-moment="${index}" data-mood="${occasion.mood}">
+                <p class="alp70-time">${alp70Esc(occasion.time)}</p>
+                <h2 class="alp70-display alp70-display-sm">
+                  <span class="alp70-line"><span>${alp70Esc(title)}</span></span>
+                  <span class="alp70-line"><em>${alp70Esc(em)}</em></span>
+                </h2>
+              </article>
+            `;
+          }).join("")}
         </div>
 
         <div class="alp70-scene alp70-s-brand" data-scene="brand">
           <h2 class="alp70-wordmark" id="alp70Wordmark">
-            <span class="alp70-wordmark-text">AROMA</span>
-            <small>LPARFUM</small>
+            <span class="alp70-wordmark-text">${alp70Esc(ALP70_HERO.word)}</span>
+            <small>${alp70Esc(`${ALP70_HERO.title} ${ALP70_HERO.titleEm.split(" ")[0]} · ${g5}`.toUpperCase())}</small>
           </h2>
-          <div class="alp70-stats">${statsHtml}</div>
-          <div class="alp70-actions">
-            <button class="alp70-btn" type="button" data-alp70="skip">${alp70Esc(alp70L("Ver la colección", "See the collection"))} <span aria-hidden="true">↓</span></button>
-            <button class="alp70-btn ghost" type="button" data-route="catalog" data-filter="Todos">${alp70Esc(alp70L("Catálogo completo", "Full catalog"))}</button>
-          </div>
+          ${priceBlock}
+          ${buyButtons(alp70L("Ver ficha completa", "Full details"))}
+          <button class="alp70-link alp70-continue" type="button" data-alp70="skip">${alp70Esc(alp70L("Seguir a la tienda", "Continue to the store"))} <span aria-hidden="true">↓</span></button>
         </div>
 
         <nav class="alp70-dots" aria-label="${alp70Attr(alp70L("Escenas", "Scenes"))}">
@@ -604,26 +543,90 @@ function alp70RenderFilm()
       <div class="alp70-static">
         <div class="alp70-static-grid">
           <div>
-            <p class="alp70-eyebrow">${alp70Esc(alp70L("Cómo se lee un perfume", "How to read a perfume"))}</p>
+            <p class="alp70-eyebrow">${alp70Esc(alp70L("Pirámide olfativa", "Fragrance pyramid"))}</p>
             <ol class="alp70-static-list">
-              ${anatomy.map(item => `<li><strong>${alp70Esc(item.title)}</strong><span>${alp70Esc(item.text)}</span></li>`).join("")}
+              ${pyramid.map(item => `<li><span>${alp70Esc(item.title)}</span><strong data-alp70-field="${item.field}">${alp70Esc(alp70Capitalize(hero.notes[item.field]))}</strong></li>`).join("")}
             </ol>
           </div>
           <div>
-            <p class="alp70-eyebrow">${alp70Esc(alp70L("Un perfume para cada hora", "A scent for every hour"))}</p>
-            <div class="alp70-static-moments">
-              ${moments.map(moment => `
-                <article>
-                  <span class="alp70-time">${alp70Esc(moment.time)}</span>
-                  <strong>${alp70Esc(moment.copy.title)} <em>${alp70Esc(moment.copy.em)}</em></strong>
-                  <p>${alp70Esc(moment.copy.text)}</p>
-                  ${momentButton(moment)}
-                </article>
-              `).join("")}
-            </div>
+            <p class="alp70-eyebrow">${alp70Esc(alp70L("Duración y estela", "Longevity and trail"))}</p>
+            <ol class="alp70-static-list">
+              <li><span>${alp70Esc(alp70L("Duración", "Longevity"))}</span><strong data-alp70-field="longevity">${alp70Esc(hero.longevity || "—")}</strong></li>
+              <li><span>${alp70Esc(alp70L("Proyección", "Projection"))}</span><strong data-alp70-field="projection">${alp70Esc(hero.projection || "—")}</strong></li>
+            </ol>
           </div>
         </div>
-        <div class="alp70-stats alp70-static-stats">${statsHtml}</div>
+      </div>
+    </section>
+  `;
+}
+
+// Cuando llega el detalle del producto (notas, descripción, duración) se
+// actualizan los textos sin volver a armar la película.
+function alp70RefreshHeroFields()
+{
+  const film = alp70.film;
+  const product = alp70.hero?.product;
+  if (!film || !product) return;
+  const hero = alp70HeroData(product);
+  alp70.hero = hero;
+  const values = {
+    description: hero.description,
+    salida: alp70Capitalize(hero.notes.salida),
+    corazon: alp70Capitalize(hero.notes.corazon),
+    fondo: alp70Capitalize(hero.notes.fondo),
+    longevity: hero.longevity,
+    projection: hero.projection,
+  };
+  film.querySelectorAll("[data-alp70-field]").forEach(node =>
+  {
+    const value = values[node.dataset.alp70Field];
+    if (value && node.textContent !== value) node.textContent = value;
+  });
+  film.querySelectorAll(".alp70-note").forEach((node, index) =>
+  {
+    const word = hero.words[index];
+    if (word) node.textContent = word.toUpperCase();
+  });
+}
+
+function alp70LoadHeroDetail()
+{
+  const product = alp70.hero?.product;
+  if (!product || product.salida || typeof loadProductDetailFields !== "function") return;
+  Promise.resolve(loadProductDetailFields(product.id))
+    .then(() => alp70RefreshHeroFields())
+    .catch(() => {});
+}
+
+// Sección "Un perfume para cada hora" para la home (debajo de la película).
+function alp70RenderDayMoments()
+{
+  const cards = ALP70_DAY_MOMENTS
+    .map(moment => ({ ...moment, copy: alp70L(moment.es, moment.en), count: alp70CountKeyword(moment.keyword) }))
+    .filter(moment => moment.count > 0);
+
+  if (!cards.length) return "";
+
+  return `
+    <section class="section alp70-day">
+      <div class="container">
+        <div class="section-title-row">
+          <div>
+            <p class="eyebrow">${alp70Esc(alp70L("Un perfume para cada hora", "A scent for every hour"))}</p>
+            <h2 class="section-title">${alp70Esc(alp70L("¿Para cuándo lo buscás?", "When will you wear it?"))}</h2>
+          </div>
+        </div>
+        <div class="alp70-day-grid">
+          ${cards.map(moment => `
+            <button class="alp70-day-card" type="button" data-alp70="moment" data-keyword="${alp70Attr(moment.keyword)}" data-mood="${moment.mood}">
+              <span class="alp70-day-time">${alp70Esc(moment.time)}</span>
+              <strong>${alp70Esc(moment.copy[0])}</strong>
+              <em>${alp70Esc(moment.copy[1])}</em>
+              <span class="alp70-day-link">${alp70Esc(alp70L(`Ver ${moment.count} fragancias`, `See ${moment.count} fragrances`))} <span aria-hidden="true">→</span></span>
+            </button>
+          `).join("")}
+        </div>
       </div>
     </section>
   `;
@@ -633,29 +636,29 @@ function alp70RenderFilm()
 // Movimiento
 // ---------------------------------------------------------------------------
 
-// Posición del frasco a lo largo de la película: x/y en % del escenario.
+// Posición del frasco a lo largo de la película: x/y en vw/vh.
 const ALP70_BOTTLE_PATH = {
   desktop: [
-    { p: 0, x: 0, y: 0, s: 1, r: -5 },
-    { p: 0.14, x: 0, y: 0, s: 1, r: -2 },
-    { p: 0.22, x: 2, y: 2, s: 1.06, r: 0 },
-    { p: 0.36, x: 2, y: 2, s: 1.06, r: 0 },
+    { p: 0, x: 0, y: 0, s: 1, r: -4 },
+    { p: 0.14, x: 0, y: 0, s: 1, r: -1 },
+    { p: 0.22, x: 2, y: 1, s: 1.04, r: 0 },
+    { p: 0.36, x: 2, y: 1, s: 1.04, r: 0 },
     { p: 0.46, x: 4, y: 0, s: 0.98, r: 0 },
     { p: 0.56, x: 2, y: 0, s: 0.96, r: 0 },
     { p: 0.76, x: 2, y: 0, s: 0.96, r: 0 },
-    { p: 0.9, x: 6, y: 1, s: 0.94, r: 0 },
-    { p: 1, x: 6, y: 1, s: 0.94, r: 0 },
+    { p: 0.9, x: 6, y: 1, s: 0.96, r: 0 },
+    { p: 1, x: 6, y: 1, s: 0.96, r: 0 },
   ],
   mobile: [
-    { p: 0, x: 20, y: 9, s: 0.9, r: -6 },
-    { p: 0.14, x: 20, y: 9, s: 0.9, r: -2 },
-    { p: 0.22, x: 24, y: -5, s: 1, r: 0 },
-    { p: 0.36, x: 24, y: -5, s: 1, r: 0 },
-    { p: 0.46, x: 16, y: 14, s: 0.86, r: 0 },
+    { p: 0, x: 22, y: 16, s: 0.82, r: -4 },
+    { p: 0.14, x: 22, y: 16, s: 0.82, r: -1 },
+    { p: 0.22, x: 24, y: -4, s: 1, r: 0 },
+    { p: 0.36, x: 24, y: -4, s: 1, r: 0 },
+    { p: 0.46, x: 12, y: 18, s: 0.78, r: 0 },
     { p: 0.56, x: 0, y: 10, s: 0.86, r: 0 },
     { p: 0.76, x: 0, y: 10, s: 0.86, r: 0 },
-    { p: 0.88, x: 0, y: 12, s: 0.82, r: 0 },
-    { p: 1, x: 0, y: 12, s: 0.82, r: 0 },
+    { p: 0.88, x: 22, y: 16, s: 0.78, r: 0 },
+    { p: 1, x: 22, y: 16, s: 0.78, r: 0 },
   ],
 };
 
@@ -673,13 +676,6 @@ function alp70BottleAt(p)
     s: alp70Lerp(a.s, b.s, t),
     r: alp70Lerp(a.r, b.r, t),
   };
-}
-
-function alp70CapLift(p)
-{
-  const up = alp70EaseOut(alp70Range(p, 0.17, 0.27));
-  const down = alp70Smooth(alp70Range(p, 0.8, 0.9));
-  return up * (1 - down);
 }
 
 function alp70ReadProgress()
@@ -798,36 +794,27 @@ function alp70BuildWordmark()
   alp70.wordReady = alp70.word.length > 0;
 }
 
+function alp70ImagePoint(fx, fy)
+{
+  const img = alp70.bottleImg;
+  const stage = alp70.stage;
+  if (!img || !stage) return { x: 0, y: 0 };
+  const rect = img.getBoundingClientRect();
+  const stageRect = stage.getBoundingClientRect();
+  return {
+    x: rect.left - stageRect.left + rect.width * fx,
+    y: rect.top - stageRect.top + rect.height * fy,
+  };
+}
+
 function alp70Nozzle()
 {
-  const svg = alp70.bottleSvg;
-  const stage = alp70.stage;
-  if (!svg || !stage) return { x: 0, y: 0 };
-  const matrix = svg.getScreenCTM();
-  const stageRect = stage.getBoundingClientRect();
-  if (!matrix) return { x: 0, y: 0 };
-  const point = svg.createSVGPoint();
-  point.x = 186;
-  point.y = 115;
-  const screen = point.matrixTransform(matrix);
-  return { x: screen.x - stageRect.left, y: screen.y - stageRect.top };
+  return alp70ImagePoint(ALP70_NOZZLE.x, ALP70_NOZZLE.y);
 }
 
 function alp70Anchors()
 {
-  const svg = alp70.bottleSvg;
-  const stage = alp70.stage;
-  const matrix = svg?.getScreenCTM();
-  if (!matrix || !stage) return [];
-  const stageRect = stage.getBoundingClientRect();
-  const point = svg.createSVGPoint();
-  return ALP70_ANCHORS.map(anchor =>
-  {
-    point.x = anchor.x;
-    point.y = anchor.y;
-    const screen = point.matrixTransform(matrix);
-    return { x: screen.x - stageRect.left, y: screen.y - stageRect.top };
-  });
+  return ALP70_ANCHORS.map(anchor => alp70ImagePoint(anchor.x, anchor.y));
 }
 
 function alp70DrawLines(p)
@@ -928,7 +915,7 @@ function alp70DrawCanvas(p)
   if (m > 0 && mistFade > 0)
   {
     const nozzle = alp70Nozzle();
-    const reach = Math.max(w, h) * (alp70.mobile ? 0.17 : 0.48);
+    const reach = Math.max(w, h) * (alp70.mobile ? 0.12 : 0.48);
     // En el celular el texto va arriba: la bruma sube en vez de ir a la izquierda.
     const turn = alp70.mobile ? 1.0 : 0;
     alp70.mist.forEach(dot =>
@@ -991,22 +978,22 @@ function alp70Apply(p)
   });
 
   // Momentos del día
+  const moods = { morning: 0, dusk: 0, night: 0 };
   els.moments.forEach((moment, index) =>
   {
-    const [start, end] = ALP70_MOMENTS[index].range;
+    const [start, end] = ALP70_MOMENT_RANGES[index] || ALP70_MOMENT_RANGES[ALP70_MOMENT_RANGES.length - 1];
     const opacity = alp70SceneOpacity(p, start, end);
     moment.style.opacity = opacity.toFixed(3);
     moment.style.visibility = opacity < 0.02 ? "hidden" : "visible";
     moment.style.transform = `translate3d(0, ${((1 - opacity) * 18).toFixed(1)}px, 0)`;
+    const mood = moment.dataset.mood;
+    if (mood in moods) moods[mood] = Math.max(moods[mood], opacity);
   });
 
   // Luz de fondo según el momento
-  const morning = alp70SceneOpacity(p, 0.53, 0.62);
-  const dusk = alp70SceneOpacity(p, 0.61, 0.70);
-  const night = alp70SceneOpacity(p, 0.69, 0.8, { keepEnd: false });
-  els.glowMorning.style.opacity = morning.toFixed(3);
-  els.glowDusk.style.opacity = dusk.toFixed(3);
-  els.glowNight.style.opacity = night.toFixed(3);
+  els.glowMorning.style.opacity = moods.morning.toFixed(3);
+  els.glowDusk.style.opacity = moods.dusk.toFixed(3);
+  els.glowNight.style.opacity = moods.night.toFixed(3);
   els.haze.style.opacity = (alp70Range(p, 0.38, 0.47) * (1 - alp70Range(p, 0.5, 0.58)) * 0.9).toFixed(3);
 
   // Notas gigantes detrás del frasco
@@ -1023,14 +1010,12 @@ function alp70Apply(p)
   els.ingredients.style.setProperty("--fly", fly.toFixed(3));
   els.ingredients.style.opacity = (1 - alp70Range(p, 0.14, 0.22)).toFixed(3);
 
-  // Frasco y tapa
+  // Frasco
   const pose = alp70BottleAt(p);
   const px = alp70.mobile ? 0 : alp70.pointer.x * 10;
   const py = alp70.mobile ? 0 : alp70.pointer.y * 8;
   alp70.bottle.style.transform = `translate3d(calc(-50% + ${pose.x}vw + ${px.toFixed(1)}px), calc(-50% + ${pose.y}vh + ${py.toFixed(1)}px), 0) scale(${pose.s.toFixed(3)}) rotate(${(pose.r + alp70.pointer.x * 1.5).toFixed(2)}deg)`;
-  const lift = alp70CapLift(p);
-  alp70.cap?.setAttribute("transform", `translate(${(-26 * lift).toFixed(1)} ${(-200 * lift).toFixed(1)}) rotate(${(-10 * lift).toFixed(2)} 200 94)`);
-  alp70.cap?.setAttribute("opacity", (1 - alp70Range(lift, 0.35, 0.85)).toFixed(3));
+  els.halo.style.opacity = (0.55 + 0.45 * alp70Range(p, 0.36, 0.45) * (1 - alp70Range(p, 0.5, 0.58))).toFixed(3);
 
   // Puntos de progreso y header
   const active = ALP70_SCENES.reduce((acc, scene, index) => (p >= scene.start - 0.001 ? index : acc), 0);
@@ -1150,8 +1135,7 @@ function alp70Mount()
   alp70.film = film;
   alp70.stage = document.getElementById("alp70Stage");
   alp70.bottle = document.getElementById("alp70Bottle");
-  alp70.bottleSvg = film.querySelector(".alp70-bottle-svg");
-  alp70.cap = document.getElementById("alp70Cap");
+  alp70.bottleImg = film.querySelector(".alp70-bottle-img");
   alp70.canvas = document.getElementById("alp70Canvas");
   alp70.lines = document.getElementById("alp70Lines");
   alp70.ctx = alp70.canvas?.getContext("2d") || null;
@@ -1167,11 +1151,13 @@ function alp70Mount()
     glowDusk: film.querySelector(".alp70-glow-dusk"),
     glowNight: film.querySelector(".alp70-glow-night"),
     haze: film.querySelector(".alp70-haze"),
+    halo: film.querySelector(".alp70-bottle-halo"),
     hint: film.querySelector(".alp70-hint"),
     activeDot: -1,
   };
 
   document.body.classList.add("alp70-home");
+  alp70LoadHeroDetail();
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   alp70.staticMode = reduced || !alp70.ctx;
@@ -1212,6 +1198,12 @@ function alp70Mount()
 
   alp70Resize();
   alp70Kick();
+
+  // La foto del frasco define dónde nacen la bruma y las líneas.
+  if (alp70.bottleImg && !alp70.bottleImg.complete)
+  {
+    alp70.bottleImg.addEventListener("load", () => { alp70.applied = -1; alp70Kick(); }, { once: true });
+  }
 
   // La tipografía puede llegar después del primer render: re-muestrear la marca.
   if (document.fonts?.ready)
@@ -1427,26 +1419,41 @@ function alp70Install()
     const originalHome = renderHomePage;
     renderHomePage = function alp70RenderHomePage()
     {
+      const product = alp70HeroProduct();
       let rest = "";
       try
       {
-        rest = alp70DemoteHeading(originalHome());
+        rest = originalHome();
       }
       catch (error)
       {
         console.error("Home original falló:", error);
       }
 
+      // Si el producto protagonista no está en el catálogo, la home queda como antes.
+      if (!product) return rest;
+
       try
       {
         // El resto de la home sube como una hoja sobre el final de la película.
-        return `${alp70RenderFilm()}<div class="alp70-after" id="alp70After">${rest}</div>`;
+        return `${alp70RenderFilm(product)}<div class="alp70-after" id="alp70After">${alp70DemoteHeading(rest)}</div>`;
       }
       catch (error)
       {
         console.error("Película de inicio falló:", error);
         return rest;
       }
+    };
+  }
+
+  if (typeof renderCommercialSegments === "function")
+  {
+    const originalSegments = renderCommercialSegments;
+    renderCommercialSegments = function alp70RenderCommercialSegments()
+    {
+      let extra = "";
+      try { extra = alp70RenderDayMoments(); } catch (error) { console.error("Momentos del día:", error); }
+      return originalSegments() + extra;
     };
   }
 

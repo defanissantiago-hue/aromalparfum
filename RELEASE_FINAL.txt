@@ -1,3 +1,21 @@
+AromaLParfum — V2.71 NUEVA VISIÓN
+Build: 71
+Version: 2.71.0
+Channel: stable
+Fecha: 2026-11-09
+
+RESUMEN
+- Estilo oscuro de lujo en toda la tienda (noir-v2.css).
+- Película de inicio con el Le Male Elixir Absolu (inspiración G5), datos en vivo del producto 1862.
+- Sección "¿Para cuándo lo buscás?" con conteos reales por ocasión.
+- Detalle y archivos en README_PASO71.txt. No requiere SQL.
+
+DESPLIEGUE
+1. Subir el frontend encima del Build 70.
+2. NO borrar /imagenes.
+3. Hacer Ctrl+F5.
+
+---- Build 70 ----
 AromaLParfum — V2.70 EXPERIENCIA CINEMATOGRÁFICA
 Build: 70
 Version: 2.70.0

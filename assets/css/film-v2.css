@@ -1,4 +1,4 @@
-/* AromaLParfum — PASO 70 · Experiencia cinematográfica
+/* AromaLParfum — PASO 70/71 · Experiencia cinematográfica
    Película de inicio, header de vidrio, navegación píldora, tarjetas con
    vista rápida y avisos. Todo queda bajo prefijos alp70 o selectores de la
    tienda; para revertir alcanza con quitar este archivo y film-v2.js. */
@@ -185,69 +185,101 @@
   animation: alp70Drift 8s ease-in-out infinite alternate;
 }
 
-.alp70-ing-petal {
-  left: 47%;
-  top: 14%;
-  width: clamp(90px, 11vw, 170px);
+.alp70-ing-plum {
+  left: 48%;
+  top: 16%;
+  width: clamp(70px, 7.4vw, 118px);
   translate: calc(var(--fly) * -34vw) calc(var(--fly) * -18vh);
-  rotate: calc(-18deg + var(--fly) * -70deg);
+  rotate: calc(-12deg + var(--fly) * -60deg);
 }
 
-.alp70-ing-citrus {
-  left: 80%;
-  top: 60%;
-  width: clamp(60px, 6.6vw, 104px);
+.alp70-ing-cinnamon {
+  left: 76%;
+  top: 66%;
+  width: clamp(100px, 11vw, 176px);
   translate: calc(var(--fly) * 24vw) calc(var(--fly) * 14vh);
-  rotate: calc(var(--fly) * 140deg);
+  rotate: calc(-18deg + var(--fly) * 80deg);
   animation-delay: -2s;
 }
 
-.alp70-ing-wood {
+.alp70-ing-lavender {
   left: 50%;
-  top: 70%;
-  width: clamp(80px, 8.6vw, 136px);
+  top: 56%;
+  width: clamp(34px, 3.6vw, 58px);
   translate: calc(var(--fly) * -30vw) calc(var(--fly) * 22vh);
-  rotate: calc(12deg + var(--fly) * -50deg);
+  rotate: calc(-28deg + var(--fly) * -50deg);
   animation-delay: -4s;
 }
 
-.alp70-ing-petal2 {
-  left: 82%;
-  top: 16%;
-  width: clamp(70px, 7.5vw, 116px);
+.alp70-ing-tonka {
+  left: 80%;
+  top: 18%;
+  width: clamp(70px, 7vw, 110px);
   translate: calc(var(--fly) * 26vw) calc(var(--fly) * -24vh);
-  rotate: calc(150deg + var(--fly) * 60deg);
+  rotate: calc(20deg + var(--fly) * 60deg);
   animation-delay: -6s;
-  opacity: .85;
 }
 
-/* Frasco */
+/* Frasco (foto recortada) */
 .alp70-bottle {
   position: absolute;
   z-index: 3;
   left: 66%;
-  top: 52%;
-  height: min(74%, 700px);
-  aspect-ratio: 400 / 640;
+  top: 50%;
+  height: min(76%, 640px);
+  aspect-ratio: 273 / 610;
   transform: translate3d(-50%, -50%, 0);
   will-change: transform;
 }
 
 .alp70-bottle-float {
+  position: relative;
   width: 100%;
   height: 100%;
   animation: alp70Float 7s ease-in-out infinite;
 }
 
-.alp70-bottle-svg {
+.alp70-bottle-img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: 100%;
-  overflow: visible;
+  object-fit: contain;
+  filter: drop-shadow(0 34px 40px rgba(0, 0, 0, .55)) saturate(1.05);
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-.alp70-cap {
-  transition: opacity .2s linear;
+.alp70-bottle-reflect {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  height: 100%;
+  margin-top: 4px;
+  object-fit: contain;
+  transform: scaleY(-1);
+  opacity: .24;
+  filter: blur(1px);
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, .75) 0%, transparent 34%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, .75) 0%, transparent 34%);
+  pointer-events: none;
+}
+
+.alp70-bottle-halo {
+  position: absolute;
+  z-index: 0;
+  left: -70%;
+  right: -70%;
+  top: 8%;
+  bottom: -6%;
+  background:
+    radial-gradient(42% 38% at 50% 52%, rgba(255, 196, 108, .42), transparent 72%),
+    radial-gradient(30% 12% at 50% 100%, rgba(255, 186, 96, .5), transparent 80%);
+  filter: blur(14px);
+  opacity: .55;
+  pointer-events: none;
 }
 
 .alp70-canvas {
@@ -452,8 +484,17 @@
   opacity: 0;
 }
 
+.alp70-callout small {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--alp70-gold);
+}
+
 .alp70-callout strong {
   width: max-content;
+  max-width: 100%;
   font-family: var(--alp70-display);
   font-size: clamp(20px, 2vw, 28px);
   font-weight: 400;
@@ -524,32 +565,93 @@
   color: var(--alp70-muted);
 }
 
-.alp70-stats {
+.alp70-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 10px;
+  margin-right: 2px;
+  border: 1px solid rgba(233, 194, 126, .45);
+  border-radius: 999px;
+  color: var(--alp70-gold);
+  letter-spacing: .18em;
+}
+
+.alp70-price {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 0 0 20px;
+}
+
+.alp70-price strong {
+  font-family: var(--alp70-display);
+  font-size: clamp(30px, 3vw, 42px);
+  font-weight: 400;
+  color: var(--alp70-gold);
+  font-variant-numeric: lining-nums;
+}
+
+.alp70-price span {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--alp70-muted);
+}
+
+.alp70-legal {
+  margin: 18px 0 0;
+  max-width: 420px;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: var(--alp70-muted);
+}
+
+.alp70-levels {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 22px;
-  max-width: min(620px, 50vw);
-  margin-bottom: 28px;
-  padding-top: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+  max-width: 440px;
+  padding-top: 18px;
   border-top: 1px solid var(--alp70-line);
 }
 
-.alp70-stat {
+.alp70-levels div {
   display: grid;
   gap: 6px;
 }
 
-.alp70-stat strong {
+.alp70-levels span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: var(--alp70-gold);
+}
+
+.alp70-levels strong {
   font-family: var(--alp70-display);
-  font-size: clamp(26px, 2.6vw, 40px);
+  font-size: clamp(20px, 2vw, 28px);
   font-weight: 400;
   color: var(--alp70-ink);
 }
 
-.alp70-stat span {
-  font-size: 11.5px;
-  line-height: 1.5;
-  color: var(--alp70-muted);
+.alp70-footnote {
+  margin: 12px 0 18px;
+  font-size: 11px;
+  color: var(--alp70-faint);
+}
+
+.alp70-continue {
+  margin-top: 22px;
+}
+
+.alp70-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* Controles */
@@ -800,10 +902,6 @@
   color: var(--alp70-gold);
 }
 
-.alp70-static-stats {
-  max-width: none;
-}
-
 .alp70-static-mode .alp70-wordmark-text {
   color: var(--alp70-gold);
 }
@@ -872,8 +970,8 @@
 
   .alp70-bottle {
     left: 50%;
-    top: 64%;
-    height: 50%;
+    top: 62%;
+    height: 52%;
   }
 
   .alp70-scene {
@@ -933,24 +1031,45 @@
     padding-bottom: 12vh;
   }
 
-  .alp70-ing-petal {
-    left: 18%;
+  .alp70-ing-plum {
+    left: 66%;
     top: 46%;
   }
 
-  .alp70-ing-citrus {
-    left: 78%;
-    top: 74%;
+  .alp70-ing-cinnamon {
+    left: 64%;
+    top: 84%;
   }
 
-  .alp70-ing-wood {
-    left: 8%;
-    top: 78%;
+  .alp70-ing-lavender {
+    left: 88%;
+    top: 58%;
   }
 
-  .alp70-ing-petal2 {
-    left: 74%;
-    top: 40%;
+  .alp70-ing-tonka {
+    left: 6%;
+    top: 84%;
+  }
+
+  .alp70-price {
+    margin-bottom: 14px;
+  }
+
+  .alp70-price strong {
+    font-size: 30px;
+  }
+
+  .alp70-legal {
+    max-width: 58%;
+    font-size: 10px;
+  }
+
+  .alp70-actions {
+    gap: 8px;
+  }
+
+  .alp70-levels strong {
+    font-size: 19px;
   }
 
   .alp70-callouts {
@@ -998,20 +1117,6 @@
     font-size: 19vw;
   }
 
-  .alp70-stats {
-    max-width: 100%;
-    gap: 12px;
-    margin-bottom: 18px;
-    padding-top: 14px;
-  }
-
-  .alp70-stat strong {
-    font-size: 24px;
-  }
-
-  .alp70-stat span {
-    font-size: 10.5px;
-  }
 
   .alp70-dots {
     right: 6px;
@@ -1054,6 +1159,19 @@
 
   .alp70-wordmark {
     gap: 14px;
+    max-width: 100%;
+  }
+
+  .alp70-wordmark small {
+    padding-left: 0;
+    font-size: 10px;
+    letter-spacing: .32em;
+    line-height: 1.6;
+  }
+
+  .alp70-film .alp70-s-moments .alp70-corner {
+    top: 2.2vh;
+    bottom: auto;
   }
 
   .alp70-static-grid {
